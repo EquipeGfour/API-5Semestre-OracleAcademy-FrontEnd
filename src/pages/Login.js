@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Button, Text, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, } from 'react-native';
 import { StyleSheet } from 'react-native';
+import BottomBar from './BottomBar';
 
 const Login = ({ navigation }) =>(
-    <View>
+    <View style={styles.container}>
         <Text> Clique para retornar!</Text>
         <TouchableOpacity
             style={''}
@@ -11,11 +12,19 @@ const Login = ({ navigation }) =>(
             onPress={() => navigation.navigate('Bem-vindo')}>
         <Text style={''}>Voltar</Text>
         </TouchableOpacity>
+        <BottomBar/>
     </View>
 );
 
 Login.navigationOptions = {
     title: 'Home',
 };
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
 export default Login;
 
