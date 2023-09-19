@@ -8,7 +8,7 @@ export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(
         <NavigationContainer>
-            <Stack.Navigator initialRouteName = "BottomBar" screenOptions={{headerShown:false}} >
+            <Stack.Navigator initialRouteName = "Bem-vindo" screenOptions={{headerShown:false}} >
                 <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
                 <Stack.Screen name = "Login" component = {Login} />
                 <Stack.Screen name = "Home" component = {''} />
