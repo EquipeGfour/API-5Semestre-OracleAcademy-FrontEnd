@@ -10,7 +10,7 @@ const BemVindo = ({ navigation }) => (
             style={''}
             title="Login"
             onPress={() => navigation.navigate('Login')}>
-            <Text style={''}>Login</Text>
+            <Text style={''}>Logiiin</Text>
         </TouchableOpacity>
         <BottomBar />
     </View>
