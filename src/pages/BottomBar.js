@@ -22,7 +22,7 @@ const BottomBar = ({ onIconPress }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.icon}>
+            <TouchableOpacity onPress={() => navigation.navigate('TabMenu')} style={styles.icon}>
                 <Icon name="home" size={30} color={verdeEscuro} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openModal} style={styles.icon}>
