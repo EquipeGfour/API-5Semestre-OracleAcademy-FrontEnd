@@ -37,9 +37,9 @@ const Login = ({ navigation }) => {
             </TextInput>
             <TouchableOpacity
                 style={styles.btnlogin}
-                title="Login"
-                onPress={() => navigation.navigate('')}>
-                <Text style={styles.textobtn}>Login</Text>
+                title="Entrar"
+                onPress={() => navigation.navigate('Home')}>
+                <Text style={styles.textobtn}>Entrar</Text>
             </TouchableOpacity>
         </PaperProvider>
     </View>
