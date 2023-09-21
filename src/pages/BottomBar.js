@@ -22,7 +22,7 @@ const BottomBar = ({ onIconPress }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('Bem-vindo')} style={styles.icon}>
+            <TouchableOpacity onPress={() => navigation.navigate('TabMenu')} style={styles.icon}>
                 <Icon name="home" size={30} color={verdeEscuro} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openModal} style={styles.icon}>
@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
         borderTopWidth: 1,
-        borderColor: 'lightgray',
+        borderColor: 'lightgray',        
     },
     icon: {
         padding: 10,
