@@ -38,7 +38,7 @@ import React, { useState } from 'react';
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? 'Select item' : '...'}
+          placeholder={!isFocus ? 'Prioridades' : '...'}
           
           value={value}
           onFocus={() => setIsFocus(true)}
