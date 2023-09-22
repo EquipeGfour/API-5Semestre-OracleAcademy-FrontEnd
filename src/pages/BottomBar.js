@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Button } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Button, DataPikerIOS } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
+import DropdownComponent from './dropDown';
+import BemVindo from './BemVindo';
 
 const verdeEscuro = "#346c68";
 
@@ -20,30 +22,43 @@ const BottomBar = ({ onIconPress }) => {
         setModalVisible(false);
     };
 
+    const [choseDate, setChosenDate] = useState(new Date())
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('TabMenu')} style={styles.icon}>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.icon}>
                 <Icon name="home" size={30} color={verdeEscuro} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={verdeEscuro} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => onIconPress('icon3')} style={styles.icon}>
+            <TouchableOpacity onPress={() => onIconPress('Login')} style={styles.icon}>
                 <Icon name="chart-bar" size={30} color={verdeEscuro} />
             </TouchableOpacity>
 
             <Modal isVisible={isModalVisible}>
                 <View style={styles.modalContainer}>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome' label = "Nome" />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição' label = "Descrição"/>
-                <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
+                <Text style = {{fontSize: 20}}>Criar Objetivos</Text>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome'  />
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição'  />
+                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA'/>
+                <DropdownComponent style = {styles.modalText}/>
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
+                    <Button title="Adicionar" onPress={closeModal} color = {verdeEscuro}/>
+                    <View style={{ width: '10%' }} />
+                    <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
                 </View>
-            </Modal>
+                </View>
+            </Modal> 
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    data:{
+        flex:1,
+        justifyContent: 'center'
+    },
     container: {
         flexDirection: 'row',
         justifyContent: 'space-around',
