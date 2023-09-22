@@ -9,7 +9,7 @@ const data = [
     { label: 'Item 3', value: '3' },
 ];
 
-const DropdownObjetivos = () => {
+const DropDownObjetivos = () => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -52,7 +52,7 @@ const DropdownObjetivos = () => {
     );
 };
 
-export default DropdownObjetivos;
+export default DropDownObjetivos;
 
 const styles = StyleSheet.create({
     container: {
