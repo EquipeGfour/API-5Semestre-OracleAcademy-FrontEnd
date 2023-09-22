@@ -7,7 +7,6 @@ import React, { useState } from 'react';
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
     { label: 'Item 3', value: '3' },
-   
   ];
 
   const DropdownComponent = () => {
@@ -17,8 +16,8 @@ import React, { useState } from 'react';
     const renderLabel = () => {
       if (value || isFocus) {
         return (
-          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-            Prioridade
+          <Text style={styles.label}>
+            Prioridades
           </Text>
         );
       }
@@ -29,10 +28,10 @@ import React, { useState } from 'react';
       <View style={styles.container}>
         {renderLabel()}
         <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+          style={styles.dropdown }
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          
+          // activeColor='pink' (se quiser colocar cor quando seleciona o item)
           iconStyle={styles.iconStyle}
           data={data}
           
@@ -48,7 +47,6 @@ import React, { useState } from 'react';
             setValue(item.value);
             setIsFocus(false);
           }}
-         
         />
       </View>
     );
