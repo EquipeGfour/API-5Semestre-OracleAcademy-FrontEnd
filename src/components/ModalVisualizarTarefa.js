@@ -1,22 +1,25 @@
-import React from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
-import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider  } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, TouchableWithoutFeedback, Button  } from 'react-native';
+import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput,  } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Login from './Login';
+import DropdownComponent from './DropDownPrioridadeTarefas';
+import Login from '../pages/Login';
 
 const verdeEscuro = "#346c68";
 
 const TodasTarefas = ({}) => { 
 
     const [visible, setVisible] = React.useState(false);
-    const [secondModalVisible, setSecondModalVisible] = React.useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
     const [checked, setChecked] = React.useState(false);
+
+    const openModal = () => {setModalVisible(true)};
+    const closeModal = () => {setModalVisible(false)};
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
-    const showSecondModal = () => setSecondModalVisible(true);
-    const hideSecondModal = () => setSecondModalVisible(false);
+
 
     return (
         <>
@@ -31,7 +34,7 @@ const TodasTarefas = ({}) => {
                         />
                         <Card.Title
                             title="Financeiro 1"
-                            subtitle="21/09/2013"
+                            subtitle="Data Conclusão: 21/09/2013"
                         />
                     </View>
                 </View>
@@ -48,8 +51,10 @@ const TodasTarefas = ({}) => {
                         />
                         <View style={styles.iconContainer}>
                             <Text style={styles.textoCheck}>Financeiro 1</Text>
-                            <Icon name="edit" size={20} onPress={showSecondModal}/>
+                            <Icon name="edit" size={20} onPress={openModal}/>
+                            <Icon name="trash" size={20} marginLeft={10} color={'red'}/>
                         </View>
+                        
                     </View>
                     <View style={styles.espacamento}>
                         <View style={styles.iconContainer}>
@@ -72,13 +77,20 @@ const TodasTarefas = ({}) => {
                 </View>
             </Modal>
 
-            <Modal visible={secondModalVisible} onDismiss={hideSecondModal}>
-                <View style={styles.modal2}>
-                    <Text style={styles.modalText}  >Editar Tarefa</Text>
-                    <Text style={ { marginTop: 20 }}>Excluir Tarefa</Text>
-
+            <Modal visible={isModalVisible} onDismiss={closeModal}>
+                <View style={styles.modalContainer}>
+                <Text style = {{fontSize: 20}}>Editar Tarefa</Text>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome Tarefa'  />
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição'  />
+                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA'/>
+                <DropdownComponent style = {styles.modalText}/>
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
+                    <Button title="Salvar" onPress={closeModal} color = {verdeEscuro}/>
+                    <View style={{ width: '10%' }} />
+                    <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
                 </View>
-            </Modal>
+                </View>
+            </Modal> 
 
             
         </>
@@ -87,8 +99,7 @@ const TodasTarefas = ({}) => {
 
 const styles = StyleSheet.create({
     textoCheck:{
-        marginRight: '60%'
-
+        marginRight: '50%'
     },
     iconContainer: {
         flexDirection: 'row',
@@ -105,20 +116,11 @@ const styles = StyleSheet.create({
     },
     modal: {
         backgroundColor: 'white',
-        margin: 20,
+        margin: 10,
         padding: 20,
         borderRadius: 20,
         elevation: 10,
         justifyContent: 'center',
-        borderColor: 'black',
-        borderWidth: 1
-    },
-    modal2: {
-        backgroundColor: 'white',
-        margin: 70, //Tamanho do modal
-        padding: 40, //Tamanho do modal
-        alignItems:'center',
-        borderRadius: 10,
         borderColor: 'black',
         borderWidth: 1
     },
@@ -137,6 +139,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    modalContainer: {
+        backgroundColor: 'white',
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        
+    },
+    modalText: {
+        mode:"flat",
+        backgroundColor : "white",
+        width: 200,
+        marginBottom: 30
+    },
+    btncolor:{
+        color: verdeEscuro
+    }
 });
 
 export default TodasTarefas;

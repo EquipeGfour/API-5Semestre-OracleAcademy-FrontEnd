@@ -4,12 +4,12 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
-import DropdownComponent from './dropDown';
-import BemVindo from './BemVindo';
+import DropdownComponent from './DropDownPrioridadeTarefas';
+import BemVindo from '../pages/BemVindo';
 
 const verdeEscuro = "#346c68";
 
-const BottomBar = ({ onIconPress }) => {
+const BottomBarTarefas = ({ onIconPress }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
     const [text, setText] = React.useState('');
@@ -38,8 +38,8 @@ const BottomBar = ({ onIconPress }) => {
 
             <Modal isVisible={isModalVisible}>
                 <View style={styles.modalContainer}>
-                <Text style = {{fontSize: 20}}>Criar Objetivos</Text>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome'  />
+                <Text style = {{fontSize: 20}}>Criar Tarefas</Text>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome Tarefa'  />
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição'  />
                 <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA'/>
                 <DropdownComponent style = {styles.modalText}/>
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default BottomBar;
+export default BottomBarTarefas;

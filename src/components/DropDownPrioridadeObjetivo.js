@@ -6,7 +6,7 @@ import React, { useState } from 'react';
   const data = [
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
+    { label: 'Item 3', value: '3' }
   ];
 
   const DropdownComponent = () => {
@@ -17,7 +17,7 @@ import React, { useState } from 'react';
       if (value || isFocus) {
         return (
           <Text style={styles.label}>
-            Prioridades
+            Prioridade
           </Text>
         );
       }
@@ -38,7 +38,7 @@ import React, { useState } from 'react';
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? 'Prioridades' : '...'}
+          placeholder={!isFocus ? 'Prioridade' : '...'}
           
           value={value}
           onFocus={() => setIsFocus(true)}
