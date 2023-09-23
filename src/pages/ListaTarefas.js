@@ -14,16 +14,33 @@ const verdeEscuro = "#346c68";
 
 const Tab = createMaterialTopTabNavigator();
 
-const ListaTarefas = ({ }) => {
+const ListaTarefas = ({route}) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const openModal = () => {
         setModalVisible(true);
     };
 
+    const getPrioridadeTitle = (prioridade) => {
+        if(prioridade === 1){
+            return "Urgente";
+        }
+        else if (prioridade === 2){
+            return "Alta";
+        }
+        else if (prioridade === 3){
+            return "Média";
+        }
+        else if(prioridade === 4){
+            return "Baixo";
+        }
+    }
+
     const closeModal = () => {
         setModalVisible(false);
     };
+
+    const { descricao, data_estimada, prioridade, id } = route.params;
 
     const onChangeSearch = query => setSearchQuery(query);
     return (
@@ -36,11 +53,11 @@ const ListaTarefas = ({ }) => {
                     <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'}/>
                 </DataTable.Header>
                 <DataTable.Header>
-                    <DataTable.Title>Descrição</DataTable.Title>
+                    <DataTable.Title>{descricao}</DataTable.Title>
                 </DataTable.Header>
                 <DataTable.Header>
-                    <DataTable.Title>Data Final: 24/09/2023</DataTable.Title>
-                    <DataTable.Title numeric>Prioridade: Alta</DataTable.Title>
+                    <DataTable.Title>Data Final: {data_estimada}</DataTable.Title>
+                    <DataTable.Title numeric>Prioridade: {getPrioridadeTitle(prioridade)}</DataTable.Title>
                 </DataTable.Header>                
             </DataTable>
 
@@ -69,7 +86,9 @@ const ListaTarefas = ({ }) => {
                         backgroundColor: '#346c68',
                     },
                 }}>
-                <Tab.Screen name="Todas" component={TodasTarefas}/>
+                <Tab.Screen name="Todas">
+                    {() => <TodasTarefas id={id} />}
+                </Tab.Screen>
                 {/* <Tab.Screen name="Todas" component={Login} /> */}
                 {/* <Tab.Screen name="Atrasadas" component={BemVindo} />
                 <Tab.Screen name="Concluídas" component={BemVindo} /> */}

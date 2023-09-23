@@ -8,7 +8,7 @@ import Login from '../pages/Login';
 
 const verdeEscuro = "#346c68";
 
-const TodasTarefas = ({}) => { 
+const TodasTarefas = ({id}) => { 
 
     const [visible, setVisible] = React.useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
