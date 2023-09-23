@@ -93,7 +93,7 @@ const ListaTarefas = ({route}) => {
                 {/* <Tab.Screen name="Atrasadas" component={BemVindo} />
                 <Tab.Screen name="Concluídas" component={BemVindo} /> */}
             </Tab.Navigator>
-            <BottomBarTarefas/>
+            <BottomBarTarefas id={id}/>
         </>
     );
 };

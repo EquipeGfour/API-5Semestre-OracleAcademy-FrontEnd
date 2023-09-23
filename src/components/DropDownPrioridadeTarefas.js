@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' }
+    { label: 'Urgente', value: 1 },
+    { label: 'Alta', value: 2 },
+    { label: 'Média', value: 3 },
+    { label: 'Baixo', value: 4 }
 ];
 
 const DropdownComponent = (props) => {
