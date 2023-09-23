@@ -9,6 +9,7 @@ import TodasTarefas from '../components/ModalVisualizarTarefa';
 import BottomBar from '../components/ModalBottomBarObjetivos';
 import BottomBarTarefas from '../components/ModalBottomBarTarefas';
 import DropdownComponent from '../components/DropDownPrioridadeObjetivo'
+import { deleteObjetivo } from "../service/objetivo"
 
 const verdeEscuro = "#346c68";
 
@@ -17,6 +18,7 @@ const Tab = createMaterialTopTabNavigator();
 const ListaTarefas = ({route}) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
+    const [flagTarefa, setFlagTarefa] = useState(false);
     const openModal = () => {
         setModalVisible(true);
     };
@@ -36,21 +38,43 @@ const ListaTarefas = ({route}) => {
         }
     }
 
+
     const closeModal = () => {
         setModalVisible(false);
     };
 
-    const { descricao, data_estimada, prioridade, id } = route.params;
 
+    const deletarObjetivo = () =>{
+        deleteObjetivo(id).then(res => {
+            Toast.show({
+                type: 'success',
+                text1: 'Objetivo excluida com sucesso!',
+            });
+            buscarTarefas();
+        }).catch(error => {
+            Toast.show({
+                type: 'error',
+                text1: 'Ocorreu algum problema...',
+            });
+            console.error('Erro', error);
+        })
+    }
+
+    const criouTarefa = () =>{
+        setFlagTarefa(true)
+    }
+
+    const { titulo, descricao, data_estimada, prioridade, id } = route.params;
+ 
     const onChangeSearch = query => setSearchQuery(query);
     return (
         <>
 
             <DataTable style={styles.dataTable}>
                 <DataTable.Header style={styles.editar}>
-                    <Text>Relatórios</Text>
-                    <Icon style={styles.edit}name="edit" size={20} onPress={openModal}/>
-                    <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'}/>
+                    <Text>{titulo}</Text>
+                    {/* <Icon style={styles.edit}name="edit" size={20} onPress={openModal}/> */}
+                    <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(id)}}/>
                 </DataTable.Header>
                 <DataTable.Header>
                     <DataTable.Title>{descricao}</DataTable.Title>
@@ -87,13 +111,13 @@ const ListaTarefas = ({route}) => {
                     },
                 }}>
                 <Tab.Screen name="Todas">
-                    {() => <TodasTarefas id={id} />}
+                    {() => <TodasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={id} />}
                 </Tab.Screen>
                 {/* <Tab.Screen name="Todas" component={Login} /> */}
                 {/* <Tab.Screen name="Atrasadas" component={BemVindo} />
                 <Tab.Screen name="Concluídas" component={BemVindo} /> */}
             </Tab.Navigator>
-            <BottomBarTarefas id={id}/>
+            <BottomBarTarefas criouTarefa={criouTarefa} objetivo={{titulo, descricao, data_estimada, prioridade, id}}/>
         </>
     );
 };
@@ -115,10 +139,12 @@ const styles = StyleSheet.create({
         padding:10,
     },
     edit:{
-        marginLeft:'69%'
+        marginLeft:'55%'
     },
     icones:{
-        marginLeft:'3%'
+        justifyContent:'space-between',
+        textAlign:'right',
+        width:'85%',
     },
     container: {
         width: 355,

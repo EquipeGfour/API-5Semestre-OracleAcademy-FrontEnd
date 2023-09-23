@@ -5,12 +5,13 @@ import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../pages/Login';
-import { getTarefas } from '../service/tarefa';
-import axios from "axios"
+import { deleteTarefa, getTarefas } from '../service/tarefa';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+
 
 const verdeEscuro = "#346c68";
 
-const TodasTarefas = ({ id }) => {
+const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
 
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -23,7 +24,7 @@ const TodasTarefas = ({ id }) => {
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
-
+ 
     const getPrioridadeTitle = (prioridade) => {
         if (prioridade === 1) {
             return "Urgente";
@@ -38,15 +39,34 @@ const TodasTarefas = ({ id }) => {
             return "Baixo";
         }
     }
+
+    const deletarTarefa = () =>{
+        deleteTarefa(id, tarefa.id).then(res => {
+            Toast.show({
+                type: 'success',
+                text1: 'Tarefa excluida com sucesso!',
+            });
+            buscarTarefas();
+            setVisible(false);
+        }).catch(error => {
+            Toast.show({
+                type: 'error',
+                text1: 'Ocorreu algum problema...',
+            });
+            console.error('Erro', error);
+        })
+    }
+
     const buscarTarefas = () => {
-        axios.get(`http://10.0.2.2:3004/tarefa/buscarTarefas/${id}`).then((res) => {
+        setFlagTarefa(false)
+        getTarefas(id).then((res) => {
             const novaLista = res.data.map((tarefa) => ({
                 ...tarefa,
                 checked: false,
             }))
             setTarefas(novaLista)
         }).catch(error => {
-            console.log(error)
+            console.error(error)
         });
     }
 
@@ -74,13 +94,19 @@ const TodasTarefas = ({ id }) => {
         buscarTarefas();
     }, [])
 
+    useEffect(() => {
+        if(flagTarefa){
+            buscarTarefas();
+        }
+    }, [flagTarefa])
+
     return (
         <>
             {tarefas.map((tarefa, index) => (
-                <View>
+                <View key={tarefa.id}>
                     <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
                         <View>
-                            <View key={tarefa.id} style={styles.container}>
+                            <View style={styles.container}>
                                 <View style={styles.itemContainer}>
                                     <Checkbox
                                         style={styles.iconCheck}
@@ -112,8 +138,8 @@ const TodasTarefas = ({ id }) => {
                         />
                         <View style={styles.iconContainer}>
                             <Text style={styles.textoCheck}>{tarefa.titulo}</Text>
-                            <Icon name="edit" size={20} onPress={openModal} />
-                            <Icon name="trash" size={20} marginLeft={10} color={'red'} />
+                            {/* <Icon name="edit" size={20} onPress={openModal} /> */}
+                            <Icon name="trash"  style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefa(tarefa.id)} />
                         </View>
 
                     </View>
@@ -152,7 +178,6 @@ const TodasTarefas = ({ id }) => {
                     </View>
                 </View>
             </Modal>
-
 
         </>
     );
@@ -215,6 +240,11 @@ const styles = StyleSheet.create({
     },
     btncolor: {
         color: verdeEscuro
+    },
+    icons:{
+        justifyContent:'space-between',
+        textAlign:'right',
+        width:'30%',
     }
 });
 

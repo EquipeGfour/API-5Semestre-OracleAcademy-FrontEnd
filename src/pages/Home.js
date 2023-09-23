@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',        
     },
     nome:{
-        marginLeft: 15,
+        marginLeft: 5,
         color: '#545F71',
         fontFamily: 'Inter',
         fontSize: 32,

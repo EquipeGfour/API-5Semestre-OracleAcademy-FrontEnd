@@ -9,3 +9,8 @@ export const getTarefas = (id) => {
 export const postTarefa = (id, data) => {
     return axios.post(`/tarefa/criar/${id}`, data);
 }
+
+
+export const deleteTarefa = (id, idTarefa) => {
+    return axios.delete(`/tarefa/deletar/${id}/${idTarefa}`)
+}

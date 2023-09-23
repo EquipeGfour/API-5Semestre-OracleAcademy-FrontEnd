@@ -8,3 +8,7 @@ export const getObjetivos = () => {
 export const postObjetivos = (data) => {
     return axios.post("/objetivo/criar", data);
 }
+
+export const deleteObjetivo = (id) => {
+    return axios.delete(`/objetivo/deletar/${id}`)
+}

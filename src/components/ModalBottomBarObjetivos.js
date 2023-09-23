@@ -54,7 +54,7 @@ const BottomBar = ({ onIconPress }) => {
                 <Text style = {{fontSize: 20}}>Criar Objetivos</Text>
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Nome' value={nome} onChangeText={(e) => setNome(e)}/>
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição' value={descricao} onChangeText={(e) => setDescricao(e)}/>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA' value={dataEstimada} onChangeText={(e) => setDataEstimada(e)}/>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='DD/MM/AAAA' value={dataEstimada} onChangeText={(e) => setDataEstimada(e)}/>
                 <DropdownComponent prioridade={prioridade} setPrioridade={setPrioridade} style = {styles.modalText}/>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
                     <Button title="Adicionar" onPress={criarObjetivo} color = {verdeEscuro}/>
