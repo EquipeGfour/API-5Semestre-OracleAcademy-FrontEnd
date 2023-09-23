@@ -9,7 +9,7 @@ const data = [
     { label: 'Item 4', value: '4' }
 ];
 
-const DropdownComponent = () => {
+const DropdownComponent = (props) => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -40,11 +40,11 @@ const DropdownComponent = () => {
             valueField="value"
             placeholder={!isFocus ? 'Prioridade' : '...'}
             
-            value={value}
+            value={props.prioridade}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
-            setValue(item.value);
+            props.setPrioridade(item.value);
             setIsFocus(false);
             }}
         />
