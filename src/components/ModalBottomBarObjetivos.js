@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Button, DataPikerIOS } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
@@ -6,13 +6,27 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeObjetivo';
 import BemVindo from '../pages/BemVindo';
+import { postObjetivos } from '../service/objetivo';
 
 const verdeEscuro = "#346c68";
 
 const BottomBar = ({ onIconPress }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
-    const [text, setText] = React.useState('');
+
+    const [nome, setNome] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [dataEstimada, setDataEstimada] = useState("");
+    const [prioridade, setPrioridade] = useState("");
+
+    const criarObjetivo = () =>{
+        const obj = {titulo: nome, descricao:descricao, data_estimada: dataEstimada, prioridade:prioridade}
+        postObjetivos(obj).then((res) => {
+            closeModal(false)
+        }).catch(error => {
+            console.error('Erro', error.response);
+        });
+    }
 
     const openModal = () => {
         setModalVisible(true);
@@ -22,7 +36,6 @@ const BottomBar = ({ onIconPress }) => {
         setModalVisible(false);
     };
 
-    const [choseDate, setChosenDate] = useState(new Date())
 
     return (
         <View style={styles.container}>
@@ -39,12 +52,12 @@ const BottomBar = ({ onIconPress }) => {
             <Modal isVisible={isModalVisible}>
                 <View style={styles.modalContainer}>
                 <Text style = {{fontSize: 20}}>Criar Objetivos</Text>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome'  />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição'  />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA'/>
-                <DropdownComponent style = {styles.modalText}/>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome' value={nome} onChangeText={(e) => setNome(e)}/>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição' value={descricao} onChangeText={(e) => setDescricao(e)}/>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA' value={dataEstimada} onChangeText={(e) => setDataEstimada(e)}/>
+                <DropdownComponent prioridade={prioridade} setPrioridade={setPrioridade} style = {styles.modalText}/>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
-                    <Button title="Adicionar" onPress={closeModal} color = {verdeEscuro}/>
+                    <Button title="Adicionar" onPress={criarObjetivo} color = {verdeEscuro}/>
                     <View style={{ width: '10%' }} />
                     <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
                 </View>
