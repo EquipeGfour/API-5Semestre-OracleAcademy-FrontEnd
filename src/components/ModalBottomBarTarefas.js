@@ -6,13 +6,28 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import BemVindo from '../pages/BemVindo';
+import { postTarefa } from '../service/tarefa';
 
 const verdeEscuro = "#346c68";
 
-const BottomBarTarefas = ({ onIconPress }) => {
+const BottomBarTarefas = ({ onIconPress, id }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
     const [text, setText] = React.useState('');
+
+    const criarTarefa = () =>{
+        const data = {titulo: nome, descricao:descricao, data_estimada: dataFinal, prioridade:prioridade}
+        postTarefa(id, data).then((res) => {
+            closeModal(false)
+        }).catch(error => {
+            console.error('Erro', error.response);
+        })
+    }
+
+    const [nome, setNome] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [dataFinal, setDataFinal] = useState("");
+    const [prioridade, setPrioridade] = useState("");
 
     const openModal = () => {
         setModalVisible(true);
@@ -39,12 +54,12 @@ const BottomBarTarefas = ({ onIconPress }) => {
             <Modal isVisible={isModalVisible}>
                 <View style={styles.modalContainer}>
                 <Text style = {{fontSize: 20}}>Criar Tarefas</Text>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome Tarefa'  />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição'  />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA'/>
-                <DropdownComponent style = {styles.modalText}/>
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome Tarefa' value={nome} onChangeText={(e) => setNome(e)} />
+                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição' value={descricao} onChangeText={(e) => setDescricao(e)} /> 
+                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA' value={dataFinal} onChangeText={(e) => setDataFinal(e)} />
+                <DropdownComponent style = {styles.modalText} prioridade = {prioridade} setPrioridade = {setPrioridade}/>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
-                    <Button title="Adicionar" onPress={closeModal} color = {verdeEscuro}/>
+                    <Button title="Adicionar" onPress={criarTarefa} color = {verdeEscuro}/>
                     <View style={{ width: '10%' }} />
                     <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
                 </View>
