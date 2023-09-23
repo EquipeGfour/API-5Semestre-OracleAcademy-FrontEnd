@@ -38,7 +38,7 @@ const Recentes = ({ navigation }) => {
 
     useEffect(() => {
         buscarObjetivos();
-    }, [])
+    }, [objetivos])
 
     return (
         <>

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-  import { StyleSheet, Text, View } from 'react-native';
-  import { Dropdown } from 'react-native-element-dropdown';
-  
+import { StyleSheet, Text, View } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
 
+ 
   const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' }
+    { label: 'Alta', value: 2 },
+    { label: 'Média', value: 3 },
+    { label: 'Baixa', value: 4 }
   ];
 
-  const DropdownComponent = () => {
+  const DropdownComponent = (props) => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -40,11 +40,11 @@ import React, { useState } from 'react';
           valueField="value"
           placeholder={!isFocus ? 'Prioridade' : '...'}
           
-          value={value}
+          value={props.prioridade}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
-            setValue(item.value);
+            props.setPrioridade(item.value);
             setIsFocus(false);
           }}
         />
