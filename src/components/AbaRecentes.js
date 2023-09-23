@@ -1,42 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
 import BottomBar from "./ModalBottomBarObjetivos";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { ProgressBar, Colors, Card,IconButton, Avatar } from 'react-native-paper'
+import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
+import { getObjetivos } from "../service/objetivo";
+
 
 const verdeEscuro = "#346c68";
 
 const Recentes = ({ navigation }) => {
+
+    const [objetivos, setObjetivos] = useState([]);
+
+    const buscarObjetivos = () => {
+        getObjetivos().then((res) => {
+            setObjetivos(res.data)
+        }).catch(error => {
+            console.error('Erro', error.response);
+        });
+    }
+
+    const getPrioridadeTitle = (prioridade) => {
+        if(prioridade === 1){
+            return "Urgente";
+        }
+        else if (prioridade === 2){
+            return "Alta";
+        }
+        else if (prioridade === 3){
+            return "Média";
+        }
+        else if(prioridade === 4){
+            return "Baixo";
+        }
+    }
+
+    useEffect(() => {
+        buscarObjetivos();
+    }, [])
+
     return (
-        <>        
+        <>
             <BottomBar style={{ flex: 1 }} />
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
-                <TouchableOpacity  onPress={() => navigation.navigate('Lista-tarefas')}>
-                <View style={[styles.retangulo, styles.verdeEscuro]}>
-                    <Card.Title 
-                        title ="Relatorio"
-                        titleStyle={{ color: 'white' ,  fontWeight: 'bold'}}
-                    />
-                    <Card.Title 
-                        title ="11/10/2023"
-                        titleStyle={{ color: 'white' ,  fontWeight: 'bold'}}
-                        left={(props) => <Icon name="clock" size={30} color="white"/>}
-                    />
-                    <Card.Title 
-                        title ="Alta"
-                        titleStyle={{ color: 'white' , fontWeight: 'bold'}}
-                        left={(props) => <Icon name="flag" size={30} color="white" />}
-                    />
-                    <Card.Content style={styles.cardContent}>
-                        <View style={styles.textContainer}>
-                            {/* <Text style={styles.textoNome}>Progresso</Text> */}
-                            <Text style={styles.textoPorcentagem}>50%</Text>
+                {objetivos.map((objetivo) => (
+                    <TouchableOpacity key={objetivo.id} onPress={() => navigation.navigate('Lista-tarefas')}>
+                        <View style={[styles.retangulo, styles.verdeEscuro]}>
+                            <Card.Title
+                                title={objetivo.titulo}
+                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                            />
+                            <Card.Title
+                                title={objetivo.data_estimada}
+                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                left={(props) => <Icon name="clock" size={30} color="white" />}
+                            />
+                            <Card.Title
+                                title={getPrioridadeTitle(objetivo.prioridade)}
+                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                left={(props) => <Icon name="flag" size={30} color="white" />}
+                            />
+                            <Card.Content style={styles.cardContent}>
+                                <View style={styles.textContainer}>
+                                    {/* <Text style={styles.textoNome}>Progresso</Text> */}
+                                    <Text style={styles.textoPorcentagem}>{objetivo.progresso}%</Text>
+                                </View>
+                                <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
+                            </Card.Content>
                         </View>
-                        <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
-                    </Card.Content>
-                </View>
-                </TouchableOpacity>                
+                    </TouchableOpacity>
+                ))}
             </ScrollView>
         </>
     );
@@ -48,7 +82,7 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: 'row',
-        
+
     },
     container: {
         flexDirection: 'row',
@@ -66,18 +100,18 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         width: '80%',
     },
-    textoPorcentagem:{
-        alignSelf:"flex-end",
+    textoPorcentagem: {
+        alignSelf: "flex-end",
         color: 'white',
         fontWeight: 'bold'
     },
-    textoNome:{
+    textoNome: {
         alignSelf: "flex-start",
         color: 'white',
         fontWeight: 'bold',
-        
+
     },
-    icon:{
+    icon: {
         elevation: 0
     }
 });
