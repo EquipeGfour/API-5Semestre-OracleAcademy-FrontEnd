@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableWithoutFeedback, Button  } from 'react-native';
 import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput,  } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../pages/Login';
+import { getTarefas } from '../service/tarefa';
 
 const verdeEscuro = "#346c68";
 
 const TodasTarefas = ({id}) => { 
 
-    const [visible, setVisible] = React.useState(false);
+    const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
-    const [checked, setChecked] = React.useState(false);
+    const [checked, setChecked] = useState(false);
+    const [tarefas, setTarefas] = useState([]);
 
     const openModal = () => {setModalVisible(true)};
     const closeModal = () => {setModalVisible(false)};
@@ -20,6 +22,17 @@ const TodasTarefas = ({id}) => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
+    const buscarTarefas = () => {
+        getTarefas(id).then((res) => {
+            setTarefas(res.data);
+        }).then(error => {
+            console.error('Erro', error);
+        })
+    }
+
+    useEffect(() => {
+        buscarTarefas();
+    },[])
 
     return (
         <>
