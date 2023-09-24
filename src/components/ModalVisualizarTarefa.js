@@ -242,9 +242,10 @@ const styles = StyleSheet.create({
         color: verdeEscuro
     },
     icons:{
+        position:"absolute",
         justifyContent:'space-between',
         textAlign:'right',
-        width:'30%',
+        width:'105%',
     }
 });
 

@@ -15,7 +15,7 @@ const verdeEscuro = "#346c68";
 
 const Tab = createMaterialTopTabNavigator();
 
-const ListaTarefas = ({route}) => {
+const ListaTarefas = ({route, navigation}) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [flagTarefa, setFlagTarefa] = useState(false);
@@ -74,7 +74,7 @@ const ListaTarefas = ({route}) => {
                 <DataTable.Header style={styles.editar}>
                     <Text>{titulo}</Text>
                     {/* <Icon style={styles.edit}name="edit" size={20} onPress={openModal}/> */}
-                    <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(id)}}/>
+                    <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(id), navigation.navigate('Home')}}/>
                 </DataTable.Header>
                 <DataTable.Header>
                     <DataTable.Title>{descricao}</DataTable.Title>
@@ -142,9 +142,11 @@ const styles = StyleSheet.create({
         marginLeft:'55%'
     },
     icones:{
+        marginTop:10,
+        position:"absolute",
         justifyContent:'space-between',
         textAlign:'right',
-        width:'85%',
+        width:'100%',
     },
     container: {
         width: 355,

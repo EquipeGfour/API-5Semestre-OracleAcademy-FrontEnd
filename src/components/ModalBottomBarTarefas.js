@@ -36,6 +36,10 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
     };
     postTarefa(objetivo.id, data)
       .then(res => {
+        setNome('')
+        setDescricao('')
+        setDataFinal('')
+        setPrioridade('')
         closeModal(false);
         if (criouTarefa) criouTarefa()
         navigation.navigate('Lista-tarefas', objetivo);

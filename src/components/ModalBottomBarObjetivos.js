@@ -22,6 +22,10 @@ const BottomBar = ({ onIconPress }) => {
     const criarObjetivo = () =>{
         const obj = {titulo: nome, descricao:descricao, data_estimada: dataEstimada, prioridade:prioridade}
         postObjetivos(obj).then((res) => {
+            setNome('')
+            setDescricao('')
+            setDataEstimada('')
+            setPrioridade('')
             closeModal(false)
         }).catch(error => {
             console.error('Erro', error.response);
