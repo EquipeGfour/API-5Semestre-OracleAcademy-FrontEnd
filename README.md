@@ -4,11 +4,11 @@
 
  - Repositório destinado ao Front-End da Aplicação.
 
-## Step 1: Start the Metro Server
+## Step 1: Startar o Metro Server
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Primeiro, você precisará iniciar o **Metro**, o _bundler_ JavaScript que vem _com_ o React Native.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Para iniciar o Metro, execute o seguinte comando na _root_ do projeto React Native:
 
 ```bash
 # using npm
@@ -18,11 +18,11 @@ npm start
 yarn start
 ```
 
-## Step 2: Start your Application
+## Step 2: Start sua aplicação
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Deixe o Metro Bundler rodar em seu próprio terminal. Abra um _novo_ terminal da _root_ do seu projeto React Native. Execute o seguinte comando para iniciar seu aplicativo _Android_ ou _iOS_:
 
-### For Android
+### Para Android 
 
 ```bash
 # using npm
@@ -32,7 +32,7 @@ npm run android
 yarn android
 ```
 
-### For iOS
+### Para iOS
 
 ```bash
 # using npm
