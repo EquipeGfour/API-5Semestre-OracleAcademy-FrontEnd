@@ -18,7 +18,7 @@ const BemVindo = ({ navigation }) => (
         <TouchableOpacity
             style={styles.btncadastro}
             title="Cadastre-se"
-            onPress={() => navigation.navigate('')}>
+            onPress={() => navigation.navigate('Cadastro-usuario')}>
             <Text style={styles.textobtn}>Cadastre-se</Text>
         </TouchableOpacity>
         <Text style={styles.empresa}>Desenvolvido por GFour Soluções Digitais</Text>

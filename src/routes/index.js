@@ -7,18 +7,20 @@ import Recentes from '../components/AbaRecentes';
 import Home from '../pages/Home';
 import ListaTarefas from '../pages/ListaTarefas';
 import BottomBarTarefas from '../components/ModalBottomBarTarefas';
+import CadastroUsuário from '../pages/CadastroUsuario';
 
 export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(
         <NavigationContainer>
             <Stack.Navigator initialRouteName = "Bem-vindo" screenOptions={{headerShown:false}} >
-                <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
+                <Stack.Screen name = "Bem-vindo" component = {BemVindo}/>
                 <Stack.Screen name ='Home' component={Home}/>
-                <Stack.Screen name = "Login" component = {Login} />
+                <Stack.Screen name = "Login" component = {Login}/>
+                <Stack.Screen name = "Cadastro-usuario" component = {CadastroUsuário}/>
                 <Stack.Screen name ='Lista-tarefas' component={ListaTarefas}/>                
                 {/* Componentes */}
-                <Stack.Screen name = "Recentes" component = {Recentes} />
+                <Stack.Screen name = "Recentes" component = {Recentes}/>
                 <Stack.Screen name ='BottomBar' component={BottomBar}/>
                 <Stack.Screen name ='BottomBarTarefas' component={BottomBarTarefas}/>
             </Stack.Navigator>
