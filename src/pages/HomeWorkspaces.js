@@ -7,13 +7,12 @@ import { Text } from "react-native-paper";
 import BottomBar from "../components/ModalBottomBarObjetivos";
 import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
 
 
 const Tab = createMaterialTopTabNavigator();
-const verdeEscuro  = '#346c68'
-const verdeClaro = '#51A8A2'
-
-const Home = ({ navigation}) => {
+const azulClaro = '#1BA7E2'
+const HomeWorkspaces = ({ navigation}) => {
     return (
         <>
             <View style = {styles.nomeUsuario}>
@@ -23,25 +22,25 @@ const Home = ({ navigation}) => {
             </View>
 
             <View style={styles.header}>
+                <Icon name = 'chevron-left'size={30} style={styles.icone1} onPress={() => navigation.navigate('Home')}/>
                 <View style={styles.textoObjetivoContainer}>
-                    <Text style={styles.textoObjetivo}>Meus Objetivos</Text>
+                    <Text style={styles.textoObjetivo}>Workspaces</Text>
                 </View>
-                <Icon name = 'chevron-right'size={30} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
             </View>
             <Tab.Navigator screenOptions={{
-                tabBarActiveTintColor: '#346c68',
+                tabBarActiveTintColor: '#1BA7E2',
                 tabBarInactiveTintColor: 'black',
                 tabBarLabelStyle: { fontSize: 15 },
                 tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
                 tabBarIndicatorStyle: {
-                    backgroundColor: "#346c68"
+                    backgroundColor: "#57C0ED",
                 },
             }}>
-                <Tab.Screen name="Recentes" component={Recentes}/>
-                <Tab.Screen name="Concluidas" component={Recentes} />
-                <Tab.Screen name="Atrasadas" component={Recentes} />
+                <Tab.Screen name="Workspaces" component={Recentes}/>
+                <Tab.Screen name="Criados" component={Recentes} />
+                <Tab.Screen name="Finalizados" component={Recentes} />
             </Tab.Navigator>
-            <BottomBar style={styles.container}/>
+            <BottomBarWorkspaces style={styles.container}/>
         </>
     );
 }
@@ -68,24 +67,24 @@ const styles = StyleSheet.create({
     },
     textoObjetivo: {
         fontSize: 25,
-        color: "#346c68",
+        color: "#1BA7E2",
         alignSelf:"center", // para ficar o texto no meio do icone
-        marginLeft: 20,
+        marginRight: 20
     },
     icone1:{
         color: '#bac0ca',
-        marginRight: 20
+        marginLeft: 20,
+        
     },
     titulo1:{
     
         marginLeft: 30,
-        color: '#346c68',
         fontSize: 32,
         fontWeight: '700',        
     },
     nome:{
         marginLeft: 5,
-        color: '#545F71',
+        color: "#1BA7E2",
         fontFamily: 'Inter',
         fontSize: 32,
         fontWeight: '700',
@@ -94,5 +93,5 @@ const styles = StyleSheet.create({
     },
 
 })
-export default Home
+export default HomeWorkspaces
 
