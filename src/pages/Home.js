@@ -2,7 +2,7 @@ import React from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import BemVindo from "./BemVindo";
 import Login from "./Login";
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from "react-native-paper";
 import BottomBar from "../components/ModalBottomBarObjetivos";
 import Recentes from "../components/AbaRecentes";
@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Tab = createMaterialTopTabNavigator();
 
-const Home = ({ }) => {
+const Home = ({ navigation}) => {
     return (
         <>
             <View style = {styles.nomeUsuario}>
@@ -21,7 +21,10 @@ const Home = ({ }) => {
             </View>
 
             <View style={styles.header}>
-                <Text style={styles.texto}>Meus Objetivos</Text>
+                <View style={styles.textoObjetivoContainer}>
+                    <Text style={styles.textoObjetivo}>Meus Objetivos</Text>
+                </View>
+                <Icon name = 'chevron-right'size={30} style={styles.icone1} onPress={() => navigation.navigate('Login')}/>
             </View>
             <Tab.Navigator screenOptions={{
                 tabBarActiveTintColor: 'black',
@@ -43,7 +46,7 @@ const Home = ({ }) => {
 const styles = StyleSheet.create({
     nomeUsuario:{
         flexDirection:"row",
-        alignItems: "center",
+        alignItems: "center" ,
         paddingLeft: '7%',
         paddingTop: '10%'
     },
@@ -51,12 +54,24 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
+        flexDirection:"row",
         paddingTop: '15%',
+        justifyContent: "center",
+
     },
-    texto: {
-        fontSize: 20,
-        paddingLeft: '7%',
-        color: "#346c68"
+
+    textoObjetivoContainer: {
+        flex: 1,  // Isso faz com que o contêiner do texto preencha o espaço disponível
+    },
+    textoObjetivo: {
+        fontSize: 25,
+        color: "#346c68",
+        alignSelf:"center", // para ficar o texto no meio do icone
+        marginLeft: 20,
+    },
+    icone1:{
+        color: '#bac0ca',
+        marginRight: 20
     },
     titulo1:{
     
