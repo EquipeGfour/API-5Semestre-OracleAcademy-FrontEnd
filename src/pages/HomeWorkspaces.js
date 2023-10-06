@@ -2,16 +2,24 @@ import React from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import BemVindo from "./BemVindo";
 import Login from "./Login";
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View,TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
 import BottomBar from "../components/ModalBottomBarObjetivos";
 import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
+import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
+import AbaWorkspaces from "../components/AbaWorkspaces";
+
 
 
 const Tab = createMaterialTopTabNavigator();
-const azulClaro = '#1BA7E2'
+const colors = {
+    verde: "#346c68",
+    azul: "#4974a5",
+    roxo: "#21005d"
+};
+
 const HomeWorkspaces = ({ navigation}) => {
     return (
         <>
@@ -28,15 +36,15 @@ const HomeWorkspaces = ({ navigation}) => {
                 </View>
             </View>
             <Tab.Navigator screenOptions={{
-                tabBarActiveTintColor: '#1BA7E2',
+                tabBarActiveTintColor: colors.roxo,
                 tabBarInactiveTintColor: 'black',
                 tabBarLabelStyle: { fontSize: 15 },
                 tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
                 tabBarIndicatorStyle: {
-                    backgroundColor: "#57C0ED",
+                    backgroundColor: colors.roxo,
                 },
             }}>
-                <Tab.Screen name="Workspaces" component={Recentes}/>
+                <Tab.Screen name="Workspaces" component={AbaWorkspaces}/>                
                 <Tab.Screen name="Criados" component={Recentes} />
                 <Tab.Screen name="Finalizados" component={Recentes} />
             </Tab.Navigator>
@@ -67,9 +75,10 @@ const styles = StyleSheet.create({
     },
     textoObjetivo: {
         fontSize: 25,
-        color: "#1BA7E2",
+        color: colors.roxo,
         alignSelf:"center", // para ficar o texto no meio do icone
-        marginRight: 20
+        marginRight: 20,
+        fontWeight: 'bold'
     },
     icone1:{
         color: '#bac0ca',
@@ -80,14 +89,14 @@ const styles = StyleSheet.create({
     
         marginLeft: 30,
         fontSize: 32,
-        fontWeight: '700',        
+        fontWeight: '700',       
     },
     nome:{
         marginLeft: 5,
-        color: "#1BA7E2",
+        color: colors.roxo,
         fontFamily: 'Inter',
         fontSize: 32,
-        fontWeight: '700',
+        fontWeight: 'bold'
         
         //letterSpacing: -0.48
     },
