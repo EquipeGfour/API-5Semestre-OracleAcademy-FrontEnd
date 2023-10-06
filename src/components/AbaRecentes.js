@@ -69,6 +69,8 @@ const Recentes = ({ navigation }) => {
                                 <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
                             </Card.Content>
                         </View>
+
+                        
                     </TouchableOpacity>
                 ))}
             </ScrollView>

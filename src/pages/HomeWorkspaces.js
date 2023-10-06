@@ -2,18 +2,25 @@ import React from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import BemVindo from "./BemVindo";
 import Login from "./Login";
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View,TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
 import BottomBar from "../components/ModalBottomBarObjetivos";
 import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
+import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
+import AbaWorkspaces from "../components/AbaWorkspaces";
+
 
 
 const Tab = createMaterialTopTabNavigator();
-const verdeEscuro  = '#346c68'
-const verdeClaro = '#51A8A2'
+const colors = {
+    verde: "#346c68",
+    azul: "#4974a5",
+    roxo: "#21005d"
+};
 
-const Home = ({ navigation}) => {
+const HomeWorkspaces = ({ navigation}) => {
     return (
         <>
             <View style = {styles.nomeUsuario}>
@@ -23,25 +30,25 @@ const Home = ({ navigation}) => {
             </View>
 
             <View style={styles.header}>
+                <Icon name = 'chevron-left'size={30} style={styles.icone1} onPress={() => navigation.navigate('Home')}/>
                 <View style={styles.textoObjetivoContainer}>
-                    <Text style={styles.textoObjetivo}>Meus Objetivos</Text>
+                    <Text style={styles.textoObjetivo}>Workspaces</Text>
                 </View>
-                <Icon name = 'chevron-right'size={30} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
             </View>
             <Tab.Navigator screenOptions={{
-                tabBarActiveTintColor: '#346c68',
+                tabBarActiveTintColor: colors.roxo,
                 tabBarInactiveTintColor: 'black',
                 tabBarLabelStyle: { fontSize: 15 },
                 tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
                 tabBarIndicatorStyle: {
-                    backgroundColor: "#346c68"
+                    backgroundColor: colors.roxo,
                 },
             }}>
-                <Tab.Screen name="Recentes" component={Recentes}/>
-                <Tab.Screen name="Concluidas" component={Recentes} />
-                <Tab.Screen name="Atrasadas" component={Recentes} />
+                <Tab.Screen name="Workspaces" component={AbaWorkspaces}/>                
+                <Tab.Screen name="Criados" component={Recentes} />
+                <Tab.Screen name="Finalizados" component={Recentes} />
             </Tab.Navigator>
-            <BottomBar style={styles.container}/>
+            <BottomBarWorkspaces style={styles.container}/>
         </>
     );
 }
@@ -68,31 +75,32 @@ const styles = StyleSheet.create({
     },
     textoObjetivo: {
         fontSize: 25,
-        color: "#346c68",
+        color: colors.roxo,
         alignSelf:"center", // para ficar o texto no meio do icone
-        marginLeft: 20,
+        marginRight: 20,
+        fontWeight: 'bold'
     },
     icone1:{
         color: '#bac0ca',
-        marginRight: 20
+        marginLeft: 20,
+        
     },
     titulo1:{
     
         marginLeft: 30,
-        color: '#346c68',
         fontSize: 32,
-        fontWeight: '700',        
+        fontWeight: '700',       
     },
     nome:{
         marginLeft: 5,
-        color: '#545F71',
+        color: colors.roxo,
         fontFamily: 'Inter',
         fontSize: 32,
-        fontWeight: '700',
+        fontWeight: 'bold'
         
         //letterSpacing: -0.48
     },
 
 })
-export default Home
+export default HomeWorkspaces
 

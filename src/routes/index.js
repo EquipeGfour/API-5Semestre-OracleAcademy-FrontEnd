@@ -7,12 +7,13 @@ import Recentes from '../components/AbaRecentes';
 import Home from '../pages/Home';
 import ListaTarefas from '../pages/ListaTarefas';
 import BottomBarTarefas from '../components/ModalBottomBarTarefas';
+import HomeWorkspaces from '../pages/HomeWorkspaces';
 
 export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(
         <NavigationContainer>
-            <Stack.Navigator initialRouteName = "Bem-vindo" screenOptions={{headerShown:false}} >
+            <Stack.Navigator initialRouteName = "HomeWorkspaces" screenOptions={{headerShown:true}} >
                 <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
                 <Stack.Screen name ='Home' component={Home}/>
                 <Stack.Screen name = "Login" component = {Login} />
@@ -21,6 +22,8 @@ export default function Routes(){
                 <Stack.Screen name = "Recentes" component = {Recentes} />
                 <Stack.Screen name ='BottomBar' component={BottomBar}/>
                 <Stack.Screen name ='BottomBarTarefas' component={BottomBarTarefas}/>
+                <Stack.Screen name = 'HomeWorkspaces' component={HomeWorkspaces}/>
+
             </Stack.Navigator>
         </NavigationContainer>
     )
