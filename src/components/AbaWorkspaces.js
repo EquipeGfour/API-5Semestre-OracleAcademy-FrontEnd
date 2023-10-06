@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBar from "./ModalBottomBarObjetivos";
+import BottomBarObjetivos from "./ModalBottomBarObjetivos";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
 import { getObjetivos } from "../service/objetivo";
+import BottomBarTarefas from "./ModalBottomBarTarefas";
 
 const colors = {
     verde: "#346c68",
@@ -18,7 +19,6 @@ const AbaWorkspaces = ({ navigation }) => {
 
     return (
         <>
-            <BottomBar style={{ flex: 1 }} />
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
             <View style={[styles.retangulo, styles.verdeEscuro2]}>
                 <Card.Title
@@ -34,11 +34,6 @@ const AbaWorkspaces = ({ navigation }) => {
                     title={'11/07/1992'}
                     titleStyle={{ color: 'white', fontWeight: 'bold' }}
                     left={(props) => <Icon name="clock" size={25} color="white" />}
-                />
-                <Card.Title
-                    title={'ALTA'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    left={(props) => <Icon name="flag" size={25} color="white" />}
                 />
                 <Text style={styles.tituloMembros}>Membros</Text>
 
@@ -75,11 +70,6 @@ const AbaWorkspaces = ({ navigation }) => {
                     titleStyle={{ color: 'white', fontWeight: 'bold' }}
                     left={(props) => <Icon name="clock" size={25} color="white" />}
                 />
-                <Card.Title
-                    title={'ALTA'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    left={(props) => <Icon name="flag" size={25} color="white" />}
-                />
                 <Text style={styles.tituloMembros}>Membros</Text>
 
                 <View style={styles.circulosContainer}>
@@ -98,7 +88,7 @@ const AbaWorkspaces = ({ navigation }) => {
                     <View style={styles.circulo}>
                         <Text style={styles.circuloTexto}>NB</Text>
                     </View>
-                    </View>
+                </View>
             </View>
             </ScrollView>
         </>

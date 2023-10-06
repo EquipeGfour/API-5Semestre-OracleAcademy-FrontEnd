@@ -8,13 +8,13 @@ import DropdownComponent from './DropDownPrioridadeObjetivo';
 import BemVindo from '../pages/BemVindo';
 import { postObjetivos } from '../service/objetivo';
 
-
 const colors = {
     verde: "#346c68",
     azul: "#4974a5",
     roxo: "#21005d",
     branco: "#ffffff"
 };
+
 
 const BottomBarWorkspaces = ({ onIconPress }) => {
     const navigation = useNavigation();
@@ -49,14 +49,14 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.icon}>
-                <Icon name="home" size={30} color= {colors.roxo}/>
+            <TouchableOpacity onPress={() => navigation.navigate('')} style={styles.icon}>
+                <Icon name="home" size={30} color={colors.roxo} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openModal} style={styles.icon}>
-                <Icon name="plus-circle" size={30} color= {colors.roxo}/>
+                <Icon name="plus-circle" size={30} color={colors.roxo} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => onIconPress('Login')} style={styles.icon}>
-                <Icon name="chart-bar" size={30} color= {colors.roxo}/>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.icon}>
+                <Icon name="chart-bar" size={30} color={colors.roxo} />
             </TouchableOpacity>
 
             <Modal isVisible={isModalVisible}>
