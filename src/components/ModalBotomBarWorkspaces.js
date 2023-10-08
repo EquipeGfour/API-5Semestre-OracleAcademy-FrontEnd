@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         position: 'absolute',
         bottom: 0,
         left: 0,

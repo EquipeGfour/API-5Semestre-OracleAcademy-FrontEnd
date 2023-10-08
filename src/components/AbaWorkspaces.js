@@ -20,48 +20,13 @@ const AbaWorkspaces = ({ navigation }) => {
     return (
         <>
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
-            <View style={[styles.retangulo, styles.verdeEscuro2]}>
-                <Card.Title
-                    title={'Api - Oracle'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold', fontSize: 20  }}
-                />
-                <Card.Title
-                    title={'Gersu'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    left={(props) => <Icon name="user" size={25} color="white" />}
-                />
-                <Card.Title
-                    title={'11/07/1992'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    left={(props) => <Icon name="clock" size={25} color="white" />}
-                />
-                <Text style={styles.tituloMembros}>Membros</Text>
-
-                <View style={styles.circulosContainer}>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
+            <View style={[styles.retangulo, styles.verdeEscuro2, styles.marginRightNegative]}>
+                <View style={styles.centeredTextContainer}>
+                    <Text style={styles.tituloRetangulo}>Api - Oracle</Text>
                 </View>
-            </View>
-            <View style={[styles.retangulo, styles.verdeEscuro2]}>
+
                 <Card.Title
-                    title={'Api - Oracle'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold', fontSize: 20  }}
-                />
-                <Card.Title
-                    title={'Gersu'}
+                    title={'Gerssu'}
                     titleStyle={{ color: 'white', fontWeight: 'bold' }}
                     left={(props) => <Icon name="user" size={25} color="white" />}
                 />
@@ -96,6 +61,20 @@ const AbaWorkspaces = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    marginRightNegative: {
+        marginRight: 5, // Ajuste o valor conforme necessário
+    },
+    
+    centeredTextContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    tituloRetangulo: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
     cardContent: {
         alignItems: 'center',
     },
@@ -103,25 +82,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     retangulo: {
-        width: 300,
-        height: 350,
+        width: 280,
+        height: 380,
         margin: 30,
         borderRadius: 20,
     },
-    verdeEscuro: {
-        backgroundColor: colors.verde,
-    },
     verdeEscuro2:{
         backgroundColor: colors.roxo
-    },
-    progressBar: {
-        alignSelf: "stretch",
-        width: '80%',
-    },
-    textoPorcentagem: {
-        alignSelf: "flex-end",
-        color: 'white',
-        fontWeight: 'bold'
     },
     textoNome: {
         alignSelf: "flex-start",
@@ -129,19 +96,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
 
     },
-    icon: {
-        elevation: 0
-    },
     tituloMembros: {
         color: 'white',
         fontWeight: 'bold',
         alignSelf: 'flex-start',
         marginLeft: 20,
-        marginTop: 10,
+        marginTop: 40,
     },
     circulosContainer: {
         flexDirection: 'row',
-        marginVertical: 10, //sobe desce
+        marginVertical: 45, //sobe desce
+        marginTop: 20,
         justifyContent: 'flex-start', // Alterado para 'flex-start'
         alignItems: 'center', // Centraliza verticalmente
     },
