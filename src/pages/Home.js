@@ -4,7 +4,7 @@ import BemVindo from "./BemVindo";
 import Login from "./Login";
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBar from "../components/ModalBottomBarObjetivos";
+import BottomBarObjetivos from "../components/ModalBottomBarObjetivos";
 import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -41,7 +41,7 @@ const Home = ({ navigation}) => {
                 <Tab.Screen name="Concluidas" component={Recentes} />
                 <Tab.Screen name="Atrasadas" component={Recentes} />
             </Tab.Navigator>
-            <BottomBar style={styles.container}/>
+            <BottomBarObjetivos style={styles.container}/>
         </>
     );
 }
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         color: "#346c68",
         alignSelf:"center", // para ficar o texto no meio do icone
         marginLeft: 20,
+        fontWeight: 'bold'
     },
     icone1:{
         color: '#bac0ca',

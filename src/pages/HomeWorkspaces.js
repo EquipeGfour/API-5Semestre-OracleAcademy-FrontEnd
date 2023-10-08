@@ -4,8 +4,6 @@ import BemVindo from "./BemVindo";
 import Login from "./Login";
 import { ScrollView, StyleSheet, View,TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBar from "../components/ModalBottomBarObjetivos";
-import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
@@ -45,10 +43,10 @@ const HomeWorkspaces = ({ navigation}) => {
                 },
             }}>
                 <Tab.Screen name="Workspaces" component={AbaWorkspaces}/>                
-                <Tab.Screen name="Criados" component={Recentes} />
-                <Tab.Screen name="Finalizados" component={Recentes} />
+                <Tab.Screen name="Criados" component={Login} />
+                <Tab.Screen name="Finalizados" component={Login} />
             </Tab.Navigator>
-            <BottomBarWorkspaces style={styles.container}/>
+            <BottomBarWorkspaces/>
         </>
     );
 }
