@@ -7,10 +7,17 @@ import { TextInput } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeObjetivo';
 import BemVindo from '../pages/BemVindo';
 import { postObjetivos } from '../service/objetivo';
+import { getStorageItem } from '../functions/encryptedStorageFunctions';
 
-const verdeEscuro = "#346c68";
+const colors = {
+    verde: "#346c68",
+    azul: "#4974a5",
+    roxo: "#21005d",
+    branco: "#ffffff"
+};
 
-const BottomBar = ({ onIconPress }) => {
+
+const BottomBarObjetivos = ({ onIconPress }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -19,16 +26,17 @@ const BottomBar = ({ onIconPress }) => {
     const [dataEstimada, setDataEstimada] = useState("");
     const [prioridade, setPrioridade] = useState("");
 
-    const criarObjetivo = () =>{
-        const obj = {titulo: nome, descricao:descricao, data_estimada: dataEstimada, prioridade:prioridade}
-        postObjetivos(obj).then((res) => {
+    const criarObjetivo = async () =>{
+        const obj = {titulo: nome, descricao:descricao, data_estimada: dataEstimada, prioridade:prioridade, workspace:false}
+        const token = await getStorageItem('token');       
+        postObjetivos(obj,token).then((res) => {
             setNome('')
             setDescricao('')
             setDataEstimada('')
             setPrioridade('')
             closeModal(false)
         }).catch(error => {
-            console.error('Erro', error.response);
+            console.error('Erro', error);
         });
     }
 
@@ -44,26 +52,26 @@ const BottomBar = ({ onIconPress }) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.icon}>
-                <Icon name="home" size={30} color={verdeEscuro} />
+                <Icon name="home" size={30} color={colors.verde} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openModal} style={styles.icon}>
-                <Icon name="plus-circle" size={30} color={verdeEscuro} />
+                <Icon name="plus-circle" size={30} color={colors.verde} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onIconPress('Login')} style={styles.icon}>
-                <Icon name="chart-bar" size={30} color={verdeEscuro} />
+                <Icon name="chart-bar" size={30} color={colors.verde} />
             </TouchableOpacity>
 
             <Modal isVisible={isModalVisible}>
                 <View style={styles.modalContainer}>
-                <Text style = {{fontSize: 20}}>Criar Objetivos</Text>
+                {/* <Text style = {{fontSize: 20}}>Criar Objetivos</Text> */}
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Nome' value={nome} onChangeText={(e) => setNome(e)}/>
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição' value={descricao} onChangeText={(e) => setDescricao(e)}/>
                 <TextInput style = {styles.modalText} multiline={true} placeholder='DD/MM/AAAA' value={dataEstimada} onChangeText={(e) => setDataEstimada(e)}/>
                 <DropdownComponent prioridade={prioridade} setPrioridade={setPrioridade} style = {styles.modalText}/>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
-                    <Button title="Adicionar" onPress={criarObjetivo} color = {verdeEscuro}/>
+                    <Button title="Adicionar" onPress={criarObjetivo} color = {colors.verde}/>
                     <View style={{ width: '10%' }} />
-                    <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
+                    <Button title="Fechar" onPress={closeModal} color = {colors.verde}/>
                 </View>
                 </View>
             </Modal> 
@@ -107,4 +115,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default BottomBar;
+export default BottomBarObjetivos;
