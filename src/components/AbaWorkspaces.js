@@ -13,6 +13,7 @@ const colors = {
     roxo: "#21005d",
     branco: "#ffffff"
 };
+const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const AbaWorkspaces = ({ navigation }) => {
 
@@ -20,16 +21,17 @@ const AbaWorkspaces = ({ navigation }) => {
     return (
         <>
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
-            <View style={[styles.retangulo, styles.verdeEscuro2, styles.marginRightNegative]}>
-            <Card.Title
-                title="API"
-                titleStyle={{ color: 'white', fontWeight: 'bold', textAlign: "center", fontSize: 20, lineHeight: 50, marginTop: 10 }}
-            />
-
+            <View style={[styles.retangulo, styles.roxo, styles.marginRightNegative]}>
                 <Card.Title
-                    title={'Dono:'}
+                    title="API"
+                    titleStyle={{ color: 'white', fontWeight: 'bold', textAlign: "center", fontSize: 20, lineHeight: 50, marginTop: 10 }}
+                />
+                <Card.Title
+                    title={'Responsavel:'}
+                    subtitle= {'Gersu'}
                     titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    left={(props) => <Icon name="user" size={25} color="white" />}
+                    subtitleStyle={{ color: 'white', fontWeight: 'bold' }}
+                    left={(props) => <Icon name="user-circle" size={40} color="white" />}
                 />
                 <Text style={styles.tituloMembros}>Membros</Text>
 
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
         margin: 30,
         borderRadius: 20,
     },
-    verdeEscuro2:{
+    roxo:{
         backgroundColor: colors.roxo
     },
     textoNome: {
