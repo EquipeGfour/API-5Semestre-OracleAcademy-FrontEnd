@@ -58,14 +58,16 @@ import { Dropdown } from 'react-native-element-dropdown';
     container: {
       backgroundColor: 'white',
       padding: 16,
+      width: 325,
     },
     dropdown: {
       height: 50,
-      width: 200,
+      width: 325,
       borderColor: 'gray',
       borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
+      
     },
     icon: {
       marginRight: 5,
@@ -78,6 +80,7 @@ import { Dropdown } from 'react-native-element-dropdown';
       zIndex: 999,
       paddingHorizontal: 8,
       fontSize: 14,
+      
     },
     placeholderStyle: {
       fontSize: 16,

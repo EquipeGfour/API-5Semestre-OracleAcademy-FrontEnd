@@ -21,19 +21,15 @@ const AbaWorkspaces = ({ navigation }) => {
         <>
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
             <View style={[styles.retangulo, styles.verdeEscuro2, styles.marginRightNegative]}>
-                <View style={styles.centeredTextContainer}>
-                    <Text style={styles.tituloRetangulo}>Api - Oracle</Text>
-                </View>
+            <Card.Title
+                title="API"
+                titleStyle={{ color: 'white', fontWeight: 'bold', textAlign: "center", fontSize: 20, lineHeight: 50, marginTop: 10 }}
+            />
 
                 <Card.Title
-                    title={'Gerssu'}
+                    title={'Dono:'}
                     titleStyle={{ color: 'white', fontWeight: 'bold' }}
                     left={(props) => <Icon name="user" size={25} color="white" />}
-                />
-                <Card.Title
-                    title={'11/07/1992'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    left={(props) => <Icon name="clock" size={25} color="white" />}
                 />
                 <Text style={styles.tituloMembros}>Membros</Text>
 
@@ -48,10 +44,7 @@ const AbaWorkspaces = ({ navigation }) => {
                         <Text style={styles.circuloTexto}>NB</Text>
                     </View>
                     <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
+                        <Icon name= 'plus'/>
                     </View>
                 </View>
             </View>
@@ -82,8 +75,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     retangulo: {
-        width: 280,
-        height: 380,
+        width: 250,
+        height: 300,
         margin: 30,
         borderRadius: 20,
     },

@@ -1,41 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Button, DataPikerIOS } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
-import DropdownComponent from './DropDownPrioridadeObjetivo';
-import BemVindo from '../pages/BemVindo';
 import { postObjetivos } from '../service/objetivo';
 
 const colors = {
     verde: "#346c68",
     azul: "#4974a5",
     roxo: "#21005d",
-    branco: "#ffffff"
+    branco: "#ffffff",
+    cinza: "#BAC0CA"
 };
-
 
 const BottomBarWorkspaces = ({ onIconPress }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isInputFocused, setInputFocused] = useState(false);
 
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
     const [dataEstimada, setDataEstimada] = useState("");
     const [prioridade, setPrioridade] = useState("");
 
-    const criarObjetivo = () =>{
-        const obj = {titulo: nome, descricao:descricao, data_estimada: dataEstimada, prioridade:prioridade}
-        postObjetivos(obj).then((res) => {
-            setNome('')
-            setDescricao('')
-            setDataEstimada('')
-            setPrioridade('')
-            closeModal(false)
-        }).catch(error => {
-            console.error('Erro', error.response);
-        });
+    const criarObjetivo = () => {
+        const obj = {
+            titulo: nome,
+            descricao: descricao,
+            data_estimada: dataEstimada,
+            prioridade: prioridade
+        };
+        postObjetivos(obj)
+            .then((res) => {
+                setNome('')
+                setDescricao('')
+                setDataEstimada('')
+                setPrioridade('')
+                closeModal()
+            })
+            .catch(error => {
+                console.error('Erro', error.response);
+            });
     }
 
     const openModal = () => {
@@ -46,6 +52,16 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
         setModalVisible(false);
     };
 
+    const handleInputFocus = () => {
+        setInputFocused(true);
+    };
+
+    const handleInputBlur = () => {
+        setInputFocused(false);
+    };
+
+    const windowHeight = Dimensions.get('window').height;
+    const modalHeight = 300; // Ajuste isso conforme necessário
 
     return (
         <View style={styles.container}>
@@ -59,28 +75,49 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
                 <Icon name="chart-bar" size={30} color={colors.roxo} />
             </TouchableOpacity>
 
-            <Modal isVisible={isModalVisible}>
-                <View style={styles.modalContainer}>
-                <Text style = {{fontSize: 20}}>Criar Objetivos</Text>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome' value={nome} onChangeText={(e) => setNome(e)}/>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição' value={descricao} onChangeText={(e) => setDescricao(e)}/>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='DD/MM/AAAA' value={dataEstimada} onChangeText={(e) => setDataEstimada(e)}/>
-                <DropdownComponent prioridade={prioridade} setPrioridade={setPrioridade} style = {styles.modalText}/>
-                <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
-                    <Button title="Adicionar" onPress={criarObjetivo} color = {colors.roxo}/>
-                    <View style={{ width: '10%' }} />
-                    <Button title="Fechar" onPress={closeModal} color = {colors.roxo}/>
+            <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
+                <View style={[styles.modalContainer,]}>
+                    <TextInput
+                        style={styles.usuario}
+                        mode='outlined'
+                        textColor="#545F71"
+                        placeholder="Insira o nome do Workspaces"
+                        label={isInputFocused ? "Workspaces" : ""}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
+                        onChangeText={(text) => setNome(text)}
+                        value={nome}
+                    />
+                    <View style={{ marginTop: 40 }}>
+                        <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
+                            <Text style={styles.buttonText}>Criar</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                </View>
-            </Modal> 
+            </Modal>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    data:{
-        flex:1,
-        justifyContent: 'center'
+    botaoCriar: {
+        width: 150,
+        borderRadius: 20,
+        backgroundColor: colors.roxo,
+        alignSelf: 'center', // Centraliza o botão horizontalmente
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+    usuario: {
+        marginTop: 40,
+        alignSelf: 'center',
+        width: 325,
     },
     container: {
         flexDirection: 'row',
@@ -92,7 +129,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         borderTopWidth: 1,
-        borderColor: 'lightgray',        
+        borderColor: 'lightgray',
     },
     icon: {
         padding: 10,
@@ -101,16 +138,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
         borderRadius: 10,
-        alignItems: 'center',
-        
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        borderColor: colors.cinza, // Cor da borda vermelha
+        borderWidth: 2, // Largura da borda vermelha
     },
-    modalText: {
-        mode:"flat",
-        backgroundColor : "white",
-        width: 200,
-        marginBottom: 30
-    },
-    
 });
 
 export default BottomBarWorkspaces;
