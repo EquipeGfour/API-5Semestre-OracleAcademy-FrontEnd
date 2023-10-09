@@ -11,6 +11,7 @@ import HomeWorkspaces from '../pages/HomeWorkspaces';
 import BottomBarWorkspaces from '../components/ModalBotomBarWorkspaces';
 import BottomBarTarefasWork from '../components/BottomBarTarefasWork';
 
+
 export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(
@@ -18,8 +19,9 @@ export default function Routes(){
             <Stack.Navigator initialRouteName = "Bem-vindo" screenOptions={{headerShown:false}}>
                 <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
                 <Stack.Screen name ='Home' component={Home}/>
-                <Stack.Screen name = "Login" component = {Login} />
-                <Stack.Screen name ='Lista-tarefas' component={ListaTarefas}/>                
+                <Stack.Screen name = "Login" component = {Login}/>
+                <Stack.Screen name = "Cadastro-usuario" component = {CadastroUsuário}/>
+                <Stack.Screen name ='Lista-tarefas' component={ListaTarefas}/>               
                 {/* Componentes */}
                 <Stack.Screen name = "Recentes" component = {Recentes} />
                 <Stack.Screen name ='BottomBarObjetivos' component={BottomBarObjetivos}/>
