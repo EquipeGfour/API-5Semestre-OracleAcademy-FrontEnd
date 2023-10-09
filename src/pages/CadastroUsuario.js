@@ -53,7 +53,13 @@ const CadastroUsuário = ({navigation}) => {
                         }}>
                     </Checkbox>
                     <Text>Eu aceito os termos de uso.</Text>
-                </View>               
+                </View>
+                <TouchableOpacity
+                    style={styles.btncadastro}
+                    title="Cadastrar"
+                    onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.textobtn}>Cadastrar</Text>
+                </TouchableOpacity>               
             </PaperProvider>
         </View>
 
@@ -97,6 +103,27 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignSelf:'center',
     },
+    btncadastro:{
+        marginTop: 100,
+        width: 325,
+        height: 48,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 10,
+        borderRadius: 20,
+        border: 1,
+        backgroundColor: '#51A8A2',  
+    },
+    textobtn:{
+        color: '#fff',
+        fontFamily: 'Inter',
+        fontSize: 16,
+        fontStyle:'normal',
+        fontWeight: '600',
+        lineHeight: 20,
+        letterSpacing: -0.32
+    }   
     
 
 });
