@@ -7,6 +7,7 @@ import { TextInput } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeObjetivo';
 import BemVindo from '../pages/BemVindo';
 import { postObjetivos } from '../service/objetivo';
+import { getStorageItem } from '../functions/encryptedStorageFunctions';
 
 const colors = {
     verde: "#346c68",
@@ -25,16 +26,17 @@ const BottomBarObjetivos = ({ onIconPress }) => {
     const [dataEstimada, setDataEstimada] = useState("");
     const [prioridade, setPrioridade] = useState("");
 
-    const criarObjetivo = () =>{
-        const obj = {titulo: nome, descricao:descricao, data_estimada: dataEstimada, prioridade:prioridade}
-        postObjetivos(obj).then((res) => {
+    const criarObjetivo = async () =>{
+        const obj = {titulo: nome, descricao:descricao, data_estimada: dataEstimada, prioridade:prioridade, workspace:false}
+        const token = await getStorageItem('token');       
+        postObjetivos(obj,token).then((res) => {
             setNome('')
             setDescricao('')
             setDataEstimada('')
             setPrioridade('')
             closeModal(false)
         }).catch(error => {
-            console.error('Erro', error.response);
+            console.error('Erro', error);
         });
     }
 
@@ -61,7 +63,7 @@ const BottomBarObjetivos = ({ onIconPress }) => {
 
             <Modal isVisible={isModalVisible}>
                 <View style={styles.modalContainer}>
-                <Text style = {{fontSize: 20}}>Criar Objetivos</Text>
+                {/* <Text style = {{fontSize: 20}}>Criar Objetivos</Text> */}
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Nome' value={nome} onChangeText={(e) => setNome(e)}/>
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição' value={descricao} onChangeText={(e) => setDescricao(e)}/>
                 <TextInput style = {styles.modalText} multiline={true} placeholder='DD/MM/AAAA' value={dataEstimada} onChangeText={(e) => setDataEstimada(e)}/>

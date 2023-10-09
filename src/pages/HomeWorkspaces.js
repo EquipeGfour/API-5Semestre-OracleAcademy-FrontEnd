@@ -24,7 +24,7 @@ const HomeWorkspaces = ({ navigation}) => {
             <View style = {styles.nomeUsuario}>
                 <Icon name = 'user' size={40}/>
                 <Text style={styles.titulo1}>Olá,</Text>
-                <Text style={styles.nome}>Daniela</Text>
+                <Text style={styles.nome}>Gerson</Text>
             </View>
 
             <View style={styles.header}>

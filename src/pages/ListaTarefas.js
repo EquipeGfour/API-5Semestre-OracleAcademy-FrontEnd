@@ -45,7 +45,7 @@ const ListaTarefas = ({route, navigation}) => {
 
 
     const deletarObjetivo = () =>{
-        deleteObjetivo(id).then(res => {
+        deleteObjetivo(_id).then(res => {
             Toast.show({
                 type: 'success',
                 text1: 'Objetivo excluida com sucesso!',
@@ -64,7 +64,7 @@ const ListaTarefas = ({route, navigation}) => {
         setFlagTarefa(true)
     }
 
-    const { titulo, descricao, data_estimada, prioridade, id } = route.params;
+    const { titulo, descricao, data_estimada, prioridade, _id } = route.params;
  
     const onChangeSearch = query => setSearchQuery(query);
     return (
@@ -74,7 +74,7 @@ const ListaTarefas = ({route, navigation}) => {
                 <DataTable.Header style={styles.editar}>
                     <Text>{titulo}</Text>
                     {/* <Icon style={styles.edit}name="edit" size={20} onPress={openModal}/> */}
-                    <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(id), navigation.navigate('Home')}}/>
+                    <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(_id), navigation.navigate('Home')}}/>
                 </DataTable.Header>
                 <DataTable.Header>
                     <DataTable.Title>{descricao}</DataTable.Title>
@@ -111,13 +111,13 @@ const ListaTarefas = ({route, navigation}) => {
                     },
                 }}>
                 <Tab.Screen name="Todas">
-                    {() => <TodasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={id} />}
+                    {() => <TodasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
                 </Tab.Screen>
                 {/* <Tab.Screen name="Todas" component={Login} /> */}
                 {/* <Tab.Screen name="Atrasadas" component={BemVindo} />
                 <Tab.Screen name="Concluídas" component={BemVindo} /> */}
             </Tab.Navigator>
-            <BottomBarTarefas criouTarefa={criouTarefa} objetivo={{titulo, descricao, data_estimada, prioridade, id}}/>
+            <BottomBarTarefas criouTarefa={criouTarefa} objetivo={{titulo, descricao, data_estimada, prioridade, _id}}/>
         </>
     );
 };

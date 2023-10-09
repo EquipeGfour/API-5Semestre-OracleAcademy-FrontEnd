@@ -45,7 +45,7 @@ const Recentes = ({ navigation }) => {
             <BottomBarObjetivos style={{ flex: 1 }} />
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
                 {objetivos.map((objetivo) => (
-                    <TouchableOpacity key={objetivo.id} onPress={() => navigation.navigate('Lista-tarefas', objetivo)}>
+                    <TouchableOpacity key={objetivo._id} onPress={() => navigation.navigate('Lista-tarefas', objetivo)}>
                         <View style={[styles.retangulo, styles.verdeEscuro]}>
                             <Card.Title
                                 title={objetivo.titulo}
