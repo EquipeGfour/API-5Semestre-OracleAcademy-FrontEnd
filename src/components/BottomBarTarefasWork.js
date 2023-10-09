@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import { postObjetivos } from '../service/objetivo';
+import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 
 const colors = {
     verde: "#346c68",
@@ -14,7 +15,7 @@ const colors = {
     cinza: "#BAC0CA"
 };
 
-const BottomBarWorkspaces = ({ onIconPress }) => {
+const BottomBarTarefasWork = ({ onIconPress }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
     const [isInputFocused, setInputFocused] = useState(false);
@@ -76,19 +77,42 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
             </TouchableOpacity>
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
-                <View style={[styles.modalContainer,]}>
+                <View style={[styles.modalContainer]}>
                     <TextInput
                         style={styles.usuario}
                         mode='outlined'
                         // textColor="#545F71"
-                        placeholder="Insira o nome do Workspaces"
-                        label={isInputFocused ? "Workspaces" : ""}
+                        placeholder="Insira o nome da Tarefa"
+                        label={isInputFocused ? "Tarefa" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         onChangeText={(text) => setNome(text)}
                         value={nome}
                     />
-                    <View style={{ marginTop: 40 }}>
+                    <TextInput
+                        style={styles.usuario}
+                        mode='outlined'
+                        // textColor="#545F71"
+                        placeholder="Insira o nome da Descrição"
+                        label={isInputFocused ? "Descrição" : ""}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
+                        onChangeText={(text) => setNome(text)}
+                        value={nome}
+                    />
+                    <TextInput
+                        style={styles.usuario}
+                        mode='outlined'
+                        // textColor="#545F71"
+                        placeholder="DD / MM / YYYY"
+                        label={isInputFocused ? "Data Conclusão" : ""}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
+                        onChangeText={(text) => setNome(text)}
+                        value={nome}
+                    />
+                    <PrioridadeTarefaWork/>
+                    <View style={{ marginTop: 30 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
                             <Text style={styles.buttonText}>Criar</Text>
                         </TouchableOpacity>
@@ -100,6 +124,12 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
 };
 
 const styles = StyleSheet.create({
+    modalText: {
+        mode: 'flat',
+        backgroundColor: 'white',
+        width: 200,
+        marginBottom: 30,
+    },
     botaoCriar: {
         width: 150,
         borderRadius: 20,
@@ -115,7 +145,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     usuario: {
-        marginTop: 40,
+        marginTop: 20,
         alignSelf: 'center',
         width: 325,
         backgroundColor: 'transparent'
@@ -137,7 +167,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        padding: 20,
+        padding: 50, // tamanho modal
         borderRadius: 10,
         position: 'absolute',
         left: 0,
@@ -147,4 +177,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BottomBarWorkspaces;
+export default BottomBarTarefasWork;

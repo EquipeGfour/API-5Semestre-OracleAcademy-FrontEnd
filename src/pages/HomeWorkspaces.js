@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
 import AbaWorkspaces from "../components/AbaWorkspaces";
+import BottomBarTarefasWork from "../components/BottomBarTarefasWork";
 
 
 
@@ -21,6 +22,7 @@ const colors = {
 const HomeWorkspaces = ({ navigation}) => {
     return (
         <>
+            <Icon name= 'sign-out-alt' style={styles.logout}/>
             <View style = {styles.nomeUsuario}>
                 <Icon name = 'user' size={40}/>
                 <Text style={styles.titulo1}>Olá,</Text>
@@ -28,9 +30,9 @@ const HomeWorkspaces = ({ navigation}) => {
             </View>
 
             <View style={styles.header}>
-                <Icon name = 'chevron-left'size={30} style={styles.icone1} onPress={() => navigation.navigate('Home')}/>
-                <View style={styles.textoObjetivoContainer}>
-                    <Text style={styles.textoObjetivo}>Workspaces</Text>
+                <Icon name = 'chevron-left'size={30} style={styles.iconeSeta} onPress={() => navigation.navigate('Home')}/>
+                <View style={styles.textoWorkContainer}>
+                    <Text style={styles.textoWorkspace}>Workspaces</Text>
                 </View>
             </View>
             <Tab.Navigator screenOptions={{
@@ -52,33 +54,38 @@ const HomeWorkspaces = ({ navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    logout:{
+        fontSize: 20,
+        color: colors.roxo,
+        alignSelf:"flex-end",
+        marginEnd: 20,
+        marginTop: 15
+    },
     nomeUsuario:{
         flexDirection:"row",
         alignItems: "center" ,
         paddingLeft: '7%',
-        paddingTop: '10%'
+        paddingTop: '4%'
     },
     container: {
         flex: 1,
     },
     header: {
         flexDirection:"row",
-        paddingTop: '15%',
+        paddingTop: '10%',
         justifyContent: "center",
-
     },
-
-    textoObjetivoContainer: {
-        flex: 1,  // Isso faz com que o contêiner do texto preencha o espaço disponível
+    textoWorkContainer: {
+        flex: 1,
     },
-    textoObjetivo: {
+    textoWorkspace: {
         fontSize: 25,
         color: colors.roxo,
         alignSelf:"center", // para ficar o texto no meio do icone
         marginRight: 20,
         fontWeight: 'bold'
     },
-    icone1:{
+    iconeSeta:{
         color: '#bac0ca',
         marginLeft: 20,
         
@@ -95,7 +102,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter',
         fontSize: 32,
         fontWeight: 'bold'
-        
         //letterSpacing: -0.48
     },
 

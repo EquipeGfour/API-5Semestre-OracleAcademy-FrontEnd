@@ -9,6 +9,7 @@ import ListaTarefas from '../pages/ListaTarefas';
 import BottomBarTarefas from '../components/ModalBottomBarTarefas';
 import HomeWorkspaces from '../pages/HomeWorkspaces';
 import BottomBarWorkspaces from '../components/ModalBotomBarWorkspaces';
+import BottomBarTarefasWork from '../components/BottomBarTarefasWork';
 
 export default function Routes(){
     const Stack = createNativeStackNavigator();
@@ -25,6 +26,7 @@ export default function Routes(){
                 <Stack.Screen name ='BottomBarTarefas' component={BottomBarTarefas}/>
                 <Stack.Screen name = 'HomeWorkspaces' component={HomeWorkspaces}/>
                 <Stack.Screen name = 'BottomBarWorkspaces' component={BottomBarWorkspaces}/>
+                <Stack.Screen name = 'BottomBarTarefasWork' component={BottomBarTarefasWork}/>
 
             </Stack.Navigator>
         </NavigationContainer>
