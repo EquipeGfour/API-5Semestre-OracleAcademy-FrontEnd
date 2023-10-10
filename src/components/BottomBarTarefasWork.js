@@ -10,7 +10,7 @@ import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 const colors = {
     verde: "#346c68",
     azul: "#4974a5",
-    roxo: "#21005d",
+    roxo: "#51336b",
     branco: "#ffffff",
     cinza: "#BAC0CA"
 };
@@ -66,9 +66,9 @@ const BottomBarTarefasWork = ({ onIconPress }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('')} style={styles.icon}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('')} style={styles.icon}>
                 <Icon name="home" size={30} color={colors.roxo} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.roxo} />
             </TouchableOpacity>

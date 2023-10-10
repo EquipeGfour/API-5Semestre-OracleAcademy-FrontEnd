@@ -47,8 +47,8 @@ const Home = ({ navigation }) => {
                 },
             }}>
                 <Tab.Screen name="Recentes" component={Recentes}/>
-                <Tab.Screen name="Concluidas" component={Recentes} />
-                <Tab.Screen name="Atrasadas" component={Recentes} />
+                {/* <Tab.Screen name="Concluidas" component={Recentes} />
+                <Tab.Screen name="Atrasadas" component={Recentes} /> */}
             </Tab.Navigator>
             <BottomBarObjetivos style={styles.container}/>
         </>

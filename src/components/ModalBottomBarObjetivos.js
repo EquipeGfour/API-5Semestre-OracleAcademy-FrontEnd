@@ -12,7 +12,7 @@ import { getStorageItem } from '../functions/encryptedStorageFunctions';
 const colors = {
     verde: "#346c68",
     azul: "#4974a5",
-    roxo: "#21005d",
+    roxo: "#51336b",
     branco: "#ffffff"
 };
 
@@ -51,9 +51,9 @@ const BottomBarObjetivos = ({ onIconPress }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.icon}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.icon}>
                 <Icon name="home" size={30} color={colors.verde} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.verde} />
             </TouchableOpacity>

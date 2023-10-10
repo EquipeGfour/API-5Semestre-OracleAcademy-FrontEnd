@@ -10,7 +10,7 @@ import BottomBarTarefas from "./ModalBottomBarTarefas";
 const colors = {
     verde: "#346c68",
     azul: "#4974a5",
-    roxo: "#21005d",
+    roxo: "#51336b",
     branco: "#ffffff"
 };
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
