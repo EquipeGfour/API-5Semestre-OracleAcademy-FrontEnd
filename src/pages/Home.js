@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import BemVindo from "./BemVindo";
 import Login from "./Login";
@@ -7,21 +7,30 @@ import { Text } from "react-native-paper";
 import BottomBarObjetivos from "../components/ModalBottomBarObjetivos";
 import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { getStorageItem } from "../functions/encryptedStorageFunctions";
 
 
 const Tab = createMaterialTopTabNavigator();
 const verdeEscuro  = '#346c68'
 const verdeClaro = '#51A8A2'
 
-const Home = ({ navigation}) => {
+const Home = ({ navigation }) => {
+    const [usuario, setUsuario] = useState('');
+
+    useEffect(async () => {
+
+        let usuario = await getStorageItem("nome");
+        setUsuario(usuario);
+
+    }, []);
+    
     return (
         <>
             <View style = {styles.nomeUsuario}>
                 <Icon name = 'user' size={40}/>
                 <Text style={styles.titulo1}>Olá,</Text>
-                <Text style={styles.nome}>Daniela</Text>
+                <Text style={styles.nome}>{usuario}</Text>
             </View>
-
             <View style={styles.header}>
                 <View style={styles.textoObjetivoContainer}>
                     <Text style={styles.textoObjetivo}>Meus Objetivos</Text>

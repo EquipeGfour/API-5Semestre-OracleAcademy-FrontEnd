@@ -25,6 +25,7 @@ const Login = ({ navigation }) => {
         roundness: 10,
     };
 
+
     const login = () =>{
         const data = {
             email:email,
@@ -35,6 +36,10 @@ const Login = ({ navigation }) => {
             const token = res.headers.authorization;
             try {
                 await storageItem('token', token);
+                console.log(res.data.usuario)
+                const usuario = res.data.usuario
+                await storageItem('nome', usuario.nome);
+                await storageItem("id", usuario._id)
                 setEmail('');
                 setSenha('');
                 navigation.navigate('Home');

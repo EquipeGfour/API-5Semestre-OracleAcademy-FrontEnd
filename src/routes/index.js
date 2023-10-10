@@ -10,6 +10,7 @@ import BottomBarTarefas from '../components/ModalBottomBarTarefas';
 import HomeWorkspaces from '../pages/HomeWorkspaces';
 import BottomBarWorkspaces from '../components/ModalBotomBarWorkspaces';
 import BottomBarTarefasWork from '../components/BottomBarTarefasWork';
+import CadastroUsuario from '../pages/CadastroUsuario';
 
 
 export default function Routes(){
@@ -20,7 +21,7 @@ export default function Routes(){
                 <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
                 <Stack.Screen name ='Home' component={Home}/>
                 <Stack.Screen name = "Login" component = {Login}/>
-                <Stack.Screen name = "Cadastro-usuario" component = {CadastroUsuário}/>
+                <Stack.Screen name = "Cadastro-usuario" component = {CadastroUsuario}/>
                 <Stack.Screen name ='Lista-tarefas' component={ListaTarefas}/>               
                 {/* Componentes */}
                 <Stack.Screen name = "Recentes" component = {Recentes} />
