@@ -23,7 +23,7 @@ const AbaTodasWorkspace = () => {
 
   return (
     <View style={styles.filtros}>
-      <Card style={styles.Cardcontainer}>
+      <Card style={styles.Cardcontainer}>  
         
         <Card.Content style={styles.contentContainer}>
           <Checkbox

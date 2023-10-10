@@ -21,6 +21,7 @@ const AbaWorkspaces = ({ navigation }) => {
     return (
         <>
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
+            <TouchableOpacity onPress={() => navigation.navigate('ListaTarefaWorkspace')}>
             <View style={[styles.retangulo, styles.roxo, styles.marginRightNegative]}>
                 <Card.Title
                     title="API"
@@ -50,6 +51,7 @@ const AbaWorkspaces = ({ navigation }) => {
                     </View>
                 </View>
             </View>
+            </TouchableOpacity>
             </ScrollView>
         </>
     );
