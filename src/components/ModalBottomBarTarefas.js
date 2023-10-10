@@ -16,7 +16,7 @@ import BemVindo from '../pages/BemVindo';
 import {postTarefa} from '../service/tarefa';
 import Toast from 'react-native-toast-message';
 
-const verdeEscuro = '#346c68';
+const verdeEscuro = '#51A8A2';
 
 const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
   const navigation = useNavigation();

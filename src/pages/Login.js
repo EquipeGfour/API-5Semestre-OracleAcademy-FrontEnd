@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import { TextInput, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme,TextInput, Provider as PaperProvider } from 'react-native-paper';
 
 import { View, Text, TouchableOpacity, Image, StatusBar, StyleSheet, Pressable} from 'react-native';
 import { postLogin } from '../service/login';
@@ -12,19 +12,26 @@ const Login = ({ navigation }) => {
     // Dados do Usuário    
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [isInputFocused, setInputFocused] = useState(false);
 
     handleDoubleTap = () => {
         setEmail('nichollaslimma734@gmail.com');
         setSenha('senha');
     }
-    
-    const theme = {
-        colors: {
-            primary: '#51A8A2',
-        },
-        roundness: 10,
+
+    const [senhaVisivel, setSenhaVisivel] = useState(false); // Estado para controlar a visibilidade da senha
+
+    const togglePasswordVisibility = () => {
+      setSenhaVisivel(!senhaVisivel); // Inverte o estado de visibilidade da senha
     };
 
+    const theme = {
+        ...DefaultTheme,
+        colors: {
+            ...DefaultTheme.colors,
+          primary: '#51A8A2', // Cor de foco
+        },
+    };
 
     const login = () =>{
         const data = {
@@ -56,28 +63,51 @@ const Login = ({ navigation }) => {
         })
     }
 
+    const handleInputFocus = () => {
+        setInputFocused(true);
+    };
+
+    const handleInputBlur = () => {
+        setInputFocused(false);
+    };
+
+
+
+    
+
     return(
     <View style={{ flex:1, backgroundColor: '#FFF' }}>
         <StatusBar backgroundColor='#FFF' barStyle={'dark-content'}/>
         <Pressable onLongPress={handleDoubleTap}><Image style={styles.logo} source={require('../assets/images/logoApp.png')}></Image></Pressable>
-        <PaperProvider theme={theme}>
+        <PaperProvider theme={theme} >
             <TextInput
                 style={styles.usuario}
                 mode="outlined"
                 textColor="#545F71"
+                label="Usuário"
                 placeholder="E-mail"
+                selectionColor='#545f71'
                 value={email}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
                 onChangeText={(e) => setEmail(e)}>                
             </TextInput>    
             <TextInput
                 style={styles.senha}
                 mode="outlined"
-                value={senha}   
+                value={senha}
+                label="Senha"   
                 placeholder="Senha"
                 placeholderTextColor ="#9BA5B7"
                 textColor="#545F71"
-                secureTextEntry
-                right={<TextInput.Icon icon="eye" />}
+                secureTextEntry={!senhaVisivel} // Use o estado para controlar a visibilidade da senha
+                right={
+                    <TextInput.Icon
+                        icon="eye"
+                        name={senhaVisivel ? 'eye-off' : 'eye'} // Alterne o ícone com base no estado de visibilidade da senha
+                        onPress={togglePasswordVisibility}
+                    />
+                }
                 onChangeText={(e) => setSenha(e)}>
             </TextInput>
             <TouchableOpacity
@@ -104,13 +134,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter',
         alignSelf: 'center',
         width: 325,
+        backgroundColor:'transparent'
     },
     senha:{
         marginTop: 20,
         fontFamily: 'Inter',
         alignSelf: 'center',
         width: 325,
-        borderRadius:200        
+        borderRadius:200,   
+        backgroundColor:'transparent'     
     },
     btnlogin:{
         marginTop: 100,

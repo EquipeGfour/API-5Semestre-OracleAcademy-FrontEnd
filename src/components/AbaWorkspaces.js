@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         marginHorizontal: -10,
     },
     circuloTexto: {
-        color: 'black',
+        color: '#545F71',
         fontWeight: 'bold',
     },
 

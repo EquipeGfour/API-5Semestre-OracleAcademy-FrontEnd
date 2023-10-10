@@ -10,7 +10,7 @@ import { postObjetivos } from '../service/objetivo';
 import { getStorageItem } from '../functions/encryptedStorageFunctions';
 
 const colors = {
-    verde: "#346c68",
+    verde: "#51A8A2",
     azul: "#4974a5",
     roxo: "#51336b",
     branco: "#ffffff"

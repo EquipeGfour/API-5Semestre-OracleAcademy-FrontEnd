@@ -37,7 +37,7 @@ const HomeWorkspaces = ({ navigation}) => {
             </View>
             <Tab.Navigator screenOptions={{
                 tabBarActiveTintColor: colors.roxo,
-                tabBarInactiveTintColor: 'black',
+                tabBarInactiveTintColor: '#545F71',
                 tabBarLabelStyle: { fontSize: 15 },
                 tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
                 tabBarIndicatorStyle: {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         
     },
     titulo1:{
-    
+        color:"#545F71",
         marginLeft: 30,
         fontSize: 32,
         fontWeight: '700',       

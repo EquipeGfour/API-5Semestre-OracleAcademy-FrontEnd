@@ -68,17 +68,16 @@ const ListaTarefas = ({route, navigation}) => {
  
     const onChangeSearch = query => setSearchQuery(query);
     return (
-        <>
-
+        <View style={{ flex:1, backgroundColor: '#FFF' }}>
             <DataTable style={styles.dataTable}>
                 <DataTable.Header style={styles.editar}>
-                    <Text>{titulo}</Text>
+                    <Text style={styles.nomeObjetivo}>{titulo}</Text>
                     {/* <Icon style={styles.edit}name="edit" size={20} onPress={openModal}/> */}
-                    <Icon style={styles.icones} name="trash" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(_id), navigation.navigate('Home')}}/>
+                    <IconButton style={styles.icones} icon="dots-vertical" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(_id), navigation.navigate('Home')}}/>
                 </DataTable.Header>
-                <DataTable.Header>
+                {/* <DataTable.Header>
                     <DataTable.Title>{descricao}</DataTable.Title>
-                </DataTable.Header>
+                </DataTable.Header> */}
                 <DataTable.Header>
                     <DataTable.Title>Data Final: {data_estimada}</DataTable.Title>
                     <DataTable.Title numeric>Prioridade: {getPrioridadeTitle(prioridade)}</DataTable.Title>
@@ -103,11 +102,11 @@ const ListaTarefas = ({route, navigation}) => {
             <Tab.Navigator
                 style={styles.tab}
                 screenOptions={{
-                    tabBarActiveTintColor: 'black',
+                    tabBarActiveTintColor: '#51A8A2',
                     tabBarLabelStyle: { fontSize: 11 },
                     tabBarStyle: { backgroundColor: 'white'},
                     tabBarIndicatorStyle: {
-                        backgroundColor: '#346c68',
+                        backgroundColor: '#51A8A2',
                     },
                 }}>
                 <Tab.Screen name="Todas">
@@ -118,7 +117,7 @@ const ListaTarefas = ({route, navigation}) => {
                 <Tab.Screen name="Concluídas" component={BemVindo} /> */}
             </Tab.Navigator>
             <BottomBarTarefas criouTarefa={criouTarefa} objetivo={{titulo, descricao, data_estimada, prioridade, _id}}/>
-        </>
+        </View>
     );
 };
 
@@ -129,6 +128,11 @@ const styles = StyleSheet.create({
     }, 
     header: {
         paddingTop: '50%',
+    },
+    nomeObjetivo:{
+        color:'#51A8A2',
+        fontSize:20,
+        fontWeight: 'bold'
     },
     texto: {
         fontSize: 20,
@@ -179,7 +183,8 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     tab:{
-        zIndex:-1
+        zIndex:-1,
+        marginTop:20
     }
 });
 export default ListaTarefas;

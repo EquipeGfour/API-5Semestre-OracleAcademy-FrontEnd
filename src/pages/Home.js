@@ -11,8 +11,11 @@ import { getStorageItem } from "../functions/encryptedStorageFunctions";
 
 
 const Tab = createMaterialTopTabNavigator();
-const verdeEscuro  = '#346c68'
-const verdeClaro = '#51A8A2'
+const colors = {
+    verde: "#346c68",
+    azul: "#4974a5",
+    roxo: "#51336b"
+};
 
 const Home = ({ navigation }) => {
     const [usuario, setUsuario] = useState('');
@@ -26,6 +29,7 @@ const Home = ({ navigation }) => {
     
     return (
         <>
+            <Icon name= 'sign-out-alt' style={styles.logout}/>
             <View style = {styles.nomeUsuario}>
                 <Icon name = 'user' size={40}/>
                 <Text style={styles.titulo1}>Olá,</Text>
@@ -38,17 +42,17 @@ const Home = ({ navigation }) => {
                 <Icon name = 'chevron-right'size={30} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
             </View>
             <Tab.Navigator screenOptions={{
-                tabBarActiveTintColor: '#346c68',
+                tabBarActiveTintColor: '#51A8A2',
                 tabBarInactiveTintColor: 'black',
                 tabBarLabelStyle: { fontSize: 15 },
                 tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
                 tabBarIndicatorStyle: {
-                    backgroundColor: "#346c68"
+                    backgroundColor: "#51A8A2"
                 },
             }}>
                 <Tab.Screen name="Recentes" component={Recentes}/>
-                {/* <Tab.Screen name="Concluidas" component={Recentes} />
-                <Tab.Screen name="Atrasadas" component={Recentes} /> */}
+                <Tab.Screen name="Concluidas" component={Recentes} />
+                <Tab.Screen name="Atrasadas" component={Recentes} />
             </Tab.Navigator>
             <BottomBarObjetivos style={styles.container}/>
         </>
@@ -56,6 +60,13 @@ const Home = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    logout:{
+        fontSize: 20,
+        color:'#51A8A2',
+        alignSelf:"flex-end",
+        marginEnd: 20,
+        marginTop: 15
+    },
     nomeUsuario:{
         flexDirection:"row",
         alignItems: "center" ,
@@ -77,7 +88,7 @@ const styles = StyleSheet.create({
     },
     textoObjetivo: {
         fontSize: 25,
-        color: "#346c68",
+        color: "#51A8A2",
         alignSelf:"center", // para ficar o texto no meio do icone
         marginLeft: 20,
         fontWeight: 'bold'
@@ -89,13 +100,13 @@ const styles = StyleSheet.create({
     titulo1:{
     
         marginLeft: 30,
-        color: '#346c68',
+        color: '#545F71',
         fontSize: 32,
         fontWeight: '700',        
     },
     nome:{
         marginLeft: 5,
-        color: '#545F71',
+        color: '#51A8A2',
         fontFamily: 'Inter',
         fontSize: 32,
         fontWeight: '700',

@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-import {TextInput, Provider as PaperProvider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import {DefaultTheme, TextInput, Provider as PaperProvider } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome';
+Icon.loadFont();
 import { View, Text, TouchableOpacity,  Image, StatusBar, StyleSheet} from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { postUsuarios } from "../service/usuario";
@@ -13,13 +14,18 @@ const CadastroUsuario = ({navigation}) => {
     const [nome, setNome] = useState('');
     const [checked, setChecked] = React.useState(false);
 
+    const [senhaVisivel, setSenhaVisivel] = useState(false); // Estado para controlar a visibilidade da senha
+
+    const togglePasswordVisibility = () => {
+      setSenhaVisivel(!senhaVisivel); // Inverte o estado de visibilidade da senha
+    };
+
     const theme = {
+        ...DefaultTheme,
         colors: {
-            primary: '#51A8A2', // Cor da borda quando o campo está focado (clicado)
-
+            ...DefaultTheme.colors,
+          primary: '#51A8A2', // Cor de foco
         },
-        roundness: 10,
-
     };
 
     const cadastrarUsuario = async () => {
@@ -64,19 +70,26 @@ const CadastroUsuario = ({navigation}) => {
                     style={styles.email}
                     mode="outlined"
                     textColor="#545F71"
+                    label='E-mail'
                     placeholder="E-mail"
                     value={email}
                     onChangeText={(e) => setEmail(e)}>
                 </TextInput>    
                 <TextInput
                     style={styles.senha}
-                    mode="outlined"   
+                    mode="outlined"
+                    label="Senha"   
                     placeholder="Senha"
                     placeholderTextColor ="#9BA5B7"
                     textColor="#545F71"
-                    secureTextEntry
-                    right={<TextInput.Icon icon="eye" />}
-                    value={senha}
+                    secureTextEntry={!senhaVisivel} // Use o estado para controlar a visibilidade da senha
+                    right={
+                        <TextInput.Icon
+                            icon='eye'
+                            name={senhaVisivel ? 'eye' : 'eye-slash'} // Alterne o ícone com base no estado de visibilidade da senha
+                            onPress={togglePasswordVisibility}
+                        />
+                    } 
                     onChangeText={(e) => setSenha(e)}>
                 </TextInput>
                 <View style={styles.termos}>
@@ -117,19 +130,22 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter',
         alignSelf: 'center',
         width: 325,
+        backgroundColor:'transparent'
     },
     email:{
         marginTop: 20,
         fontFamily: 'Inter',
         alignSelf: 'center',
         width: 325,
+        backgroundColor:'transparent'
     },
     senha:{
         marginTop: 20,
         fontFamily: 'Inter',
         alignSelf: 'center',
         width: 325,
-        borderRadius:200        
+        borderRadius:200,
+        backgroundColor:'transparent'        
     },
     termos:{
         marginTop:10,
