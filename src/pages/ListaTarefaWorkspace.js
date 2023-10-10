@@ -1,23 +1,35 @@
 import React, { useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StyleSheet, View } from 'react-native';
-import { Text, IconButton, DataTable } from 'react-native-paper';
+import { Text, IconButton, DataTable, Menu, Button, Divider, Provider } from 'react-native-paper';
 import AbaTodasWorkspace from '../components/AbaTodasWorkspace';
 
 const Tab = createMaterialTopTabNavigator();
 
 const ListaTarefaWorkspace = ({ route, navigation }) => {
+  const [visible, setVisible] = React.useState(false);
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
+
   return (
     <View style={{flex:1, backgroundColor: 'white'}}>
+    <Provider>
     <DataTable style={styles.dataTable}>
         <DataTable.Header style={styles.header}>
             <View style={styles.titleContainer}>
                 <Text style={styles.nomeWorkspace}>Lab</Text>
             </View>
-                <IconButton style={styles.menuWorkspace} icon="dots-vertical" />
+                <Menu style={styles.menu}
+                  visible={visible}
+                  onDismiss={closeMenu}
+                  anchor={<IconButton style={styles.menuWorkspace} icon="dots-vertical" onPress={openMenu}/>}>
+                  <Menu.Item onPress={() => {}} title="Editar Workspace" />
+                  <Menu.Item onPress={() => {}} title="Excluir Workspace" />
+                  <Menu.Item onPress={() => {}} title="Membros" />
+              </Menu>
         </DataTable.Header>
-
     </DataTable>
+    </Provider>
     
     <Tab.Navigator
                 style={styles.tab}
@@ -40,8 +52,12 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  menu:{
+    zIndex:2
+  },
   tab: {
-    marginTop: 20,
+    zIndex:-1,
+    marginTop: -600,
   },
   header: {
     flexDirection: 'row',
@@ -56,6 +72,7 @@ const styles = StyleSheet.create({
   },
   menuWorkspace:{
     paddingLeft: 20,
+    zIndex:3
   },
 
   titleContainer: {
