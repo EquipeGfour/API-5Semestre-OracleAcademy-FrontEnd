@@ -67,9 +67,9 @@ const BottomBarObjetivos = ({ onIconPress }) => {
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.verde} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => onIconPress('Login')} style={styles.icon}>
+            {/* <TouchableOpacity onPress={() => onIconPress('Login')} style={styles.icon}>
                 <Icon name="chart-bar" size={30} color={colors.verde} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
             <PaperProvider theme={theme}>

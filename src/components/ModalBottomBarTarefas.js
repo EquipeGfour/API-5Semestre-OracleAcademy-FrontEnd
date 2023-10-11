@@ -91,11 +91,11 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
       <TouchableOpacity onPress={openModal} style={styles.icon}>
         <Icon name="plus-circle" size={30} color={colors.verde} />
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => onIconPress('Login')}
         style={styles.icon}>
         <Icon name="chart-bar" size={30} color={colors.verde} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <Modal isVisible={isModalVisible} onBackdropPress={closeModal} style={styles.modal}>
       <PaperProvider theme={theme}>
@@ -183,7 +183,7 @@ buttonText: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     position: 'absolute',
     bottom: 0,
     left: 0,

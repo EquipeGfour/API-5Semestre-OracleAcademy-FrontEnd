@@ -66,15 +66,15 @@ const BottomBarTarefasWork = ({ onIconPress }) => {
 
     return (
         <View style={styles.container}>
-            {/* <TouchableOpacity onPress={() => navigation.navigate('')} style={styles.icon}>
+            <TouchableOpacity onPress={() => navigation.navigate('HomeWorkspaces')} style={styles.icon}>
                 <Icon name="home" size={30} color={colors.roxo} />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.roxo} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.icon}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.icon}>
                 <Icon name="chart-bar" size={30} color={colors.roxo} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
                 <View style={[styles.modalContainer]}>

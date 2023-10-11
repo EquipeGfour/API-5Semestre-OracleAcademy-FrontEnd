@@ -45,8 +45,8 @@ const HomeWorkspaces = ({ navigation}) => {
                 },
             }}>
                 <Tab.Screen name="Workspaces" component={AbaWorkspaces}/>                
-                <Tab.Screen name="Criados" component={Login} />
-                <Tab.Screen name="Finalizados" component={Login} />
+                {/* <Tab.Screen name="Criados" component={Login} />
+                <Tab.Screen name="Finalizados" component={Login} /> */}
             </Tab.Navigator>
             <BottomBarWorkspaces/>
         </>
