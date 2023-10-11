@@ -90,7 +90,7 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
                     />
                     <View style={{ marginTop: 40 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
-                            <Text style={styles.buttonText}>Criar</Text>
+                            <Text style={styles.buttonText}>Criar Workspaces</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -34,7 +34,7 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
       data_estimada: dataFinal,
       prioridade: prioridade,
     };
-    postTarefa(objetivo.id, data)
+    postTarefa(objetivo._id, data)
       .then(res => {
         setNome('')
         setDescricao('')

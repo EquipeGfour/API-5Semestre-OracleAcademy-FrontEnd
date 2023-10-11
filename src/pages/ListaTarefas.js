@@ -10,6 +10,7 @@ import BottomBar from '../components/ModalBottomBarObjetivos';
 import BottomBarTarefas from '../components/ModalBottomBarTarefas';
 import DropdownComponent from '../components/DropDownPrioridadeObjetivo'
 import { deleteObjetivo } from "../service/objetivo"
+import Toast from 'react-native-toast-message';
 
 const verdeEscuro = "#346c68";
 
@@ -48,13 +49,13 @@ const ListaTarefas = ({route, navigation}) => {
     };
 
 
-    const deletarObjetivo = () =>{
+    const deletarObjetivo = (_id) =>{
         deleteObjetivo(_id).then(res => {
             Toast.show({
                 type: 'success',
                 text1: 'Objetivo excluida com sucesso!',
             });
-            buscarTarefas();
+            navigation.navigate('Home')
         }).catch(error => {
             Toast.show({
                 type: 'error',
@@ -69,7 +70,6 @@ const ListaTarefas = ({route, navigation}) => {
     }
 
     const { titulo, descricao, data_estimada, prioridade, _id } = route.params;
- 
 
     return (
         <View style={{ flex:1, backgroundColor: '#FFF' }}>
@@ -86,7 +86,7 @@ const ListaTarefas = ({route, navigation}) => {
                             style={{ backgroundColor: 'white' }} // Defina a cor de fundo desejada aqui
                             anchor={<IconButton style={styles.menuObjetivos} icon="dots-vertical"  iconColor={'#51A8A2'} onPress={openMenu}/>}>
                                 <Menu.Item style={styles.opcoesMenu} onPress={() => {}}  title="Editar Tarefa" />
-                                <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'red'}} onPress={() => {}}   title="Excluir Tarefa" />
+                                <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'white'}} onPress={() => {deletarObjetivo(_id)}}   title="Excluir Tarefa" />
                         </Menu> 
 
                         {/* <IconButton style={styles.icones} icon="dots-vertical" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(_id), navigation.navigate('Home')}}/> */}

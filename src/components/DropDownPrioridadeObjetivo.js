@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
- 
+  const colors = {
+    verde: "#51A8A2",
+    azul: "#4974a5",
+    roxo: "#51336b",
+    branco: "#ffffff",
+    cinza: "#9BA5B7"
+  };
+
   const data = [
     { label: 'Alta', value: 2 },
     { label: 'Média', value: 3 },
@@ -59,15 +66,16 @@ import { Dropdown } from 'react-native-element-dropdown';
       backgroundColor: 'white',
       padding: 16,
       width: 325,
+      marginTop: -15
     },
     dropdown: {
       height: 50,
       width: 325,
-      borderColor: 'gray',
+      borderColor: colors.cinza,
       borderWidth: 0.5,
-      borderRadius: 8,
-      paddingHorizontal: 8,
-      
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      marginStart: -15
     },
     icon: {
       marginRight: 5,
