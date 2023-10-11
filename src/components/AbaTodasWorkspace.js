@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: '5%',
     marginTop: '5%',
+    backgroundColor:'white'
   },
   // CardView:{
     // flexDirection: 'row'
