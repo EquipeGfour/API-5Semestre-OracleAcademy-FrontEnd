@@ -22,10 +22,10 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
                 <Menu style={styles.menu}
                   visible={visible}
                   onDismiss={closeMenu}
-                  anchor={<IconButton style={styles.menuWorkspace} icon="dots-vertical" onPress={openMenu}/>}>
-                  <Menu.Item onPress={() => {}} title="Editar Workspace" />
-                  <Menu.Item onPress={() => {}} title="Excluir Workspace" />
-                  <Menu.Item onPress={() => {}} title="Membros" />
+                  anchor={<IconButton style={styles.menuWorkspace} icon="dots-vertical" iconColor={'#51336b'} onPress={openMenu}/>}>
+                  <Menu.Item style={styles.opcoesMenu} onPress={() => {}} title="Editar Workspace" />
+                  <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'red'}} onPress={() => {}} title="Excluir Workspace" />
+                  <Menu.Item style={styles.opcoesMenu3} onPress={() => {}} title="Membros" />
               </Menu>
         </DataTable.Header>
     </DataTable>
@@ -53,7 +53,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   menu:{
-    zIndex:2
+    zIndex:2,
   },
   tab: {
     zIndex:-1,
@@ -73,6 +73,17 @@ const styles = StyleSheet.create({
   menuWorkspace:{
     paddingLeft: 20,
     zIndex:3
+  },
+  opcoesMenu:{
+    marginTop:-8,
+    backgroundColor:'white',  
+  },
+  opcoesMenu2:{
+    backgroundColor:'white',  
+  },
+  opcoesMenu3:{
+    marginBottom:-8,
+    backgroundColor:'white',  
   },
 
   titleContainer: {
