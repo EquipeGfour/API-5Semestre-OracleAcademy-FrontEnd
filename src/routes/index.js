@@ -11,6 +11,7 @@ import HomeWorkspaces from '../pages/HomeWorkspaces';
 import BottomBarWorkspaces from '../components/ModalBotomBarWorkspaces';
 import ListaTarefaWorkspace from '../pages/ListaTarefaWorkspace';
 import AbaTarefasWorkspace from '../components/AbaTodasWorkspace';
+import CadastroUsuario from '../pages/CadastroUsuario';
 
 export default function Routes(){
     const Stack = createNativeStackNavigator();
@@ -21,14 +22,15 @@ export default function Routes(){
                 <Stack.Screen name ='Home' component={Home}/>
                 <Stack.Screen name = "Login" component = {Login} />
                 <Stack.Screen name ='Lista-tarefas' component={ListaTarefas}/>  
-                <Stack.Screen name = 'ListaTarefaWorkspace' component={ListaTarefaWorkspace} options={{ headerTitle: null }}/>              
+                <Stack.Screen name = 'ListaTarefaWorkspace' component={ListaTarefaWorkspace}/>              
+                <Stack.Screen name = 'Cadastro-usuario' component={CadastroUsuario}/>
                 {/* Componentes */}
                 <Stack.Screen name = "Recentes" component = {Recentes} />
                 <Stack.Screen name ='BottomBarObjetivos' component={BottomBarObjetivos}/>
                 <Stack.Screen name ='BottomBarTarefas' component={BottomBarTarefas}/>
                 <Stack.Screen name = 'HomeWorkspaces' component={HomeWorkspaces}/>
                 <Stack.Screen name = 'BottomBarWorkspaces' component={BottomBarWorkspaces}/>
-                <Stack.Screen name = 'AbaTodasWorkspace' component={AbaTarefasWorkspace} options={{ headerTitle: null }}/>
+                <Stack.Screen name = 'AbaTodasWorkspace' component={AbaTarefasWorkspace}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

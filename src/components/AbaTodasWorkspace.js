@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Card, Checkbox, IconButton, Text } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Modal, TouchableWithoutFeedback } from 'react-native';
+import { Card, Checkbox, IconButton, Text, Button } from 'react-native-paper';
+import BottomBarTarefasWork from './BottomBarTarefasWork';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const verdeEscuro = '#346c68';
 
@@ -19,44 +21,128 @@ const UserAvatar = ({ name }) => {
 };
 
 const AbaTodasWorkspace = () => {
+  const [isModalVisible, setModalVisible] = useState(false);
   const name = "Rafael Waltrick"; // Substitua pelo nome do inscrito
 
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
-    <View style={styles.filtros}>
-      <Card style={styles.Cardcontainer}>  
-        
-        <Card.Content style={styles.contentContainer}>
-          <Checkbox
-            style={styles.iconCheck}
-            onPress={() => {
-              // Coloque sua lógica para lidar com a seleção aqui
-            }}
-          />
-        <Card.Title
-          title="Tarefa"
-          subtitle={`Data Conclusão: 22/11/2023\nMembros: ${name}\nPrioridade:Alta`}
-          subtitleNumberOfLines={3}
-          style={styles.title}
-        />
-        <Card.Actions style={styles.actionsContainer}>
-          <IconButton
-            icon="fire"
-            onPress={() => {
-              // Coloque sua lógica para lidar com o ícone de fogo aqui
-            }}
-          />
-        </Card.Actions>
-        </Card.Content>
-        
-        <UserAvatar name={name} />
-      </Card>
-    </View>
+    <>
+      <ScrollView>
+        <View style={styles.filtros}>
+          <Card style={styles.Cardcontainer} onPress={toggleModal}>
+            <Card.Content style={styles.contentContainer}>
+              <Checkbox
+                style={styles.iconCheck}
+                onPress={() => {
+                  // Coloque sua lógica para lidar com a seleção aqui
+                }}
+              />
+              <Card.Title
+                title="Tarefa"
+                subtitle={`Data Conclusão: 22/11/2023\nMembros: ${name}\nPrioridade: Alta`}
+                subtitleNumberOfLines={3}
+                style={styles.title}
+              />
+              <Card.Actions style={styles.actionsContainer}>
+                <IconButton
+                  icon="fire"
+                  onPress={() => {
+                    // Coloque sua lógica para lidar com o ícone de fogo aqui
+                  }}
+                />
+              </Card.Actions>
+            </Card.Content>
+            <UserAvatar name={name} />
+          </Card>
+        </View>
+      </ScrollView>
+
+      <Modal visible={isModalVisible} transparent animationType="slide">
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modal}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Checkbox
+                  onPress={() => {
+                    // Lógica para a seleção
+                  }}
+                />
+                <View style={styles.iconContainer}>
+                  <Text style={styles.textoCheck}>titulo</Text>
+                  {/* <Icon name="edit" size={20} onPress={openModal} /> */}
+                  <Icon name="trash" style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefa(tarefa.id)} />
+                </View>
+              </View>
+              <View style={styles.espacamento}>
+                <View style={styles.iconContainer}>
+                  <Icon name="bars" size={20} style={styles.icon} />
+                  <Text>descrição</Text>
+                </View>
+              </View>
+              <View style={styles.espacamento}>
+                <View style={styles.iconContainer}>
+                  <Icon name="clock" size={20} style={styles.icon} />
+                  <Text>11/07/1992</Text>
+                </View>
+              </View>
+              <View style={styles.espacamento}>
+                <View style={styles.iconContainer}>
+                  <Icon name="flag" size={20} style={styles.icon} />
+                  <Text>alta</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    backgroundColor: 'white',
+    margin: 10,
+    padding: 20,
+    borderRadius: 20,
+    elevation: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  espacamento: {
+    marginTop: 45,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  textoCheck: {
+    marginRight: '50%',
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icons: {
+    position: "absolute",
+    justifyContent: 'space-between',
+    textAlign: 'right',
+    width: '105%',
+  },
   filtros: {
-    
+    // Estilização para seus filtros, se necessário
   },
   Cardcontainer: {
     width: 370,
@@ -65,11 +151,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: '5%',
     marginTop: '5%',
-    backgroundColor:'white'
+    backgroundColor: 'white',
   },
-  // CardView:{
-    // flexDirection: 'row'
-  // },
   contentContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -99,6 +182,9 @@ const styles = StyleSheet.create({
   },
   iconCheck: {
     marginLeft: 16,
+    marginRight: 10,
+  },
+  icon: {
     marginRight: 10,
   },
 });

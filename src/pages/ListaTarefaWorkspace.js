@@ -3,6 +3,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { StyleSheet, View } from 'react-native';
 import { Text, IconButton, DataTable, Menu, Button, Divider, Provider } from 'react-native-paper';
 import AbaTodasWorkspace from '../components/AbaTodasWorkspace';
+import BottomBarTarefasWork from '../components/BottomBarTarefasWork';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -46,7 +47,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
    
 
     </Tab.Navigator>
-
+    <BottomBarTarefasWork style={{ flex: 1 }} />
     </View>
   );
 };

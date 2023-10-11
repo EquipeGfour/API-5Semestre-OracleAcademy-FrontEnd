@@ -58,13 +58,14 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         padding: 16,
+        paddingTop: -25
     },
     dropdown: {
         height: 50,
-        width: 200,
+        width: 325,
         borderColor: 'gray',
         borderWidth: 0.5,
-        borderRadius: 8,
+        borderRadius: 3,
         paddingHorizontal: 8,
     },
     icon: {

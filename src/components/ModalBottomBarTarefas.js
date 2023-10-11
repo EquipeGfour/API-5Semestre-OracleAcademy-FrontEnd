@@ -10,13 +10,27 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
-import {TextInput} from 'react-native-paper';
+import {TextInput, PaperProvider,DefaultTheme } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import BemVindo from '../pages/BemVindo';
 import {postTarefa} from '../service/tarefa';
 import Toast from 'react-native-toast-message';
 
-const verdeEscuro = '#51A8A2';
+const colors = {
+  verde: "#51A8A2",
+  azul: "#4974a5",
+  roxo: "#51336b",
+  branco: "#ffffff",
+  cinza: "#9BA5B7"
+};
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+      ...DefaultTheme.colors,
+    primary: colors.verde, // Cor de foco
+  },
+};
 
 const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
   const navigation = useNavigation();
@@ -34,7 +48,7 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
       data_estimada: dataFinal,
       prioridade: prioridade,
     };
-    postTarefa(objetivo.id, data)
+    postTarefa(objetivo._id, data)
       .then(res => {
         setNome('')
         setDescricao('')
@@ -72,22 +86,24 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('Home')}
         style={styles.icon}>
-        <Icon name="home" size={30} color={verdeEscuro} />
+        <Icon name="home" size={30} color={colors.verde} />
       </TouchableOpacity>
       <TouchableOpacity onPress={openModal} style={styles.icon}>
-        <Icon name="plus-circle" size={30} color={verdeEscuro} />
+        <Icon name="plus-circle" size={30} color={colors.verde} />
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => onIconPress('Login')}
         style={styles.icon}>
-        <Icon name="chart-bar" size={30} color={verdeEscuro} />
-      </TouchableOpacity>
+        <Icon name="chart-bar" size={30} color={colors.verde} />
+      </TouchableOpacity> */}
 
-      <Modal isVisible={isModalVisible}>
+      <Modal isVisible={isModalVisible} onBackdropPress={closeModal} style={styles.modal}>
+      <PaperProvider theme={theme}>
         <View style={styles.modalContainer}>
-          <Text style={{fontSize: 20}}>Criar Tarefas</Text>
           <TextInput
             style={styles.modalText}
+            mode='outlined'
+            label= 'Nome Tarefa'
             multiline={true}
             placeholder="Nome Tarefa"
             value={nome}
@@ -95,6 +111,8 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
           />
           <TextInput
             style={styles.modalText}
+            mode='outlined'
+            label='Descrição'
             multiline={true}
             placeholder="Descrição"
             value={descricao}
@@ -102,6 +120,8 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
           />
           <TextInput
             style={styles.modalText}
+            mode='outlined'
+            label='DD/MM/AAAA'
             multiline={true}
             placeholder="DD/MM/AAAA"
             value={dataFinal}
@@ -112,22 +132,49 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
             prioridade={prioridade}
             setPrioridade={setPrioridade}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+
+        <View style={{marginTop: 20}}>         
+            <TouchableOpacity onPress={criarTarefa} style={styles.botaoCriar}>
+                <Text style={styles.buttonText}>Criar Objetivos</Text>
+            </TouchableOpacity>
+            {/* <Button title="Adicionar Objetivo" onPress={criarObjetivo} color = {colors.verde}/> */}
+        </View>
+
+
+          {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Button
               title="Adicionar"
               onPress={criarTarefa}
               color={verdeEscuro}
             />
-            <View style={{width: '10%'}} />
-            <Button title="Fechar" onPress={closeModal} color={verdeEscuro} />
-          </View>
+          </View> */}
         </View>
+        </PaperProvider>
       </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  modal: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  botaoCriar: {
+    width: 150,
+    borderRadius: 20,
+    backgroundColor: colors.verde,
+    alignSelf: 'center', // Centraliza o botão horizontalmente
+},
+buttonText: {
+    color: 'white',
+    fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    textAlign: 'center',
+    fontWeight: 'bold'
+},
   data: {
     flex: 1,
     justifyContent: 'center',
@@ -136,7 +183,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -156,7 +203,7 @@ const styles = StyleSheet.create({
   modalText: {
     mode: 'flat',
     backgroundColor: 'white',
-    width: 200,
+    width: 325,
     marginBottom: 30,
   },
 });

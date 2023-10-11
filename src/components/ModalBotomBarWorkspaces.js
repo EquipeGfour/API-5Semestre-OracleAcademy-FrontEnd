@@ -71,9 +71,9 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.roxo} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.icon}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.icon}>
                 <Icon name="chart-bar" size={30} color={colors.roxo} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
                 <View style={[styles.modalContainer,]}>
@@ -90,7 +90,7 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
                     />
                     <View style={{ marginTop: 40 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
-                            <Text style={styles.buttonText}>Criar</Text>
+                            <Text style={styles.buttonText}>Criar Workspaces</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

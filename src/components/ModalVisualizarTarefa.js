@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableWithoutFeedback, Button } from 'react-native';
+import { View, TouchableWithoutFeedback, Button, ScrollView } from 'react-native';
 import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -102,6 +102,7 @@ const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
 
     return (
         <>
+                        <ScrollView>
             {tarefas.map((tarefa, index) => (
                 <View key={tarefa.id}>
                     <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
@@ -124,8 +125,8 @@ const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-            ))}
-
+))}
+</ScrollView>
             <Modal visible={visible} onDismiss={hideModal}>
 
                 <View style={styles.modal}>

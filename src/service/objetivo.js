@@ -10,5 +10,5 @@ export const postObjetivos = (data,token) => {
 }
 
 export const deleteObjetivo = (id) => {
-    return axios.delete(`/objetivo/deletar/${id}`,{ headers: { Authorization: token } })
+    return axios.delete(`/objetivo/deletar/${id}`)
 }
