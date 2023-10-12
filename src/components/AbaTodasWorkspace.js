@@ -3,28 +3,25 @@ import { View, StyleSheet, ScrollView, Modal, TouchableWithoutFeedback } from 'r
 import { Card, Checkbox, IconButton, Text, Button } from 'react-native-paper';
 import BottomBarTarefasWork from './BottomBarTarefasWork';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import DropdwnGenerico from './DropdownGenerico';
+import UserAvatar from './UserAvatar';
 
 const verdeEscuro = '#346c68';
-
-const UserAvatar = ({ name }) => {
-  const initials = name
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase())
-    .join('')
-    .substr(0, 2);
-
-  return (
-    <View style={styles.avatarContainer}>
-      <Text style={styles.avatarText}>{initials}</Text>
-    </View>
-  );
-};
 
 const AbaTodasWorkspace = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const name = "Rafael Waltrick"; // Substitua pelo nome do inscrito
+  const nomes = ["Rafael Waltrick", "Felipe Gabriel","Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel"]
   const [visible, setVisible] = React.useState(false);
   const openModal = () => setVisible(true);
+
+  const data = [
+    { label: 'Completo', value: 1 },
+    { label: 'Em Andamento', value: 2 },
+    { label: 'Não Iniciado', value: 3 },
+    { label: 'Atrasado', value: 4 },
+    { label: 'Aguardando Validação', value: 5 },
+];
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -61,7 +58,9 @@ const AbaTodasWorkspace = () => {
                 />
               </Card.Actions>
             </Card.Content>
-            <UserAvatar name={name} />
+            <View style={{...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap'}}>
+            {nomes.map((n)=> <UserAvatar name={n} />)}
+            </View>
           </Card>
         </View>
       </ScrollView>
@@ -81,7 +80,7 @@ const AbaTodasWorkspace = () => {
                 </View>
                 <View style={styles.iconContainerTittle}>
 
-                  <Icon name="user" style={styles.icons} size={20} onPress={openModal} />
+                  <Icon name="user-plus" style={styles.icons} color={'#51336b'} size={20} onPress={openModal} />
                   <Icon name="trash" style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefa(tarefa.id)} />
 
                 </View>
@@ -104,6 +103,19 @@ const AbaTodasWorkspace = () => {
                   <Text>alta</Text>
                 </View>
               </View>
+              <View style={styles.espacamento}>
+                <View style={styles.iconContainer}>
+                  <DropdwnGenerico data= {data} label= "Status"/>
+                </View>
+              </View>
+              <View style={styles.espacamento}>
+                <View style={styles.iconContainer}>
+                    <Text>Membros</Text>
+                </View> 
+              </View>
+                <View style={{...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap'}}>
+                  {nomes.map((n)=> <UserAvatar name={n} />)}                  
+                </View>   
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -177,20 +189,6 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: 'row',
     marginTop: 10,
-  },
-  avatarContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 25,
-    backgroundColor: '#51336b',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 16,
-  },
-  avatarText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   iconCheck: {
     marginLeft: 16,
