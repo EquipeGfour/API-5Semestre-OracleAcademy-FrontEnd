@@ -1,19 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Modal, TouchableWithoutFeedback } from 'react-native';
 import { Card, Checkbox, IconButton, Text, Button } from 'react-native-paper';
 import BottomBarTarefasWork from './BottomBarTarefasWork';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdwnGenerico from './DropdownGenerico';
 import UserAvatar from './UserAvatar';
+import { getStorageItem } from "../functions/encryptedStorageFunctions";
+import { getTarefas } from '../service/tarefa';
 
 const verdeEscuro = '#346c68';
 
-const AbaTodasWorkspace = () => {
+const AbaTodasWorkspace = ({ _id }) => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const name = "Rafael Waltrick"; // Substitua pelo nome do inscrito
-  const nomes = ["Rafael Waltrick", "Felipe Gabriel","Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel"]
+  const name = "Rafael Waltrick";
+  const nomes = ["Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel"]
   const [visible, setVisible] = React.useState(false);
+  const [tarefas, setTarefas] = useState([]);
   const openModal = () => setVisible(true);
+
+
+  const getPrioridadeTitle = (prioridade) => {
+    if(prioridade === 1){
+        return "Urgente";
+    }
+    else if (prioridade === 2){
+        return "Alta";
+    }
+    else if (prioridade === 3){
+        return "Média";
+    }
+    else if(prioridade === 4){
+        return "Baixo";
+    }
+}
+
+  const buscarTarefasWorkspace = () => {
+    console.log(_id)
+    getTarefas(_id).then((res) => {
+      setTarefas(res.data);
+    }).catch(error => {
+      console.error('Erro', error.response)
+    })
+  }
+
+  useEffect(() => {
+    buscarTarefasWorkspace();
+  }, [])
 
   const data = [
     { label: 'Completo', value: 1 },
@@ -21,7 +53,7 @@ const AbaTodasWorkspace = () => {
     { label: 'Não Iniciado', value: 3 },
     { label: 'Atrasado', value: 4 },
     { label: 'Aguardando Validação', value: 5 },
-];
+  ];
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -34,35 +66,38 @@ const AbaTodasWorkspace = () => {
   return (
     <>
       <ScrollView>
-        <View style={styles.filtros}>
-          <Card style={styles.Cardcontainer} onPress={toggleModal}>
-            <Card.Content style={styles.contentContainer}>
-              <Checkbox
-                style={styles.iconCheck}
-                onPress={() => {
-                  // Coloque sua lógica para lidar com a seleção aqui
-                }}
-              />
-              <Card.Title
-                title="Palestin"
-                subtitle={`Data Conclusão: 22/11/2023\nMembros: ${name}\nPrioridade: Alta`}
-                subtitleNumberOfLines={3}
-                style={styles.title}
-              />
-              <Card.Actions style={styles.actionsContainer}>
-                <IconButton
-                  icon="fire"
+        {tarefas.map((tarefa) => (
+          <View style={styles.filtros}>
+            <Card style={styles.Cardcontainer} onPress={toggleModal}>
+              <Card.Content style={styles.contentContainer}>
+                <Checkbox
+                  style={styles.iconCheck}
                   onPress={() => {
-                    // Coloque sua lógica para lidar com o ícone de fogo aqui
+                    // Coloque sua lógica para lidar com a seleção aqui
                   }}
                 />
-              </Card.Actions>
-            </Card.Content>
-            <View style={{...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap'}}>
-            {nomes.map((n)=> <UserAvatar name={n} />)}
-            </View>
-          </Card>
-        </View>
+                <Card.Title
+                  title={tarefa.titulo}
+                  subtitle={`Data Conclusão: ${tarefa.data_estimada}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}`}
+                  subtitleNumberOfLines={3}
+                  style={styles.title}
+                />
+                <Card.Actions style={styles.actionsContainer}>
+                  <IconButton
+                    icon="fire"
+                    onPress={() => {
+                      // Coloque sua lógica para lidar com o ícone de fogo aqui
+                    }}
+                  />
+                </Card.Actions>
+              </Card.Content>
+              <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
+                {tarefa.usuarios.map((n) => <UserAvatar name={n.nome} />)}
+              </View>
+            </Card>
+          </View>
+        ))}
+
       </ScrollView>
 
       <Modal visible={isModalVisible} transparent animationType="slide">
@@ -105,17 +140,17 @@ const AbaTodasWorkspace = () => {
               </View>
               <View style={styles.espacamento}>
                 <View style={styles.iconContainer}>
-                  <DropdwnGenerico data= {data} label= "Status"/>
+                  <DropdwnGenerico data={data} label="Status" />
                 </View>
               </View>
               <View style={styles.espacamento}>
                 <View style={styles.iconContainer}>
-                    <Text>Membros</Text>
-                </View> 
+                  <Text>Membros</Text>
+                </View>
               </View>
-                <View style={{...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap'}}>
-                  {nomes.map((n)=> <UserAvatar name={n} />)}                  
-                </View>   
+              <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
+                {nomes.map((n) => <UserAvatar name={n} />)}
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
