@@ -89,7 +89,7 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                         value={descricao} onChangeText={(e) => setDescricao(e)}/>
                     <TextInput style = {styles.modalText}
                         mode='outlined'
-                        label= 'DD/MM/AAAA'
+                        label= 'Data de Conclusão'
                         multiline={true} 
                         placeholder='DD/MM/AAAA'
                         value={dataEstimada} onChangeText={(e) => setDataEstimada(e)}
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        padding: 20,
+        padding: 15,
         borderRadius: 10,
         justifyContent: 'center',
         

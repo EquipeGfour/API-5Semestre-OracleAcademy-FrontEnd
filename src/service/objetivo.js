@@ -1,8 +1,8 @@
 import axios from "./axios";
 
 
-export const getObjetivos = () => {
-    return axios.get("/objetivo/buscar");
+export const getObjetivos = (token) => {
+    return axios.get("/objetivo/buscar", { headers: { Authorization: token } });
 };
 
 export const postObjetivos = (data,token) => {

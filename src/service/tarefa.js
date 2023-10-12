@@ -11,6 +11,6 @@ export const postTarefa = (id, data) => {
 }
 
 
-export const deleteTarefa = (id, idTarefa) => {
-    return axios.delete(`/tarefa/deletar/${id}/${idTarefa}`)
+export const deleteTarefa = (idTarefa) => {
+    return axios.delete(`/tarefa/deletar/${idTarefa}`)
 }

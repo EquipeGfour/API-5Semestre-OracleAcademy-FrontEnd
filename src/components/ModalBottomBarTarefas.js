@@ -121,7 +121,7 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
           <TextInput
             style={styles.modalText}
             mode='outlined'
-            label='DD/MM/AAAA'
+            label='Data de Conclusão'
             multiline={true}
             placeholder="DD/MM/AAAA"
             value={dataFinal}

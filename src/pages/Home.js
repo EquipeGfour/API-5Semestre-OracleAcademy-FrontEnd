@@ -7,7 +7,7 @@ import { Text } from "react-native-paper";
 import BottomBarObjetivos from "../components/ModalBottomBarObjetivos";
 import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { getStorageItem } from "../functions/encryptedStorageFunctions";
+import { clearStorageItem, getStorageItem } from "../functions/encryptedStorageFunctions";
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -19,6 +19,10 @@ const colors = {
 
 const Home = ({ navigation }) => {
     const [usuario, setUsuario] = useState('');
+    const logout = async ()=>{ 
+        await clearStorageItem('token')
+        navigation.navigate('Bem-vindo')    
+    }
 
     useEffect(async () => {
 
@@ -29,7 +33,7 @@ const Home = ({ navigation }) => {
     
     return (
         <>
-            <Icon name= 'sign-out-alt' style={styles.logout}/>
+            <Icon name= 'sign-out-alt' style={styles.logout} onPress={logout}/>
             <View style = {styles.nomeUsuario}>
                 <Icon name = 'user' size={40}/>
                 <Text style={styles.titulo1}>Olá,</Text>
