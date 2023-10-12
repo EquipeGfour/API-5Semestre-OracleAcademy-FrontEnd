@@ -39,11 +39,22 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
     branco: "#ffffff"
   };
 
-  const adicionarUsuario = async (i) => {
-    const token = await getStorageItem('token');
-    setUsuariosSelecionado([...usuariosSelecionado,i])
-    /* addUserToWorkspace('65252b92f3d414bc07d9e01e',i['_id'], token) */
+  const adicionarUsuario = (usuario) => {
+    if (!usuariosSelecionado.some((u) => u._id === usuario._id)) {
+      setUsuariosSelecionado([...usuariosSelecionado, usuario]);
+    }
   };
+
+  const adicionarTodosUsuariosAoWorkspace = async () => {
+    const token = await getStorageItem('token');
+    
+    const usuariosIds = usuariosSelecionado.map((usuario) => usuario['_id']);
+    const workspaceId = 'ID_DO_SEU_WORKSPACE'; 
+    addUserToWorkspace(workspaceId, usuariosIds, token);
+    
+    setUsuariosSelecionado([]);
+  };
+
 
   const [userQuery, setUserQuery] = useState('')
   const [usuariosBusca, setUsuariosBusca] = useState([])
@@ -104,7 +115,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
             )}
           />
           <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <Button title="Adicionar" onPress={adicionarUsuario} color={colors.roxo} />
+            <Button title="Adicionar" onPress={adicionarTodosUsuariosAoWorkspace} color={colors.roxo} />
             <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} />
           </View>
           <FlatList
