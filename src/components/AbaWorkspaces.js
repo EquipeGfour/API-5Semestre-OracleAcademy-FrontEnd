@@ -53,7 +53,7 @@ const AbaWorkspaces = ({ navigation }) => {
                             />
                             <Text style={styles.tituloMembros}>Membros</Text>
 
-                            <View style={styles.circulosContainer}>
+                            <View style={{...styles.circulosContainer, flexWrap: 'wrap'}} >
                                 {workspace.usuarios.map((usuario) => (
                                     <UserAvatar key={usuario.usuario._id} name={usuario.usuario.nome} color={colors.branco} colorText={colors.roxo} />
                                 ))}

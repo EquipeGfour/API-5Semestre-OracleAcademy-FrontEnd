@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, TouchableOpacity, StyleSheet, Button, FlatList } from 'react-native';
-import { Text, IconButton, DataTable, Menu, Divider, Provider } from 'react-native-paper';
+import { Text, IconButton, DataTable, Menu, Divider, Provider, Chip } from 'react-native-paper';
 import AbaTodasWorkspace from '../components/AbaTodasWorkspace';
 import BottomBarTarefasWork from '../components/BottomBarTarefasWork';
 import Modal from 'react-native-modal';
@@ -44,6 +44,11 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
     branco: "#ffffff"
   };
 
+  const removerUsuario = (user) => {
+    const novaLista = usuariosSelecionado.filter(u => u._id != user._id)
+    setUsuariosSelecionado(novaLista)
+  }
+
   const adicionarUsuario = (usuario) => {
     if (!usuariosSelecionado.some((u) => u._id === usuario._id)) {
       setUsuariosSelecionado([...usuariosSelecionado, usuario]);
@@ -54,8 +59,9 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
     const token = await getStorageItem('token');
     
     const usuariosIds = usuariosSelecionado.map((usuario) => usuario['_id']);
-    const workspaceId = ''; 
-    addUserToWorkspace(workspaceId, usuariosIds, token);
+    const workspaceId = _id;
+    console.log(_id,titulo)
+    addUserToWorkspace(workspaceId, usuariosSelecionado, token);
     
     setUsuariosSelecionado([]);
   };
@@ -123,17 +129,11 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
             <Button title="Adicionar" onPress={adicionarTodosUsuariosAoWorkspace} color={colors.roxo} />
             <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} />
           </View>
-          <FlatList
-            data={usuariosSelecionado}
-            renderItem={({ item }) => (
-              <View style={styles.usuarioItem}>
-                {item.adicionado ? (
-                  <Icon name="check-circle" size={16} color={colors.verde} />
-                ) : null}
-                <Text>{item.nome}</Text>
-              </View>
-            )}
-          />
+          {usuariosSelecionado.map((user)=>(
+            <Chip closeIcon={'window-close'} onClose={()=>removerUsuario(user)}>
+              {user.nome}
+            </Chip>
+          ))}
         </View>
       </Modal>
 

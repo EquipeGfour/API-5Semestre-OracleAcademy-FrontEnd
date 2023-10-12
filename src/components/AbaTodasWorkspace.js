@@ -38,6 +38,7 @@ const AbaTodasWorkspace = ({ _id }) => {
     console.log(_id)
     getTarefas(_id).then((res) => {
       setTarefas(res.data);
+      console.log(res.data[1].usuarios)
     }).catch(error => {
       console.error('Erro', error.response)
     })
@@ -92,7 +93,7 @@ const AbaTodasWorkspace = ({ _id }) => {
                 </Card.Actions>
               </Card.Content>
               <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
-                {tarefa.usuarios.map((n) => <UserAvatar name={n.nome} />)}
+                {tarefa.usuarios.map((n) => <UserAvatar name={n.usuario.nome} />)}
               </View>
             </Card>
           </View>
@@ -116,6 +117,8 @@ const AbaTodasWorkspace = ({ _id }) => {
                 <View style={styles.iconContainerTittle}>
 
                   <Icon name="user-plus" style={styles.icons} color={'#51336b'} size={20} onPress={openModal} />
+                  
+                  
                   <Icon name="trash" style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefa(tarefa.id)} />
 
                 </View>
