@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, TouchableOpacity, StyleSheet, Button, FlatList } from 'react-native';
 import { Text, IconButton, DataTable, Menu, Divider, Provider } from 'react-native-paper';
@@ -9,20 +9,25 @@ import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../service/usuario';
 import { getStorageItem } from '../functions/encryptedStorageFunctions';
 import { addUserToWorkspace } from '../service/workspace';
+import { getTarefas } from '../service/tarefa';
 
 
 
 const Tab = createMaterialTopTabNavigator();
 
 const ListaTarefaWorkspace = ({ route, navigation }) => {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [usuarios, setUsuarios] = useState([]);
 
+
+  const { _id, titulo } = route.params;
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
   const [openModal, setOpenModal] = useState(false);
+
+
 
   const openModalHandler = () => {
     setOpenModal(true);
@@ -49,7 +54,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
     const token = await getStorageItem('token');
     
     const usuariosIds = usuariosSelecionado.map((usuario) => usuario['_id']);
-    const workspaceId = 'ID_DO_SEU_WORKSPACE'; 
+    const workspaceId = ''; 
     addUserToWorkspace(workspaceId, usuariosIds, token);
     
     setUsuariosSelecionado([]);
@@ -61,15 +66,15 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
   const [usuariosSelecionado, setUsuariosSelecionado] = useState([])
 
   const buscaUsuario = async () => {
-    const token = await getStorageItem('token');  
-    getUserByNameOrEmail(userQuery, token).then((res)=>{setUsuariosBusca(res.data)})
+    const token = await getStorageItem('token');
+    getUserByNameOrEmail(userQuery, token).then((res) => { setUsuariosBusca(res.data) })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     buscaUsuario()
   }, [userQuery])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const delayDebounce = setTimeout(() => {
       setUserQuery(nomeUsuario)
     }, 500)
@@ -81,7 +86,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
         <DataTable style={styles.dataTable}>
           <DataTable.Header style={styles.header}>
             <View style={styles.titleContainer}>
-              <Text style={styles.nomeWorkspace}>Palestin</Text>
+              <Text style={styles.nomeWorkspace}>{titulo}</Text>
             </View>
             <Menu style={styles.menu}
               visible={visible}
@@ -144,8 +149,9 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
           },
         }}>
 
-        <Tab.Screen style={styles.filtros} name="Todas" component={AbaTodasWorkspace} />
-
+        <Tab.Screen name="Todas" style={styles.filtros}>
+          {() => <AbaTodasWorkspace _id={_id} />}
+        </Tab.Screen>
 
       </Tab.Navigator>
       <BottomBarTarefasWork style={{ flex: 1 }} />
