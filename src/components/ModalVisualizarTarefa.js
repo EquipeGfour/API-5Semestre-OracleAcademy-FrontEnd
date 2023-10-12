@@ -7,6 +7,7 @@ import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../pages/Login';
 import { deleteTarefa, getTarefas } from '../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const verdeEscuro = "#346c68";
@@ -40,8 +41,8 @@ const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
         }
     }
 
-    const deletarTarefa = () =>{
-        deleteTarefa(id, tarefa.id).then(res => {
+    const deletarTarefa = (id) =>{
+        deleteTarefa(id).then(res => {
             Toast.show({
                 type: 'success',
                 text1: 'Tarefa excluida com sucesso!',
@@ -102,9 +103,10 @@ const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
 
     return (
         <>
-                        <ScrollView>
+        <SafeAreaView >
+        <ScrollView style={styles.listWrapper}>
             {tarefas.map((tarefa, index) => (
-                <View key={tarefa.id}>
+                <View style={{flex:1}} key={tarefa.id}>
                     <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
                         <View>
                             <View style={styles.container}>
@@ -125,10 +127,11 @@ const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-))}
-</ScrollView>
-            <Modal visible={visible} onDismiss={hideModal}>
+            ))}
+        </ScrollView>
+        </SafeAreaView>
 
+            <Modal visible={visible} onDismiss={hideModal}>
                 <View style={styles.modal}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Checkbox
@@ -137,29 +140,29 @@ const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
                                 setChecked(!checked);
                             }}
                         />
-                        <View style={styles.iconContainer}>
+                        <View style={styles.iconContainerTitle}>
                             <Text style={styles.textoCheck}>{tarefa.titulo}</Text>
                             {/* <Icon name="edit" size={20} onPress={openModal} /> */}
-                            <Icon name="trash"  style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefa(tarefa.id)} />
+                            <Icon name="trash"  style={styles.iconExclusao} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
                         </View>
 
                     </View>
                     <View style={styles.espacamento}>
                         <View style={styles.iconContainer}>
                             <Icon name="bars" size={20} style={styles.icon} />
-                            <Text>{tarefa.descricao}</Text>
+                            <Text style={styles.textos}>{tarefa.descricao}</Text>
                         </View>
                     </View>
                     <View style={styles.espacamento}>
                         <View style={styles.iconContainer}>
                             <Icon name="clock" size={20} style={styles.icon} />
-                            <Text>{tarefa.data_estimada}</Text>
+                            <Text style={styles.textos}>{tarefa.data_estimada}</Text>
                         </View>
                     </View>
                     <View style={styles.espacamento}>
                         <View style={styles.iconContainer}>
                             <Icon name="flag" size={20} style={styles.icon} />
-                            <Text>{getPrioridadeTitle(tarefa.prioridade)}</Text>
+                            <Text style={styles.textos}>{getPrioridadeTitle(tarefa.prioridade)}</Text>
                         </View>
                     </View>
                 </View>
@@ -185,15 +188,31 @@ const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
 };
 
 const styles = StyleSheet.create({
-    textoCheck: {
-        marginRight: '50%'
+    listWrapper:{
+        flexGrow:1,
+        width:'100%',
+        height:600,
     },
+    textoCheck: {
+        width:'80%',
+        marginTop:5,
+        },
     iconContainer: {
+        display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
+        justifyContent: 'right',
+    },
+    iconContainerTitle: {
+        display: 'flex',
+        flexDirection: 'row',        
     },
     icon: {
-        marginRight: 10,
+        paddingright: 5,
+        textAlign: 'right',
+    },
+    iconExclusao:{
+        width:"13%",
+        padding: 5,
     },
     espacamento: {
         marginTop: 45,
@@ -239,14 +258,17 @@ const styles = StyleSheet.create({
         width: 200,
         marginBottom: 30
     },
+    textos:{
+        marginLeft:10 
+    },
     btncolor: {
         color: verdeEscuro
     },
     icons:{
-        position:"absolute",
-        justifyContent:'space-between',
-        textAlign:'right',
-        width:'105%',
+        padding: 5,
+        textAlign: 'right',
+        // textAlign: 'right',
+        // marginRight:-40
     }
 });
 

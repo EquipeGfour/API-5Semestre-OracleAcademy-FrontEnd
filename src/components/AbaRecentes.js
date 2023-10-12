@@ -5,6 +5,7 @@ import BottomBarObjetivos from "./ModalBottomBarObjetivos";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
 import { getObjetivos } from "../service/objetivo";
+import { getStorageItem } from "../functions/encryptedStorageFunctions";
 
 
 const verdeEscuro = "#346c68";
@@ -13,8 +14,9 @@ const Recentes = ({ navigation }) => {
 
     const [objetivos, setObjetivos] = useState([]);
 
-    const buscarObjetivos = () => {
-        getObjetivos().then((res) => {
+    const buscarObjetivos = async () => {
+        const token = await getStorageItem('token');
+        getObjetivos(token).then((res) => {
             setObjetivos(res.data)
         }).catch(error => {
             console.error('Erro', error.response);

@@ -86,7 +86,7 @@ const ListaTarefas = ({route, navigation}) => {
                             style={{ backgroundColor: 'white' }} // Defina a cor de fundo desejada aqui
                             anchor={<IconButton style={styles.menuObjetivos} icon="dots-vertical"  iconColor={'#51A8A2'} onPress={openMenu}/>}>
                                 <Menu.Item style={styles.opcoesMenu} onPress={() => {}}  title="Editar Tarefa" />
-                                <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'white'}} onPress={() => {deletarObjetivo(_id)}}   title="Excluir Tarefa" />
+                                <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'red'}} onPress={() => {deletarObjetivo(_id)}}   title="Excluir Objetivo" />
                         </Menu> 
 
                         {/* <IconButton style={styles.icones} icon="dots-vertical" size={20} marginLeft={10} color={'red'} onPress={() =>{deletarObjetivo(_id), navigation.navigate('Home')}}/> */}

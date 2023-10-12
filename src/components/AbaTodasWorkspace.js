@@ -23,6 +23,8 @@ const UserAvatar = ({ name }) => {
 const AbaTodasWorkspace = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const name = "Rafael Waltrick"; // Substitua pelo nome do inscrito
+  const [visible, setVisible] = React.useState(false);
+  const openModal = () => setVisible(true);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -45,7 +47,7 @@ const AbaTodasWorkspace = () => {
                 }}
               />
               <Card.Title
-                title="Tarefa"
+                title="Palestin"
                 subtitle={`Data Conclusão: 22/11/2023\nMembros: ${name}\nPrioridade: Alta`}
                 subtitleNumberOfLines={3}
                 style={styles.title}
@@ -69,15 +71,19 @@ const AbaTodasWorkspace = () => {
           <View style={styles.modalContainer}>
             <View style={styles.modal}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Checkbox
-                  onPress={() => {
-                    // Lógica para a seleção
-                  }}
-                />
-                <View style={styles.iconContainer}>
+                <View style={styles.iconContainer} >
+                  <Checkbox
+                    onPress={() => {
+                      // Lógica para a seleção
+                    }}
+                  />
                   <Text style={styles.textoCheck}>titulo</Text>
-                  {/* <Icon name="edit" size={20} onPress={openModal} /> */}
+                </View>
+                <View style={styles.iconContainerTittle}>
+
+                  <Icon name="user" style={styles.icons} size={20} onPress={openModal} />
                   <Icon name="trash" style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefa(tarefa.id)} />
+
                 </View>
               </View>
               <View style={styles.espacamento}>
@@ -131,15 +137,21 @@ const styles = StyleSheet.create({
   textoCheck: {
     marginRight: '50%',
   },
+  iconContainerTittle: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'right',
+  },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   icons: {
-    position: "absolute",
-    justifyContent: 'space-between',
+    padding: 5,
     textAlign: 'right',
-    width: '105%',
+    /* borderColor: 'red',
+    borderWidth: 1,
+    borderStyle: "solid", */
   },
   filtros: {
     // Estilização para seus filtros, se necessário
