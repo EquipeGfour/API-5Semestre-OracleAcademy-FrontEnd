@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, TouchableOpacity, StyleSheet, Button, FlatList } from 'react-native';
-import { Text, IconButton, DataTable, Menu, Divider, Provider } from 'react-native-paper';
+import { Text, IconButton, DataTable, Menu, Divider, Provider, Chip } from 'react-native-paper';
 import AbaTodasWorkspace from '../components/AbaTodasWorkspace';
 import BottomBarTarefasWork from '../components/BottomBarTarefasWork';
 import Modal from 'react-native-modal';
@@ -9,20 +9,25 @@ import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../service/usuario';
 import { getStorageItem } from '../functions/encryptedStorageFunctions';
 import { addUserToWorkspace } from '../service/workspace';
+import { getTarefas } from '../service/tarefa';
 
 
 
 const Tab = createMaterialTopTabNavigator();
 
 const ListaTarefaWorkspace = ({ route, navigation }) => {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [usuarios, setUsuarios] = useState([]);
 
+
+  const { _id, titulo } = route.params;
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
   const [openModal, setOpenModal] = useState(false);
+
+
 
   const openModalHandler = () => {
     setOpenModal(true);
@@ -39,26 +44,43 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
     branco: "#ffffff"
   };
 
-  const adicionarUsuario = async (i) => {
-    const token = await getStorageItem('token');
-    setUsuariosSelecionado([...usuariosSelecionado,i])
-    /* addUserToWorkspace('65252b92f3d414bc07d9e01e',i['_id'], token) */
+  const removerUsuario = (user) => {
+    const novaLista = usuariosSelecionado.filter(u => u._id != user._id)
+    setUsuariosSelecionado(novaLista)
+  }
+
+  const adicionarUsuario = (usuario) => {
+    if (!usuariosSelecionado.some((u) => u._id === usuario._id)) {
+      setUsuariosSelecionado([...usuariosSelecionado, usuario]);
+    }
   };
+
+  const adicionarTodosUsuariosAoWorkspace = async () => {
+    const token = await getStorageItem('token');
+    
+    const usuariosIds = usuariosSelecionado.map((usuario) => usuario['_id']);
+    const workspaceId = _id;
+    console.log(_id,titulo)
+    addUserToWorkspace(workspaceId, usuariosSelecionado, token);
+    
+    setUsuariosSelecionado([]);
+  };
+
 
   const [userQuery, setUserQuery] = useState('')
   const [usuariosBusca, setUsuariosBusca] = useState([])
   const [usuariosSelecionado, setUsuariosSelecionado] = useState([])
 
   const buscaUsuario = async () => {
-    const token = await getStorageItem('token');  
-    getUserByNameOrEmail(userQuery, token).then((res)=>{setUsuariosBusca(res.data)})
+    const token = await getStorageItem('token');
+    getUserByNameOrEmail(userQuery, token).then((res) => { setUsuariosBusca(res.data) })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     buscaUsuario()
   }, [userQuery])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const delayDebounce = setTimeout(() => {
       setUserQuery(nomeUsuario)
     }, 500)
@@ -70,7 +92,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
         <DataTable style={styles.dataTable}>
           <DataTable.Header style={styles.header}>
             <View style={styles.titleContainer}>
-              <Text style={styles.nomeWorkspace}>Palestin</Text>
+              <Text style={styles.nomeWorkspace}>{titulo}</Text>
             </View>
             <Menu style={styles.menu}
               visible={visible}
@@ -104,20 +126,14 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
             )}
           />
           <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <Button title="Adicionar" onPress={adicionarUsuario} color={colors.roxo} />
+            <Button title="Adicionar" onPress={adicionarTodosUsuariosAoWorkspace} color={colors.roxo} />
             <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} />
           </View>
-          <FlatList
-            data={usuariosSelecionado}
-            renderItem={({ item }) => (
-              <View style={styles.usuarioItem}>
-                {item.adicionado ? (
-                  <Icon name="check-circle" size={16} color={colors.verde} />
-                ) : null}
-                <Text>{item.nome}</Text>
-              </View>
-            )}
-          />
+          {usuariosSelecionado.map((user)=>(
+            <Chip closeIcon={'window-close'} onClose={()=>removerUsuario(user)}>
+              {user.nome}
+            </Chip>
+          ))}
         </View>
       </Modal>
 
@@ -133,8 +149,9 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
           },
         }}>
 
-        <Tab.Screen style={styles.filtros} name="Todas" component={AbaTodasWorkspace} />
-
+        <Tab.Screen name="Todas" style={styles.filtros}>
+          {() => <AbaTodasWorkspace _id={_id} />}
+        </Tab.Screen>
 
       </Tab.Navigator>
       <BottomBarTarefasWork style={{ flex: 1 }} />

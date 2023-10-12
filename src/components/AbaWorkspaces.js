@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBarObjetivos from "./ModalBottomBarObjetivos";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
-import { getObjetivos } from "../service/objetivo";
-import BottomBarTarefas from "./ModalBottomBarTarefas";
+import { Card, Avatar } from 'react-native-paper';
+import { getStorageItem } from "../functions/encryptedStorageFunctions";
+import { getWorkspaceUser } from "../service/workspace";
+import UserAvatar from "./UserAvatar";
 
 const colors = {
     verde: "#346c68",
@@ -15,43 +15,57 @@ const colors = {
 };
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
+
 const AbaWorkspaces = ({ navigation }) => {
+
+    const [workspaces, setWorkspaces] = useState([]);
+    const buscarWorkspace = async () => {
+        const token = await getStorageItem('token');
+        getWorkspaceUser(token).then((res) => {
+            setWorkspaces(res.data)
+        }).catch(error => {
+            console.error('Erro', error.response);
+        });
+    }
+
+    useEffect(() => {
+        buscarWorkspace();
+    }, [])
+
 
 
     return (
         <>
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('ListaTarefaWorkspace')}>
-            <View style={[styles.retangulo, styles.roxo, styles.marginRightNegative]}>
-                <Card.Title
-                    title="API"
-                    titleStyle={{ color: 'white', fontWeight: 'bold', textAlign: "center", fontSize: 20, lineHeight: 50, marginTop: 10 }}
-                />
-                <Card.Title
-                    title={'Responsavel:'}
-                    subtitle= {'Gersu'}
-                    titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    subtitleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    left={(props) => <Icon name="user-circle" size={40} color="white" />}
-                />
-                <Text style={styles.tituloMembros}>Membros</Text>
+                {workspaces.map((workspace) => (
+                    <TouchableOpacity key={workspace._id} onPress={() => navigation.navigate('ListaTarefaWorkspace', workspace)}>
+                        <View style={[styles.retangulo, styles.roxo, styles.marginRightNegative]}>
+                            <Card.Title
+                                title={workspace.titulo}
+                                titleStyle={{ color: 'white', fontWeight: 'bold', textAlign: "center", fontSize: 20, lineHeight: 50, marginTop: 10 }}
+                            />
+                            <Card.Title
+                                title={'Responsavel:'}
+                                subtitle={workspace.proprietario.nome}
+                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                subtitleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                left={(props) => <Icon name="user-circle" size={40} color="white" />}
+                            />
+                            <Text style={styles.tituloMembros}>Membros</Text>
 
-                <View style={styles.circulosContainer}>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Text style={styles.circuloTexto}>NB</Text>
-                    </View>
-                    <View style={styles.circulo}>
-                        <Icon name= 'plus'/>
-                    </View>
-                </View>
-            </View>
-            </TouchableOpacity>
+                            <View style={{...styles.circulosContainer, flexWrap: 'wrap'}} >
+                                {workspace.usuarios.map((usuario) => (
+                                    <UserAvatar key={usuario.usuario._id} name={usuario.usuario.nome} color={colors.branco} colorText={colors.roxo} />
+                                ))}
+
+                                <View style={styles.circulo}>
+                                    <Icon name='plus' />
+                                </View>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                ))}
+
             </ScrollView>
         </>
     );
@@ -61,7 +75,7 @@ const styles = StyleSheet.create({
     marginRightNegative: {
         marginRight: 5, // Ajuste o valor conforme necessário
     },
-    
+
     centeredTextContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -84,7 +98,7 @@ const styles = StyleSheet.create({
         margin: 30,
         borderRadius: 20,
     },
-    roxo:{
+    roxo: {
         backgroundColor: colors.roxo
     },
     textoNome: {
