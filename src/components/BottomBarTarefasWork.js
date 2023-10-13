@@ -4,8 +4,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
-import { postObjetivos } from '../service/objetivo';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
+import { postTarefa } from '../service/tarefa';
+
 
 const colors = {
     verde: "#346c68",
@@ -15,7 +16,7 @@ const colors = {
     cinza: "#BAC0CA"
 };
 
-const BottomBarTarefasWork = ({ onIconPress }) => {
+const BottomBarTarefasWork = ({ onIconPress, id }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
     const [isInputFocused, setInputFocused] = useState(false);
@@ -32,7 +33,7 @@ const BottomBarTarefasWork = ({ onIconPress }) => {
             data_estimada: dataEstimada,
             prioridade: prioridade
         };
-        postObjetivos(obj)
+        postTarefa(id, obj)
             .then((res) => {
                 setNome('')
                 setDescricao('')
@@ -83,7 +84,7 @@ const BottomBarTarefasWork = ({ onIconPress }) => {
                         mode='outlined'
                         // textColor="#545F71"
                         placeholder="Insira o nome da Tarefa"
-                        label={isInputFocused ? "Tarefa" : ""}
+                        label={isInputFocused ? "Titulo" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         onChangeText={(text) => setNome(text)}
@@ -97,8 +98,8 @@ const BottomBarTarefasWork = ({ onIconPress }) => {
                         label={isInputFocused ? "Descrição" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
-                        onChangeText={(text) => setNome(text)}
-                        value={nome}
+                        onChangeText={(text) => setDescricao(text)}
+                        value={descricao}
                     />
                     <TextInput
                         style={styles.usuario}
@@ -108,10 +109,10 @@ const BottomBarTarefasWork = ({ onIconPress }) => {
                         label={isInputFocused ? "Data Conclusão" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
-                        onChangeText={(text) => setNome(text)}
-                        value={nome}
+                        onChangeText={(text) => setDataEstimada(text)}
+                        value={dataEstimada}
                     />
-                    <PrioridadeTarefaWork/>
+                    <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
                     <View style={{ marginTop: 30 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
                             <Text style={styles.buttonText}>Criar</Text>

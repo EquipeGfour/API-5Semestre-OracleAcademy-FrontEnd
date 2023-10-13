@@ -1,8 +1,16 @@
 import axios from "./axios";
 
 
+export const addUserToTarefa = (id, usuarios) => {
+    return axios.put(`/tarefa/adicionarUser/${id}`, usuarios);
+}
+
 export const getTarefas = (id) => {
     return axios.get(`/tarefa/buscarTarefas/${id}`);
+}
+
+export const getTarefaById = (id) => {
+    return axios.get(`/tarefa/buscarTarefa/${id}`);
 }
 
 
