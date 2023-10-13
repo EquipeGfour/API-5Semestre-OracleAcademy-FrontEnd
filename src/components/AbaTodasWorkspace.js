@@ -20,12 +20,10 @@ const colors = {
   branco: "#ffffff"
 };
 
-const AbaTodasWorkspace = ({ _id }) => {
+const AbaTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalUserVisible, setModalUserVisible] = useState(false);
-  const name = "Rafael Waltrick";
   const [nomeUsuario, setNomeUsuario] = useState("");
-  const nomes = ["Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel", "Rafael Waltrick", "Felipe Gabriel"]
   const [visible, setVisible] = React.useState(false);
   const [tarefas, setTarefas] = useState([]);
 
@@ -40,7 +38,12 @@ const AbaTodasWorkspace = ({ _id }) => {
 
   const closeModalHandler = () => {
     setModalUserVisible(false);
+    setUsuariosSelecionado([])
+    setUsuariosBusca([])
+    
   };
+
+  
 
 
   const getPrioridadeTitle = (prioridade) => {
@@ -59,12 +62,10 @@ const AbaTodasWorkspace = ({ _id }) => {
   }
 
   const buscarTarefasWorkspace = () => {
-    console.log(_id)
     getTarefas(_id).then((res) => {
       setTarefas(res.data);
-      console.log(res.data[1].usuarios)
     }).catch(error => {
-      console.error('Erro', error.response)
+      console.error('Erro', error)
     })
   }
 
@@ -81,7 +82,7 @@ const AbaTodasWorkspace = ({ _id }) => {
   ];
 
   const toggleModal = (_id) => {
-    getTarefaById(_id).then((res)=>{
+    getTarefaById(_id).then((res) => {
       setModalVisible(!isModalVisible);
       setTarefaSelecionado(res.data)
     })
@@ -102,12 +103,18 @@ const AbaTodasWorkspace = ({ _id }) => {
     }
   };
 
-  const adicionarTodosUsuariosATarefa = async () => {
+  const adicionarTodosUsuariosATarefa = async (id) => {
     const token = await getStorageItem('token');
 
     const usuariosIds = usuariosSelecionado.map((usuario) => usuario['_id']);
-    console.log(_id, titulo)
-    addUserToTarefa(workspaceId, usuariosSelecionado);
+    addUserToTarefa(id, usuariosSelecionado).then((res) => {
+      setModalUserVisible(false)
+      setUsuariosSelecionado([])
+      setUsuariosBusca([])
+      buscarTarefasWorkspace()
+    }).catch((error) => {
+      console.error(error.response)
+    });
     setUsuariosSelecionado([]);
   };
 
@@ -117,8 +124,10 @@ const AbaTodasWorkspace = ({ _id }) => {
   const [usuariosSelecionado, setUsuariosSelecionado] = useState([])
 
   const buscaUsuario = async () => {
-    const token = await getStorageItem('token');
-    getUserByNameOrEmail(userQuery, token).then((res) => { setUsuariosBusca(res.data); console.log(res.data) })
+    const busca = workspaceUsuarios.filter(u => {
+      return u.usuario.nome.toLowerCase().includes(userQuery.toLowerCase()) 
+    })
+    setUsuariosBusca(busca)
   }
 
   const [tarefaSelecionada, setTarefaSelecionado] = useState(null)
@@ -139,7 +148,7 @@ const AbaTodasWorkspace = ({ _id }) => {
       <ScrollView>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
-            <Card style={styles.Cardcontainer} onPress={()=>toggleModal(tarefa._id)}>
+            <Card style={styles.Cardcontainer} onPress={() => toggleModal(tarefa._id)}>
               <Card.Content style={styles.contentContainer}>
                 <Checkbox
                   style={styles.iconCheck}
@@ -163,7 +172,7 @@ const AbaTodasWorkspace = ({ _id }) => {
                 </Card.Actions>
               </Card.Content>
               <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
-                {tarefa.usuarios.map((n) => <UserAvatar name={n.usuario.nome} />)}
+                {tarefa.usuarios.map((n) => <UserAvatar name={n.usuario?.nome || ''} />)}
               </View>
             </Card>
           </View>
@@ -176,7 +185,7 @@ const AbaTodasWorkspace = ({ _id }) => {
           <View style={styles.modalContainer}>
             <View style={styles.modal}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={styles.iconContainer} >
+                <View style={{ ...styles.iconContainer, width: '75%' }} >
                   <Checkbox
                     onPress={() => {
                       // Lógica para a seleção
@@ -190,32 +199,40 @@ const AbaTodasWorkspace = ({ _id }) => {
 
                   <Modal visible={isModalUserVisible} transparent animationType="slide">
                     <TouchableWithoutFeedback onPress={closeModalHandler}>
-                      <View style={styles.modalUserContainer}>
-                        <TextInput
-                          style={styles.modalText}
-                          multiline={true}
-                          placeholder='Digite o nome do usuário'
-                          value={nomeUsuario}
-                          onChangeText={(e) => setNomeUsuario(e)}
-                          onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
-                        />
-                        <FlatList
-                          data={usuariosBusca}
-                          renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.usuarioItem} onPress={() => adicionarUsuario(item)}>
-                              <Text>{item.nome}</Text>
-                            </TouchableOpacity>
-                          )}
-                        />
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                          <Button title="Adicionar" onPress={adicionarTodosUsuariosATarefa} color={colors.roxo} />
-                          <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} />
+                      <View style={{
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}>
+                        <View style={styles.modalAddUserContainer}>
+                          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
+                          <TextInput
+                            style={styles.modalText}
+                            multiline={true}
+                            placeholder='Digite o nome do usuário'
+                            value={nomeUsuario}
+                            onChangeText={(e) => setNomeUsuario(e)}
+                            onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
+                          />
+                          <FlatList
+                            data={usuariosBusca}
+                            renderItem={({ item }) => (
+                              <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
+                                <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
+                              </TouchableOpacity>
+                            )}
+                          />
+                          {usuariosSelecionado.map((user) => (
+                            <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)} style={{ marginTop: 5 }}>
+                              {user.nome}
+                            </Chip>
+                          ))}
+                          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
+                            <Button title="Adicionar" onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)} color={colors.roxo} style={styles.btn} />
+                            <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} style={styles.btn} />
+                          </View>
                         </View>
-                        {usuariosSelecionado.map((user) => (
-                          <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)}>
-                            {user.nome}
-                          </Chip>
-                        ))}
                       </View>
                     </TouchableWithoutFeedback>
                   </Modal>
@@ -240,7 +257,7 @@ const AbaTodasWorkspace = ({ _id }) => {
               <View style={styles.espacamento}>
                 <View style={styles.iconContainer}>
                   <Icon name="flag" size={20} style={styles.icon} />
-                  <Text>alta</Text>
+                  <Text>{getPrioridadeTitle(tarefaSelecionada?.prioridade)}</Text>
                 </View>
               </View>
               <View style={styles.espacamento}>
@@ -254,7 +271,7 @@ const AbaTodasWorkspace = ({ _id }) => {
                 </View>
               </View>
               <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
-                {nomes.map((n) => <UserAvatar name={n} />)}
+                {tarefaSelecionada?.usuarios.map((n) => <UserAvatar name={n.usuario?.nome || ''} />)}
               </View>
             </View>
           </View>
@@ -312,10 +329,10 @@ const styles = StyleSheet.create({
     borderStyle: "solid", */
   },
   modalText: {
-    mode: "flat",
     backgroundColor: "white",
-    width: 200,
-    marginBottom: 30
+    marginVertical: 20,
+    height: 50,
+    fontSize: 18
   },
   filtros: {
     // Estilização para seus filtros, se necessário
@@ -349,6 +366,21 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
+  btn: {
+    borderRadius: 50,
+    padding: 5,
+    fontSize: 15
+  },
+  modalAddUserContainer: {
+    width: '96%',
+    height: 470,
+    borderStyle: 'solid',
+    borderColor: '#222',
+    borderWidth: 1,
+    borderRadius: 25,
+    padding: 20,
+    backgroundColor: '#FFF'
+  }
 });
 
 export default AbaTodasWorkspace;
