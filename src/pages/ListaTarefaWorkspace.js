@@ -8,8 +8,9 @@ import Modal from 'react-native-modal';
 import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../service/usuario';
 import { getStorageItem } from '../functions/encryptedStorageFunctions';
-import { addUserToWorkspace } from '../service/workspace';
+import { addUserToWorkspace, deleteWork } from '../service/workspace';
 import { getTarefas } from '../service/tarefa';
+import Toast from 'react-native-toast-message';
 
 
 
@@ -86,6 +87,22 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
     }, 500)
   }, [nomeUsuario])
 
+  const deletarWork = (_id)=>{
+    deleteWork(_id).then(res => {
+        Toast.show({
+            type:'success',
+            text1: 'Workspaces deletado com sucesso!'
+        });
+        navigation.navigate('HomeWorkspaces')
+    }).catch(error => {
+        Toast.show({
+            type: 'error',
+            text1: 'Ocorreu algum problema'
+        });
+        console.log('Erro', error);
+    })
+}
+
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <Provider>
@@ -99,7 +116,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
               onDismiss={closeMenu}
               anchor={<IconButton style={styles.menuWorkspace} icon="dots-vertical" iconColor={'#51336b'} onPress={openMenu} />}>
               <Menu.Item style={styles.opcoesMenu} onPress={() => { }} title="Editar Workspace" />
-              <Menu.Item style={styles.opcoesMenu2} titleStyle={{ color: 'red' }} onPress={() => { }} title="Excluir Workspace" />
+              <Menu.Item style={styles.opcoesMenu2} titleStyle={{ color: 'red' }} onPress={() => {deletarWork(_id) }} title="Excluir Workspace" />
               <Menu.Item onPress={openModalHandler} title="Adicionar Usuário" />
             </Menu>
           </DataTable.Header>
