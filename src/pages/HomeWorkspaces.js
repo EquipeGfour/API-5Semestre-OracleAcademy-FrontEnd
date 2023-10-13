@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import BemVindo from "./BemVindo";
 import Login from "./Login";
@@ -9,6 +9,7 @@ import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
 import AbaWorkspaces from "../components/AbaWorkspaces";
 import BottomBarTarefasWork from "../components/BottomBarTarefasWork";
+import { clearStorageItem, getStorageItem } from "../functions/encryptedStorageFunctions";
 
 
 
@@ -19,18 +20,30 @@ const colors = {
     roxo: "#51336b"
 };
 
-const HomeWorkspaces = ({ navigation}) => {
+const HomeWorkspaces = ({ navigation }) => {
+
+    const [usuario, setUsuario] = useState('');
+    const logout = async ()=>{ 
+        await clearStorageItem('token')
+        navigation.navigate('Bem-vindo')    
+    }
+
+    useEffect(async () => {
+        let usuario = await getStorageItem("nome");
+        setUsuario(usuario);
+    }, []);
+
     return (
         <>
-            <Icon name= 'sign-out-alt' style={styles.logout}/>
+            <Icon name= 'sign-out-alt' style={styles.logout} onPress={logout}/>
             <View style = {styles.nomeUsuario}>
                 <Icon name = 'user' size={40}/>
                 <Text style={styles.titulo1}>Olá,</Text>
-                <Text style={styles.nome}>Gerson</Text>
+                <Text style={styles.nome}>{usuario}</Text>
             </View>
 
             <View style={styles.header}>
-                <Icon name = 'chevron-left'size={30} style={styles.iconeSeta} onPress={() => navigation.navigate('Home')}/>
+                <Icon name = 'chevron-left'size={25} style={styles.iconeSeta} onPress={() => navigation.navigate('Home')}/>
                 <View style={styles.textoWorkContainer}>
                     <Text style={styles.textoWorkspace}>Workspaces</Text>
                 </View>
@@ -86,6 +99,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     iconeSeta:{
+        marginTop:5,
         color: '#bac0ca',
         marginLeft: 20,
         

@@ -85,7 +85,7 @@ const ListaTarefas = ({route, navigation}) => {
                             onDismiss={closeMenu}
                             style={{ backgroundColor: 'white' }} // Defina a cor de fundo desejada aqui
                             anchor={<IconButton style={styles.menuObjetivos} icon="dots-vertical"  iconColor={'#51A8A2'} onPress={openMenu}/>}>
-                                <Menu.Item style={styles.opcoesMenu} onPress={() => {}}  title="Editar Tarefa" />
+                                <Menu.Item style={styles.opcoesMenu} onPress={() => {}}  title="Editar Objetivo"/>
                                 <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'red'}} onPress={() => {deletarObjetivo(_id)}}   title="Excluir Objetivo" />
                         </Menu> 
 

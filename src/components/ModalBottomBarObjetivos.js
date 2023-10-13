@@ -81,12 +81,12 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                         multiline={true} 
                         placeholder='Nome'
                         value={nome} onChangeText={(e) => setNome(e)}/>
-                    <TextInput style = {styles.modalText}  
+                    {/* <TextInput style = {styles.modalText}  
                         mode='outlined'
                         label= 'Descrição'
                         multiline={true} 
                         placeholder='Descrição' 
-                        value={descricao} onChangeText={(e) => setDescricao(e)}/>
+                        value={descricao} onChangeText={(e) => setDescricao(e)}/> */}
                     <TextInput style = {styles.modalText}
                         mode='outlined'
                         label= 'Data de Conclusão'
@@ -99,7 +99,7 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                 
                     <View style={{marginTop: 20}}>         
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
-                            <Text style={styles.buttonText}>Criar Objetivos</Text>
+                            <Text style={styles.buttonText}>Criar</Text>
                         </TouchableOpacity>
                         {/* <Button title="Adicionar Objetivo" onPress={criarObjetivo} color = {colors.verde}/> */}
                     </View>

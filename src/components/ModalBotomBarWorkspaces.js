@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import { postObjetivos } from '../service/objetivo';
+import { getStorageItem } from '../functions/encryptedStorageFunctions';
 
 const colors = {
     verde: "#346c68",
@@ -20,23 +21,16 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
     const [isInputFocused, setInputFocused] = useState(false);
 
     const [nome, setNome] = useState("");
-    const [descricao, setDescricao] = useState("");
-    const [dataEstimada, setDataEstimada] = useState("");
-    const [prioridade, setPrioridade] = useState("");
 
-    const criarObjetivo = () => {
+    const criarObjetivo = async () => {
         const obj = {
             titulo: nome,
-            descricao: descricao,
-            data_estimada: dataEstimada,
-            prioridade: prioridade
+            workspace:true
         };
-        postObjetivos(obj)
+        const token = await getStorageItem('token');
+        postObjetivos(obj,token)
             .then((res) => {
                 setNome('')
-                setDescricao('')
-                setDataEstimada('')
-                setPrioridade('')
                 closeModal()
             })
             .catch(error => {
@@ -90,7 +84,7 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
                     />
                     <View style={{ marginTop: 40 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
-                            <Text style={styles.buttonText}>Criar Workspaces</Text>
+                            <Text style={styles.buttonText}>Criar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

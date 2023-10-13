@@ -43,7 +43,7 @@ const Home = ({ navigation }) => {
                 <View style={styles.textoObjetivoContainer}>
                     <Text style={styles.textoObjetivo}>Meus Objetivos</Text>
                 </View>
-                <Icon name = 'chevron-right'size={30} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
+                <Icon name = 'chevron-right'size={25} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
             </View>
             <Tab.Navigator screenOptions={{
                 tabBarActiveTintColor: '#51A8A2',
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     icone1:{
+        marginTop: 5,
         color: '#bac0ca',
         marginRight: 20
     },

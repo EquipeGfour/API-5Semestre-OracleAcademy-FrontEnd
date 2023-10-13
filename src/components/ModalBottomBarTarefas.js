@@ -135,7 +135,7 @@ const BottomBarTarefas = ({onIconPress, objetivo, criouTarefa}) => {
 
         <View style={{marginTop: 20}}>         
             <TouchableOpacity onPress={criarTarefa} style={styles.botaoCriar}>
-                <Text style={styles.buttonText}>Criar Objetivos</Text>
+                <Text style={styles.buttonText}>Criar Tarefa</Text>
             </TouchableOpacity>
             {/* <Button title="Adicionar Objetivo" onPress={criarObjetivo} color = {colors.verde}/> */}
         </View>

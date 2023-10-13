@@ -57,7 +57,7 @@ export default PrioridadeTarefaWork;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        padding: 25,
+        padding: 17,
     },
     dropdown: {
         height: 50,
