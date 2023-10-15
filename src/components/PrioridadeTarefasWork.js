@@ -9,7 +9,7 @@ const data = [
     { label: 'Baixo', value: 4 }
 ];
 
-const DropdownComponent = (props) => {
+const PrioridadeTarefaWork = (props) => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -31,7 +31,7 @@ const DropdownComponent = (props) => {
             style={styles.dropdown }
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
-            // activeColor='pink' (se quiser colocar cor quando seleciona o item)
+            // activeColor='pink' // (se quiser colocar cor quando seleciona o item)
             iconStyle={styles.iconStyle}
             data={data}
             
@@ -52,21 +52,21 @@ const DropdownComponent = (props) => {
     );
 };
 
-export default DropdownComponent;
+export default PrioridadeTarefaWork;
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        padding: 16,
-        paddingTop: -25
+        padding: 17,
     },
     dropdown: {
         height: 50,
         width: 325,
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 3,
-        paddingHorizontal: 8,
+        borderColor: 'black',
+        borderWidth: 0.7,
+        borderRadius: 5,
+        paddingHorizontal: 8, //texto dentro
+        marginStart:-55
     },
     icon: {
         marginRight: 5,

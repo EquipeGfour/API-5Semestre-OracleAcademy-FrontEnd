@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import BemVindo from "./BemVindo";
 import Login from "./Login";
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View,TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBarObjetivos from "../components/ModalBottomBarObjetivos";
-import Recentes from "../components/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
+import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
+import AbaWorkspaces from "../components/AbaWorkspaces";
+import BottomBarTarefasWork from "../components/BottomBarTarefasWork";
 import { clearStorageItem, getStorageItem } from "../functions/encryptedStorageFunctions";
+
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -17,7 +20,8 @@ const colors = {
     roxo: "#51336b"
 };
 
-const Home = ({ navigation }) => {
+const HomeWorkspaces = ({ navigation }) => {
+
     const [usuario, setUsuario] = useState('');
     const logout = async ()=>{ 
         await clearStorageItem('token')
@@ -28,7 +32,7 @@ const Home = ({ navigation }) => {
         let usuario = await getStorageItem("nome");
         setUsuario(usuario);
     }, []);
-    
+
     return (
         <>
             <Icon name= 'sign-out-alt' style={styles.logout} onPress={logout}/>
@@ -37,28 +41,27 @@ const Home = ({ navigation }) => {
                 <Text style={styles.titulo1}>Olá,</Text>
                 <Text style={styles.nome}>{usuario}</Text>
             </View>
+
             <View style={styles.header}>
-                <View style={styles.textoObjetivoContainer}>
-                    <Text style={styles.textoObjetivo}>Meus Objetivos</Text>
+                <Icon name = 'chevron-left'size={25} style={styles.iconeSeta} onPress={() => navigation.navigate('Home')}/>
+                <View style={styles.textoWorkContainer}>
+                    <Text style={styles.textoWorkspace}>Workspaces</Text>
                 </View>
-                <Icon name = 'chevron-right'size={25} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
             </View>
             <Tab.Navigator screenOptions={{
-                tabBarActiveTintColor: '#51A8A2',
-                tabBarInactiveTintColor: 'black',
+                tabBarActiveTintColor: colors.roxo,
+                tabBarInactiveTintColor: '#545F71',
                 tabBarLabelStyle: { fontSize: 15 },
                 tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
                 tabBarIndicatorStyle: {
-                    backgroundColor: "#51A8A2"
+                    backgroundColor: colors.roxo,
                 },
             }}>
-                <Tab.Screen name="Recentes" component={Recentes} />
-                {/*
-                    <Tab.Screen name="Concluidas" component={Recentes} />
-                    <Tab.Screen name="Atrasadas" component={Recentes} />
-                */}
+                <Tab.Screen name="Workspaces" component={AbaWorkspaces}/>                
+                {/* <Tab.Screen name="Criados" component={Login} />
+                <Tab.Screen name="Finalizados" component={Login} /> */}
             </Tab.Navigator>
-            <BottomBarObjetivos style={styles.container}/>
+            <BottomBarWorkspaces/>
         </>
     );
 }
@@ -66,7 +69,7 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
     logout:{
         fontSize: 20,
-        color:'#51A8A2',
+        color: colors.roxo,
         alignSelf:"flex-end",
         marginEnd: 20,
         marginTop: 15
@@ -75,50 +78,47 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         alignItems: "center" ,
         paddingLeft: '7%',
-        paddingTop: '10%'
+        paddingTop: '4%'
     },
     container: {
         flex: 1,
     },
     header: {
         flexDirection:"row",
-        paddingTop: '15%',
+        paddingTop: '10%',
         justifyContent: "center",
-
     },
-
-    textoObjetivoContainer: {
-        flex: 1,  // Isso faz com que o contêiner do texto preencha o espaço disponível
+    textoWorkContainer: {
+        flex: 1,
     },
-    textoObjetivo: {
+    textoWorkspace: {
         fontSize: 25,
-        color: "#51A8A2",
+        color: colors.roxo,
         alignSelf:"center", // para ficar o texto no meio do icone
-        marginLeft: 20,
+        marginRight: 20,
         fontWeight: 'bold'
     },
-    icone1:{
-        marginTop: 5,
+    iconeSeta:{
+        marginTop:5,
         color: '#bac0ca',
-        marginRight: 20
+        marginLeft: 20,
+        
     },
     titulo1:{
-    
+        color:"#545F71",
         marginLeft: 30,
-        color: '#545F71',
         fontSize: 32,
-        fontWeight: '700',        
+        fontWeight: '700',       
     },
     nome:{
         marginLeft: 5,
-        color: '#51A8A2',
+        color: colors.roxo,
         fontFamily: 'Inter',
         fontSize: 32,
-        fontWeight: '700',
-        
+        fontWeight: 'bold'
         //letterSpacing: -0.48
     },
 
 })
-export default Home
+export default HomeWorkspaces
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBar from "./ModalBottomBarObjetivos";
+import BottomBarObjetivos from "./ModalBottomBarObjetivos";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
 import { getObjetivos } from "../service/objetivo";
+import { getStorageItem } from "../functions/encryptedStorageFunctions";
 
 
 const verdeEscuro = "#346c68";
@@ -13,8 +14,9 @@ const Recentes = ({ navigation }) => {
 
     const [objetivos, setObjetivos] = useState([]);
 
-    const buscarObjetivos = () => {
-        getObjetivos().then((res) => {
+    const buscarObjetivos = async () => {
+        const token = await getStorageItem('token');
+        getObjetivos(token).then((res) => {
             setObjetivos(res.data)
         }).catch(error => {
             console.error('Erro', error.response);
@@ -42,10 +44,10 @@ const Recentes = ({ navigation }) => {
 
     return (
         <>
-            <BottomBar style={{ flex: 1 }} />
+            <BottomBarObjetivos style={{ flex: 1 }} />
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
                 {objetivos.map((objetivo) => (
-                    <TouchableOpacity key={objetivo.id} onPress={() => navigation.navigate('Lista-tarefas', objetivo)}>
+                    <TouchableOpacity key={objetivo._id} onPress={() => navigation.navigate('Lista-tarefas', objetivo)}>
                         <View style={[styles.retangulo, styles.verdeEscuro]}>
                             <Card.Title
                                 title={objetivo.titulo}
@@ -69,6 +71,8 @@ const Recentes = ({ navigation }) => {
                                 <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
                             </Card.Content>
                         </View>
+
+                        
                     </TouchableOpacity>
                 ))}
             </ScrollView>
