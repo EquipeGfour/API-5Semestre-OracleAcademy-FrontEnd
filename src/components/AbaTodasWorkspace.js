@@ -6,9 +6,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdwnGenerico from './DropdownGenerico';
 import UserAvatar from './UserAvatar';
 import { getStorageItem } from "../functions/encryptedStorageFunctions";
-import { addUserToTarefa, getTarefaById, getTarefas } from '../service/tarefa';
+import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas } from '../service/tarefa';
 import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../service/usuario';
+import Toast from 'react-native-toast-message';
 
 
 const verdeEscuro = '#346c68';
@@ -26,6 +27,7 @@ const AbaTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [visible, setVisible] = React.useState(false);
   const [tarefas, setTarefas] = useState([]);
+  const [tarefa, setTarefa] = useState("");
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -41,9 +43,7 @@ const AbaTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     setUsuariosSelecionado([])
     setUsuariosBusca([])
     
-  };
-
-  
+  };  
 
 
   const getPrioridadeTitle = (prioridade) => {
@@ -69,9 +69,27 @@ const AbaTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     })
   }
 
+  const deletarTarefaWorkspace = (id) =>{
+    deleteTarefa(id).then(res => {
+        Toast.show({
+            type: 'success',
+            text1: 'Tarefa excluida com sucesso!',
+        });
+        buscarTarefasWorkspace()
+        setModalVisible(false);
+    }).catch(error => {
+        Toast.show({
+            type: 'error',
+            text1: 'Ocorreu algum problema...',
+        });
+        console.error('Erro', error.response);
+        console.log(id);
+    })
+}
+
   useEffect(() => {
     buscarTarefasWorkspace();
-  }, [])
+  }, [tarefas])
 
   const data = [
     { label: 'Completo', value: 1 },
@@ -148,7 +166,7 @@ const AbaTodasWorkspace = ({ _id, workspaceUsuarios }) => {
       <ScrollView>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
-            <Card style={styles.Cardcontainer} onPress={() => toggleModal(tarefa._id)}>
+            <Card style={styles.Cardcontainer} onPress={() => {toggleModal(tarefa._id)}}>
               <Card.Content style={styles.contentContainer}>
                 <Checkbox
                   style={styles.iconCheck}
@@ -237,7 +255,7 @@ const AbaTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                     </TouchableWithoutFeedback>
                   </Modal>
 
-                  <Icon name="trash" style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefa(tarefa.id)} />
+                  <Icon name="trash" style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
 
 
                 </View>

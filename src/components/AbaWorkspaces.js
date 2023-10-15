@@ -30,7 +30,7 @@ const AbaWorkspaces = ({ navigation }) => {
 
     useEffect(() => {
         buscarWorkspace();
-    }, [])
+    }, [workspaces])
 
 
 

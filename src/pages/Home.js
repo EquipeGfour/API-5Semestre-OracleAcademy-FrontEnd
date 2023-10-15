@@ -25,10 +25,8 @@ const Home = ({ navigation }) => {
     }
 
     useEffect(async () => {
-
         let usuario = await getStorageItem("nome");
         setUsuario(usuario);
-
     }, []);
     
     return (
