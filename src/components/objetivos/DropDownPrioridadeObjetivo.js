@@ -16,7 +16,7 @@ import { Dropdown } from 'react-native-element-dropdown';
     { label: 'Baixa', value: 4 }
   ];
 
-  const DropdownComponent = (props) => {
+  const DropDownPrioridadeObjetivo = (props) => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -59,7 +59,7 @@ import { Dropdown } from 'react-native-element-dropdown';
     );
   };
 
-  export default DropdownComponent;
+  export default DropDownPrioridadeObjetivo;
 
   const styles = StyleSheet.create({
     container: {

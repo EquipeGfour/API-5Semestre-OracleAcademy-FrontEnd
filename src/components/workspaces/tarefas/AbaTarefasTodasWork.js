@@ -3,12 +3,12 @@ import { View, StyleSheet, ScrollView, Modal, TouchableWithoutFeedback, Button, 
 import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Chip } from 'react-native-paper';
 import BottomBarTarefasWork from './BottomBarTarefasWork';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import DropdwnGenerico from './DropdownGenerico';
-import UserAvatar from './UserAvatar';
-import { getStorageItem } from "../functions/encryptedStorageFunctions";
-import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas } from '../service/tarefa';
+import DropdwnGenerico from '../../genericos/DropdownGenerico';
+import UserAvatar from '../../genericos/UserAvatar';
+import { getStorageItem } from "../../../functions/encryptedStorageFunctions";
+import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
-import { getUserByNameOrEmail } from '../service/usuario';
+import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 
 
@@ -21,7 +21,7 @@ const colors = {
   branco: "#ffffff"
 };
 
-const AbaTodasWorkspace = ({ _id, workspaceUsuarios }) => {
+const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalUserVisible, setModalUserVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
@@ -401,4 +401,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AbaTodasWorkspace;
+export default AbaTarefasTodasWorkspace;

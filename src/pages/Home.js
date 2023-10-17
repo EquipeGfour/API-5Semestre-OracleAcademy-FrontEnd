@@ -4,8 +4,8 @@ import BemVindo from "./BemVindo";
 import Login from "./Login";
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBarObjetivos from "../components/ModalBottomBarObjetivos";
-import Recentes from "../components/AbaRecentes";
+import BottomBarObjetivos from "../components/objetivos/BottomBarObjetivos";
+import Recentes from "../components/objetivos/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { clearStorageItem, getStorageItem } from "../functions/encryptedStorageFunctions";
 

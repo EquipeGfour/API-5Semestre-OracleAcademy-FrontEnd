@@ -5,10 +5,10 @@ import Login from "./Login";
 import { ScrollView, StyleSheet, View,TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import BottomBarWorkspaces from "../components/ModalBotomBarWorkspaces";
+import BottomBarWorkspaces from "../components/workspaces/BotomBarWorkspaces";
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
-import AbaWorkspaces from "../components/AbaWorkspaces";
-import BottomBarTarefasWork from "../components/BottomBarTarefasWork";
+import AbaWorkspaces from "../components/workspaces/AbaTodasWorkspaces";
+import BottomBarTarefasWork from "../components/workspaces/tarefas/BottomBarTarefasWork";
 import { clearStorageItem, getStorageItem } from "../functions/encryptedStorageFunctions";
 
 

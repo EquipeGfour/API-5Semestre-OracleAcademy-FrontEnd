@@ -5,9 +5,9 @@ import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput, PaperProvider, Provider,DefaultTheme  } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeObjetivo';
-import BemVindo from '../pages/BemVindo';
-import { postObjetivos } from '../service/objetivo';
-import { getStorageItem } from '../functions/encryptedStorageFunctions';
+import BemVindo from '../../pages/BemVindo';
+import { postObjetivos } from '../../service/objetivo';
+import { getStorageItem } from '../../functions/encryptedStorageFunctions';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const colors = {

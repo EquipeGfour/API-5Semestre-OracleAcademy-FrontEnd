@@ -2,15 +2,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import BemVindo from '../pages/BemVindo';
 import Login from '../pages/Login';
-import BottomBarObjetivos from '../components/ModalBottomBarObjetivos'
-import Recentes from '../components/AbaRecentes';
+import BottomBarObjetivos from '../components/objetivos/BottomBarObjetivos'
+import Recentes from '../components/objetivos/AbaRecentes';
 import Home from '../pages/Home';
 import ListaTarefas from '../pages/ListaTarefas';
-import BottomBarTarefas from '../components/ModalBottomBarTarefas';
+import BottomBarTarefas from '../components/objetivos/tarefas/BottomBarTarefas';
 import HomeWorkspaces from '../pages/HomeWorkspaces';
-import BottomBarWorkspaces from '../components/ModalBotomBarWorkspaces';
+import BottomBarWorkspaces from '../components/workspaces/BotomBarWorkspaces';
 import ListaTarefaWorkspace from '../pages/ListaTarefaWorkspace';
-import AbaTarefasWorkspace from '../components/AbaTodasWorkspace';
+import AbaTarefasWorkspace from '../components/workspaces/tarefas/AbaTarefasTodasWork';
 import CadastroUsuario from '../pages/CadastroUsuario';
 
 export default function Routes(){

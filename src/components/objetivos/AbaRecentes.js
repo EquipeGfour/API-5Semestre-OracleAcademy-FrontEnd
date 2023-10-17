@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBarObjetivos from "./ModalBottomBarObjetivos";
+import BottomBarObjetivos from "./BottomBarObjetivos";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
-import { getObjetivos } from "../service/objetivo";
-import { getStorageItem } from "../functions/encryptedStorageFunctions";
+import { getObjetivos } from "../../service/objetivo";
+import { getStorageItem } from "../../functions/encryptedStorageFunctions";
 
 
 const verdeEscuro = "#346c68";

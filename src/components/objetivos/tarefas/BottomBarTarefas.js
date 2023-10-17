@@ -12,8 +12,8 @@ import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput, PaperProvider,DefaultTheme } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeTarefas';
-import BemVindo from '../pages/BemVindo';
-import {postTarefa} from '../service/tarefa';
+import BemVindo from '../../../pages/BemVindo';
+import {postTarefa} from '../../../service/tarefa';
 import Toast from 'react-native-toast-message';
 
 const colors = {

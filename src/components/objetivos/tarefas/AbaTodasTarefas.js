@@ -4,15 +4,15 @@ import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider,
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
-import Login from '../pages/Login';
-import { deleteTarefa, getTarefas } from '../service/tarefa';
+import Login from '../../../pages/Login';
+import { deleteTarefa, getTarefas } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const verdeEscuro = "#346c68";
 
-const TodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
+const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
 
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -272,4 +272,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TodasTarefas;
+export default AbaTodasTarefas;

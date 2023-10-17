@@ -5,10 +5,10 @@ import { StyleSheet, View, Button } from 'react-native';
 import { DefaultTheme, Text, Searchbar, IconButton, DataTable,Modal,TextInput, Provider, Menu } from 'react-native-paper';
 import Login from './Login';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import TodasTarefas from '../components/ModalVisualizarTarefa';
-import BottomBar from '../components/ModalBottomBarObjetivos';
-import BottomBarTarefas from '../components/ModalBottomBarTarefas';
-import DropdownComponent from '../components/DropDownPrioridadeObjetivo'
+import TodasTarefas from '../components/objetivos/tarefas/AbaTodasTarefas';
+import BottomBar from '../components/objetivos/BottomBarObjetivos';
+import BottomBarTarefas from '../components/objetivos/tarefas/BottomBarTarefas';
+import DropdownComponent from '../components/objetivos/DropDownPrioridadeObjetivo'
 import { deleteObjetivo } from "../service/objetivo"
 import Toast from 'react-native-toast-message';
 
