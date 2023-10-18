@@ -35,10 +35,13 @@ const DataPicker = ({ selectedDate, onSelectDate }) => {
         <View>
             <TouchableOpacity onPress={showDatePicker} style={[styles.container, { borderColor: 'black' }]}>
                 <View style={styles.container2}>
-                    <Text>Selecione a data</Text>
+                    <Text>
+                        {selectedDate ? selectedDate.toLocaleDateString() : "Selecione a data"}
+                    </Text>
                     <Icon name="calendar" size={20} color={colors.cinza} />
                 </View>
             </TouchableOpacity>
+
             {isDatePickerVisible && (
                 <DateTimePicker
                     value={selectedDate}
