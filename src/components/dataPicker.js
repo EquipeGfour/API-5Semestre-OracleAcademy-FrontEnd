@@ -31,12 +31,21 @@ const DataPicker = ({ selectedDate, onSelectDate }) => {
         hideDatePicker();
     };
 
+    const formatDateForDisplay = (date) => {
+        if (date) {
+            const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+            const formattedDate = date.toLocaleDateString('pt-BR', options);
+            return formattedDate;
+        }
+        return 'Selecione a data';
+    };
+
     return (
         <View>
             <TouchableOpacity onPress={showDatePicker} style={[styles.container, { borderColor: 'black' }]}>
                 <View style={styles.container2}>
                     <Text>
-                        {selectedDate ? selectedDate.toLocaleDateString() : "Selecione a data"}
+                        {formatDateForDisplay(selectedDate)}
                     </Text>
                     <Icon name="calendar" size={20} color={colors.cinza} />
                 </View>
