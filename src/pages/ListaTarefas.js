@@ -11,6 +11,7 @@ import BottomBarTarefas from '../components/objetivos/tarefas/BottomBarTarefas';
 import DropdownComponent from '../components/objetivos/DropDownPrioridadeObjetivo'
 import { deleteObjetivo } from "../service/objetivo"
 import Toast from 'react-native-toast-message';
+import ModalEditarObjetivo from '../components/objetivos/ModalEditarObjetivo';
 
 const verdeEscuro = "#346c68";
 
@@ -19,10 +20,16 @@ const Tab = createMaterialTopTabNavigator();
 const ListaTarefas = ({route, navigation}) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isModalEditarObjectiveVisible, setModalEditarObjectiveVisible] = useState(false);
     const [flagTarefa, setFlagTarefa] = useState(false);
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
+
+    const openModalEditObjective = () => {
+        setModalEditarObjectiveVisible(true);
+        setModalVisible(true);
+    }
 
     const openModal = () => {
         setModalVisible(true);
@@ -85,7 +92,7 @@ const ListaTarefas = ({route, navigation}) => {
                             onDismiss={closeMenu}
                             style={{ backgroundColor: 'white' }} // Defina a cor de fundo desejada aqui
                             anchor={<IconButton style={styles.menuObjetivos} icon="dots-vertical"  iconColor={'#51A8A2'} onPress={openMenu}/>}>
-                                <Menu.Item style={styles.opcoesMenu} onPress={() => {}}  title="Editar Objetivo"/>
+                                <Menu.Item style={styles.opcoesMenu} onPress={openModalEditObjective}  title="Editar Objetivo"/>
                                 <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'red'}} onPress={() => {deletarObjetivo(_id)}}   title="Excluir Objetivo" />
                         </Menu> 
 
@@ -97,12 +104,11 @@ const ListaTarefas = ({route, navigation}) => {
                     </DataTable.Header>                
                 </DataTable>
             </Provider>
-
-            <Modal visible={isModalVisible} onDismiss={closeModal}>
+            <ModalEditarObjetivo bororosca={isModalVisible} setModalVisible={setModalVisible}/>
+            {/* <Modal visible={isModalVisible} onDismiss={closeModal}>
                 <View style={styles.modalContainer}>
                 <Text style = {{fontSize: 20}}>Editar Objetivo</Text>
                 <TextInput style = {styles.modalText} multiline={true} placeholder='Nome'  />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição'  />
                 <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA'/>
                 <DropdownComponent style = {styles.modalText}/>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
@@ -111,7 +117,7 @@ const ListaTarefas = ({route, navigation}) => {
                     <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
                 </View>
                 </View>
-            </Modal> 
+            </Modal>  */}
 
             <Tab.Navigator
                 style={styles.tab}
