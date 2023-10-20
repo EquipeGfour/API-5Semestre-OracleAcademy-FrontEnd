@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const verdeEscuro = "#346c68";
 
-const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
+const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -21,11 +21,14 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
     const [tarefa, setTarefa] = useState("");
 
     const openModal = () => { setModalVisible(true) };
+    const abrirModal = () => { setModalVisible(true) };
+    const fecharModal = () => { setModalVisible(false) };
+
     const closeModal = () => { setModalVisible(false) };
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
- 
+
     const getPrioridadeTitle = (prioridade) => {
         if (prioridade === 1) {
             return "Urgente";
@@ -41,7 +44,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
         }
     }
 
-    const deletarTarefa = (id) =>{
+    const deletarTarefa = (id) => {
         deleteTarefa(id).then(res => {
             Toast.show({
                 type: 'success',
@@ -96,40 +99,40 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
     }, [])
 
     useEffect(() => {
-        if(flagTarefa){
+        if (flagTarefa) {
             buscarTarefas();
         }
     }, [flagTarefa])
 
     return (
         <>
-        <SafeAreaView >
-        <ScrollView style={styles.listWrapper}>
-            {tarefas.map((tarefa, index) => (
-                <View style={{flex:1}} key={tarefa.id}>
-                    <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
-                        <View>
-                            <View style={styles.container}>
-                                <View style={styles.itemContainer}>
-                                    <Checkbox
-                                        style={styles.iconCheck}
-                                        status={tarefa.checked ? 'checked' : 'unchecked'}
-                                        onPress={() => {
-                                            toggleSelection(index);
-                                        }}
-                                    />
-                                    <Card.Title
-                                        title={tarefa.titulo}
-                                        subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
-                                    />
+            <SafeAreaView >
+                <ScrollView style={styles.listWrapper}>
+                    {tarefas.map((tarefa, index) => (
+                        <View style={{ flex: 1 }} key={tarefa.id}>
+                            <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
+                                <View>
+                                    <View style={styles.container}>
+                                        <View style={styles.itemContainer}>
+                                            <Checkbox
+                                                style={styles.iconCheck}
+                                                status={tarefa.checked ? 'checked' : 'unchecked'}
+                                                onPress={() => {
+                                                    toggleSelection(index);
+                                                }}
+                                            />
+                                            <Card.Title
+                                                title={tarefa.titulo}
+                                                subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
+                                            />
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableWithoutFeedback>
                         </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            ))}
-        </ScrollView>
-        </SafeAreaView>
+                    ))}
+                </ScrollView>
+            </SafeAreaView>
 
             <Modal visible={visible} onDismiss={hideModal}>
                 <View style={styles.modal}>
@@ -142,10 +145,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
                         />
                         <View style={styles.iconContainerTitle}>
                             <Text style={styles.textoCheck}>{tarefa.titulo}</Text>
-                            {/* <Icon name="edit" size={20} onPress={openModal} /> */}
-                            <Icon name="trash"  style={styles.iconExclusao} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
+                            <Icon name="edit" style={styles.icons} size={20} onPress={abrirModal} />
+                            <Icon name="trash" style={styles.icons} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
                         </View>
-
                     </View>
                     <View style={styles.espacamento}>
                         <View style={styles.iconContainer}>
@@ -171,9 +173,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
             <Modal visible={isModalVisible} onDismiss={closeModal}>
                 <View style={styles.modalContainer}>
                     <Text style={{ fontSize: 20 }}>Editar Tarefa</Text>
-                    <TextInput style={styles.modalText} multiline={true} placeholder='Nome Tarefa' />
-                    <TextInput style={styles.modalText} multiline={true} placeholder='Descrição' />
-                    <TextInput style={styles.modalText} multiline={true} placeholder='DD-MM-AAAA' />
+                    <TextInput style={styles.modalText} multiline={true} placeholder={tarefa.titulo} />
+                    <TextInput style={styles.modalText} multiline={true} placeholder={tarefa.descricao} />
+                    <TextInput style={styles.modalText} multiline={true} placeholder={tarefa.data_estimada} />
                     <DropdownComponent style={styles.modalText} />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Button title="Salvar" onPress={closeModal} color={verdeEscuro} />
@@ -188,31 +190,26 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
 };
 
 const styles = StyleSheet.create({
-    listWrapper:{
-        flexGrow:1,
-        width:'100%',
-        height:600,
+    listWrapper: {
+        flexGrow: 1,
+        width: '100%',
+        height: 600,
     },
     textoCheck: {
-        width:'80%',
-        marginTop:5,
-        },
+        marginRight: '50%',
+    },
     iconContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'right',
     },
-    iconContainerTitle: {
+    iconContainerTittle: {
         display: 'flex',
-        flexDirection: 'row',        
+        flexDirection: 'row',
+        justifyContent: 'right',
     },
-    icon: {
-        paddingright: 5,
-        textAlign: 'right',
-    },
-    iconExclusao:{
-        width:"13%",
-        padding: 5,
+    icons: {
+        marginRight: 10,
     },
     espacamento: {
         marginTop: 45,
@@ -226,9 +223,8 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 20,
         elevation: 10,
-        justifyContent: 'center',
         borderColor: 'black',
-        borderWidth: 1
+        borderWidth: 1,
     },
     container: {
         width: 355,
@@ -258,18 +254,19 @@ const styles = StyleSheet.create({
         width: 200,
         marginBottom: 30
     },
-    textos:{
-        marginLeft:10 
+    textos: {
+        marginLeft: 10
     },
     btncolor: {
         color: verdeEscuro
     },
-    icons:{
+    icons: {
         padding: 5,
         textAlign: 'right',
         // textAlign: 'right',
         // marginRight:-40
     }
+
 });
 
 export default AbaTodasTarefas;
