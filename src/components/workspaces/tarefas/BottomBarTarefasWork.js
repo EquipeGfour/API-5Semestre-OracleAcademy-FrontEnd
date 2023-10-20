@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { postTarefa } from '../../../service/tarefa';
-
+import DataPicker from '../../dataPicker';
 
 const colors = {
     verde: "#346c68",
@@ -23,7 +23,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [dataEstimada, setDataEstimada] = useState("");
+    const [dataEstimada, setDataEstimada] = useState(new Date()); // Inicialize com a data atual
     const [prioridade, setPrioridade] = useState("");
 
     const criarObjetivo = () => {
@@ -101,7 +101,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                         onChangeText={(text) => setDescricao(text)}
                         value={descricao}
                     />
-                    <TextInput
+                    {/* <TextInput
                         style={styles.usuario}
                         mode='outlined'
                         // textColor="#545F71"
@@ -111,7 +111,12 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                         onBlur={handleInputBlur}
                         onChangeText={(text) => setDataEstimada(text)}
                         value={dataEstimada}
-                    />
+                    /> */}
+
+                        <DataPicker
+                            selectedDate={dataEstimada}
+                            onSelectDate={(date) => setDataEstimada(date)}
+                        />
                     <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
                     <View style={{ marginTop: 30 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
