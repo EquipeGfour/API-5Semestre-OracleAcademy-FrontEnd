@@ -25,7 +25,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
- 
+
     const getPrioridadeTitle = (prioridade) => {
         if (prioridade === 1) {
             return "Urgente";
@@ -101,6 +101,15 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
         }
     }, [flagTarefa])
 
+    const formatarData = (data) => {
+        if (data) {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
+            return formattedDate;
+        }
+        return '';
+    };
+
     return (
         <>
         <SafeAreaView >
@@ -120,7 +129,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
                                     />
                                     <Card.Title
                                         title={tarefa.titulo}
-                                        subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
+                                        // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
+                                        subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
+
+
                                     />
                                 </View>
                             </View>
@@ -156,7 +168,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa=()=>{} }) => {
                     <View style={styles.espacamento}>
                         <View style={styles.iconContainer}>
                             <Icon name="clock" size={20} style={styles.icon} />
-                            <Text style={styles.textos}>{tarefa.data_estimada}</Text>
+                            <Text style={styles.textos}>{formatarData(tarefa.data_estimada)}</Text>
                         </View>
                     </View>
                     <View style={styles.espacamento}>

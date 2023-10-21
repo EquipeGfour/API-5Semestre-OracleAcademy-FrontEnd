@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.7,
         borderRadius: 5,
         paddingHorizontal: 8, //texto dentro
-        marginStart:-55
+        marginStart:-45
     },
     icon: {
         marginRight: 5,
