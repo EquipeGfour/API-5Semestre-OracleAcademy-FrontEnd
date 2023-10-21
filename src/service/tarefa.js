@@ -22,3 +22,7 @@ export const postTarefa = (id, data) => {
 export const deleteTarefa = (idTarefa) => {
     return axios.delete(`/tarefa/deletar/${idTarefa}`)
 }
+
+export const editTarefa = (idTarefa, tarefaEdited) => {
+    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited)
+}

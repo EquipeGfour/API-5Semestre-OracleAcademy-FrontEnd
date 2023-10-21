@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   textoCheck: {
     marginRight: '50%',
   },
-  iconContainerTittle: {
+   iconContainerTittle: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'right',
