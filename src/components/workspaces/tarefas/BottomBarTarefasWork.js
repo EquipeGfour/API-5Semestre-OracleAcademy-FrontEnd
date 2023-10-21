@@ -23,7 +23,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [dataEstimada, setDataEstimada] = useState("");
+    const [dataEstimada, setDataEstimada] = useState(new Date()); // Inicialize com a data atual
     const [prioridade, setPrioridade] = useState("");
 
     const criarObjetivo = () => {
