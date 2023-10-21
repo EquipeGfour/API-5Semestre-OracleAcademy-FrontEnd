@@ -160,6 +160,14 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     }, 500)
   }, [nomeUsuario])
 
+  const formatarData = (data) => {
+    if (data) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
+        return formattedDate;
+    }
+    return '';
+};
 
   return (
     <>
@@ -176,7 +184,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                 />
                 <Card.Title
                   title={tarefa?.titulo}
-                  subtitle={`Data Conclusão: ${tarefa.data_estimada}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}`}
+                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}`}
                   subtitleNumberOfLines={3}
                   style={styles.title}
                 />
@@ -269,7 +277,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
               <View style={styles.espacamento}>
                 <View style={styles.iconContainer}>
                   <Icon name="clock" size={20} style={styles.icon} />
-                  <Text>{tarefaSelecionada?.data_estimada}</Text>
+                  <Text>{formatarData(tarefaSelecionada?.data_estimada)}</Text>
                 </View>
               </View>
               <View style={styles.espacamento}>
