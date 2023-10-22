@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableWithoutFeedback, Button, ScrollView } from 'react-native';
+import { View, TouchableWithoutFeedback, Button, ScrollView, TouchableOpacity } from 'react-native';
 import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -11,6 +11,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
 
 const verdeEscuro = "#346c68";
+const colors = {
+    verde: "#51A8A2",
+    azul: "#4974a5",
+    roxo: "#51336b",
+    branco: "#ffffff",
+    cinza: "#9BA5B7"
+};
 
 const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
@@ -32,7 +39,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const openEditModal = () => {
         setEditingTitle(tarefa.titulo);
         setEditingDescription(tarefa.descricao);
-        setEditingEstimatedDate(new Date (tarefa.data_estimada));
+        setEditingEstimatedDate(new Date(tarefa.data_estimada));
         setEditingPriority(tarefa.prioridade);
         setModalVisible(true);
     };
@@ -154,36 +161,36 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     return (
         <>
-        <SafeAreaView >
-        <ScrollView style={styles.listWrapper}>
-            {tarefas.map((tarefa, index) => (
-                <View style={{flex:1}} key={tarefa.id}>
-                    <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
-                        <View>
-                            <View style={styles.container}>
-                                <View style={styles.itemContainer}>
-                                    <Checkbox
-                                        style={styles.iconCheck}
-                                        status={tarefa.checked ? 'checked' : 'unchecked'}
-                                        onPress={() => {
-                                            toggleSelection(index);
-                                        }}
-                                    />
-                                    <Card.Title
-                                        title={tarefa.titulo}
-                                        // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
-                                        subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
+            <SafeAreaView >
+                <ScrollView style={styles.listWrapper}>
+                    {tarefas.map((tarefa, index) => (
+                        <View style={{ flex: 1 }} key={tarefa.id}>
+                            <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
+                                <View>
+                                    <View style={styles.container}>
+                                        <View style={styles.itemContainer}>
+                                            <Checkbox
+                                                style={styles.iconCheck}
+                                                status={tarefa.checked ? 'checked' : 'unchecked'}
+                                                onPress={() => {
+                                                    toggleSelection(index);
+                                                }}
+                                            />
+                                            <Card.Title
+                                                title={tarefa.titulo}
+                                                // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
+                                                subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
 
 
-                                    />
+                                            />
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableWithoutFeedback>
                         </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            ))}
-        </ScrollView>
-        </SafeAreaView>
+                    ))}
+                </ScrollView>
+            </SafeAreaView>
 
             <Modal visible={visible} onDismiss={hideModal}>
                 <View style={styles.modal}>
@@ -234,7 +241,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         <Text style={{ fontSize: 25, marginBottom: 25 }}>Editar Tarefa</Text>
                         <TextInput
                             mode='outlined'
-                            outlineColor='black'
+                            outlineColor='gray'
                             outlineStyle={{ borderWidth: 0.5 }}
                             style={styles.modalText}
                             placeholder={tarefa.titulo}
@@ -242,7 +249,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         />
                         <TextInput
                             mode='outlined'
-                            outlineColor='black'
+                            outlineColor='gray'
                             outlineStyle={{ borderWidth: 0.5 }}
                             style={styles.modalText}
                             placeholder={tarefa.descricao}
@@ -251,7 +258,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         <DataPicker
                             selectedDate={editingEstimatedDate}
                             onSelectDate={(e) => setEditingEstimatedDate(e)}
-                            stylesProps={{container: {borderWidth: 0.5, marginBottom: 25}}} 
+                            stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
                         />
                         <DropdownComponent
                             style={styles.modalText}
@@ -259,9 +266,13 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                             setPrioridade={setEditingPriority}
                         />
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Button title="Salvar" onPress={saveEditedTarefa} color={verdeEscuro} />
+                            <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
+                                <Text style={styles.buttonText}>Salvar</Text>
+                            </TouchableOpacity>
                             <View style={{ width: '10%' }} />
-                            <Button title="Fechar" onPress={closeModal} color={verdeEscuro} />
+                            <TouchableOpacity onPress={closeModal} style={styles.botaoCriar} >
+                                <Text style={styles.buttonText}>Fechar</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -272,8 +283,8 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 };
 
 const styles = StyleSheet.create({
-    drop:{
-        paddingTop:20
+    drop: {
+        paddingTop: 20
     },
     listWrapper: {
         flexGrow: 1,
@@ -284,6 +295,20 @@ const styles = StyleSheet.create({
         marginRight: '40%',
         marginTop: 8
     },
+    botaoCriar: {
+        width: 100,
+        borderRadius: 20,
+        backgroundColor: colors.verde,
+        alignSelf: 'center', // Centraliza o botão horizontalmente
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        textAlign: 'center',
+        fontWeight: 'bold'
+      },
     iconContainer: {
         display: 'flex',
         flexDirection: 'row',
