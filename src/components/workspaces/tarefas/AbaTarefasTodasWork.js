@@ -10,10 +10,10 @@ import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas } from '../../
 import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
+import DataPicker from '../../genericos/dataPicker';
+import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 
-
-const verdeEscuro = '#346c68';
-
+// --- Cores do Sistema ---
 const colors = {
   verde: "#346c68",
   azul: "#4974a5",
@@ -23,17 +23,43 @@ const colors = {
 
 const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isModalUserVisible, setModalUserVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
-  const [visible, setVisible] = React.useState(false);
   const [tarefas, setTarefas] = useState([]);
-  const [tarefa, setTarefa] = useState("");
 
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+  // --- Modal Visualizar Tarefa Workspace ---
+  const [tarefaSelecionada, setTarefaSelecionado] = useState(null)
+  const toggleModal = (_id) => {
+    getTarefaById(_id).then((res) => {
+      setModalVisible(!isModalVisible);
+      setTarefaSelecionado(res.data)
+    })
+  };
 
-  const [openModal, setOpenModal] = useState(false);
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
+  // --- Modal Editar Tarefa Workspace ---
+  const [isModalEditarTarefaVisible, setModalEditarTarefaVisible] = useState(false);
+  const [isInputFocused, setInputFocused] = useState(false);
+  const openModalEditarHandler = () => {
+    setModalEditarTarefaVisible(true);
+  }
+
+  const closeModalEditarHandler = () => {
+    setModalEditarTarefaVisible(false);
+  }
+
+  const handleInputFocus = () => {
+    setInputFocused(true);
+  };
+
+  const handleInputBlur = () => {
+    setInputFocused(false);
+  };
+
+  // --- Modal Usuários ---
+  const [isModalUserVisible, setModalUserVisible] = useState(false);
   const openModalHandler = () => {
     setModalUserVisible(true);
   };
@@ -41,11 +67,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const closeModalHandler = () => {
     setModalUserVisible(false);
     setUsuariosSelecionado([])
-    setUsuariosBusca([])
-    
+    setUsuariosBusca([])    
   };  
 
-
+  // --- Prioridades Tarefa Workspace ---
   const getPrioridadeTitle = (prioridade) => {
     if (prioridade === 1) {
       return "Urgente";
@@ -61,6 +86,16 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     }
   }
 
+  // --- Status das Tarefas ---
+  const data = [
+    { label: 'Completo', value: 1 },
+    { label: 'Em Andamento', value: 2 },
+    { label: 'Não Iniciado', value: 3 },
+    { label: 'Atrasado', value: 4 },
+    { label: 'Aguardando Validação', value: 5 },
+  ];
+
+  // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
     getTarefas(_id).then((res) => {
       setTarefas(res.data);
@@ -69,6 +104,13 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     })
   }
 
+  // --- Editar Tarefas Worspace ---
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [dataEstimada, setDataEstimada] = useState(new Date()); // Inicialize com a data atual
+  const [prioridade, setPrioridade] = useState("");
+
+  // --- Deletar Tarefas Workspace ---
   const deletarTarefaWorkspace = (id) =>{
     deleteTarefa(id).then(res => {
         Toast.show({
@@ -86,44 +128,20 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
         console.log(id);
     })
 }
-
   useEffect(() => {
     buscarTarefasWorkspace();
   }, [tarefas])
 
-  const data = [
-    { label: 'Completo', value: 1 },
-    { label: 'Em Andamento', value: 2 },
-    { label: 'Não Iniciado', value: 3 },
-    { label: 'Atrasado', value: 4 },
-    { label: 'Aguardando Validação', value: 5 },
-  ];
-
-  const toggleModal = (_id) => {
-    getTarefaById(_id).then((res) => {
-      setModalVisible(!isModalVisible);
-      setTarefaSelecionado(res.data)
-    })
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
-  const removerUsuario = (user) => {
-    const novaLista = usuariosSelecionado.filter(u => u._id != user._id)
-    setUsuariosSelecionado(novaLista)
-  }
-
+   // --- Adicionar Usuário a uma Tarefa ---
   const adicionarUsuario = (usuario) => {
     if (!usuariosSelecionado.some((u) => u._id === usuario._id)) {
       setUsuariosSelecionado([...usuariosSelecionado, usuario]);
     }
   };
 
+  // --- Adicionar Todos Usuários a uma Tarefa ---
   const adicionarTodosUsuariosATarefa = async (id) => {
     const token = await getStorageItem('token');
-
     const usuariosIds = usuariosSelecionado.map((usuario) => usuario['_id']);
     addUserToTarefa(id, usuariosSelecionado).then((res) => {
       setModalUserVisible(false)
@@ -136,11 +154,16 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     setUsuariosSelecionado([]);
   };
 
+  // --- Remover Usuário de uma Tarefa  ---
+  const removerUsuario = (user) => {
+    const novaLista = usuariosSelecionado.filter(u => u._id != user._id)
+    setUsuariosSelecionado(novaLista)
+  }
 
+  // --- Busca de Usuários ---  
   const [userQuery, setUserQuery] = useState('')
   const [usuariosBusca, setUsuariosBusca] = useState([])
   const [usuariosSelecionado, setUsuariosSelecionado] = useState([])
-
   const buscaUsuario = async () => {
     const busca = workspaceUsuarios.filter(u => {
       return u.usuario.nome.toLowerCase().includes(userQuery.toLowerCase()) 
@@ -148,8 +171,17 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     setUsuariosBusca(busca)
   }
 
-  const [tarefaSelecionada, setTarefaSelecionado] = useState(null)
+  // --- DatePicker Tarefas Workspace --- 
+  const formatarData = (data) => {
+    if (data) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
+        return formattedDate;
+    }
+    return '';
+  }; 
 
+  // --- Use Effects --- 
   useEffect(() => {
     buscaUsuario()
   }, [userQuery])
@@ -160,17 +192,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     }, 500)
   }, [nomeUsuario])
 
-  const formatarData = (data) => {
-    if (data) {
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
-        return formattedDate;
-    }
-    return '';
-};
 
   return (
     <>
+      {/* ----- Card de Tarefas Workspace ----- */}
       <ScrollView>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
@@ -179,7 +204,6 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                 <Checkbox
                   style={styles.iconCheck}
                   onPress={() => {
-                    // Coloque sua lógica para lidar com a seleção aqui
                   }}
                 />
                 <Card.Title
@@ -188,14 +212,13 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                   subtitleNumberOfLines={3}
                   style={styles.title}
                 />
-                <Card.Actions style={styles.actionsContainer}>
+                {/* <Card.Actions style={styles.actionsContainer}>
                   <IconButton
                     icon="fire"
                     onPress={() => {
-                      // Coloque sua lógica para lidar com o ícone de fogo aqui
                     }}
                   />
-                </Card.Actions>
+                </Card.Actions> */}
               </Card.Content>
               <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
                 {tarefa.usuarios.map((n) => <UserAvatar name={n.usuario?.nome || ''} />)}
@@ -203,9 +226,9 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
             </Card>
           </View>
         ))}
-
       </ScrollView>
 
+      {/* ----- Modal Visualizar Tarefa Workspace ----- */}
       <Modal visible={isModalVisible} transparent animationType="slide">
         <TouchableWithoutFeedback onPress={closeModal}>
           <View style={styles.modalContainer}>
@@ -221,8 +244,57 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                 </View>
                 <View style={styles.iconContainerTittle}>
 
-                  <Icon name="user-plus" style={styles.icons} color={'#51336b'} size={20} onPress={openModalHandler} />
+                  {/* ----- Opções da Tarefa ----- */}
+                  <Icon name="edit" style={styles.icons} marginLeft={-10} color={'#51336b'} size={20} onPress={openModalEditarHandler}/>
+                  <Icon name="user-plus" style={styles.icons} marginLeft={16} color={'#51336b'} size={20} onPress={openModalHandler} />
+                  <Icon name="trash" style={styles.icons} marginLeft={16} color={'red'} size={20} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
 
+                  {/* ----- Modal Editar Tarefa ----- */}
+                  <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide">
+                    <TouchableWithoutFeedback onPress={closeModalEditarHandler}>
+                      <View style={styles.modalEditarContainer}>
+                      <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
+                          <TextInput
+                              style={styles.usuario}
+                              mode='outlined'
+                              // textColor="#545F71"
+                              placeholder="Insira o nome da Tarefa"
+                              label={isInputFocused ? "Titulo" : ""}
+                              onFocus={handleInputFocus}
+                              onBlur={handleInputBlur}
+                              onChangeText={(text) => setNome(text)}
+                              value={nome}
+                          />
+                          <TextInput
+                              style={styles.usuario}
+                              mode='outlined'
+                              // textColor="#545F71"
+                              placeholder="Insira o nome da Descrição"
+                              label={isInputFocused ? "Descrição" : ""}
+                              onFocus={handleInputFocus}
+                              onBlur={handleInputBlur}
+                              onChangeText={(text) => setDescricao(text)}
+                              value={descricao}
+                          />
+                          <View style={styles.dataPickerContainer}>
+                          <DataPicker
+                              selectedDate={dataEstimada}
+                              onSelectDate={(date) => setDataEstimada(date)}
+                          />
+                          </View>
+                          <View style={styles.prioridadeContainer}>
+                          <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
+                          </View>
+                          <View style={{ marginTop: 30 }}>
+                              <TouchableOpacity onPress={closeModalEditarHandler} style={styles.botaoCriar}>
+                                  <Text style={styles.buttonText}>Salvar</Text>
+                              </TouchableOpacity>
+                          </View>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </Modal>  
+
+                  {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
                   <Modal visible={isModalUserVisible} transparent animationType="slide">
                     <TouchableWithoutFeedback onPress={closeModalHandler}>
                       <View style={{
@@ -262,12 +334,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                       </View>
                     </TouchableWithoutFeedback>
                   </Modal>
-
-                  <Icon name="trash" style={styles.icons} size={20} marginLeft={10} color={'red'} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
-
-
+                
                 </View>
               </View>
+
               <View style={styles.espacamento}>
                 <View style={styles.iconContainer}>
                   <Icon name="bars" size={20} style={styles.icon} />
@@ -348,7 +418,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icons: {
-    padding: 5,
+    padding: 0,
     textAlign: 'right',
     /* borderColor: 'red',
     borderWidth: 1,
@@ -406,7 +476,54 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 20,
     backgroundColor: '#FFF'
-  }
+  },
+  // Modal Editar Tarefa Workspace
+  modalEditarContainer: {
+    backgroundColor: 'white',
+    marginTop: 125,
+    padding: 20, // tamanho modal
+    marginLeft:10,
+    marginRight:10,
+    borderRadius: 10,
+    borderColor: colors.cinza, // Cor da borda modal
+    borderWidth: 1, // Largura da borda modal
+},
+textoEditarTarefaWorkspace:{
+  textAlign:'center',
+  color:colors.roxo,
+  fontSize: 18,
+  fontWeight: 'bold'
+},
+botaoCriar: {
+  width: 150,
+  borderRadius: 20,
+  backgroundColor: colors.roxo,
+  alignSelf: 'center', // Centraliza o botão horizontalmente
+},
+buttonText: {
+  color: 'white',
+  fontSize: 16,
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  textAlign: 'center',
+  fontWeight: 'bold'
+},
+usuario: {
+  marginTop: 20,
+  alignSelf: 'center',
+  width: 325,
+  backgroundColor: 'transparent'
+},
+prioridadeContainer:{
+  marginTop: -15,
+  marginLeft: 30,
+  backgroundColor: 'transparent'
+},
+dataPickerContainer: {
+  left: -23,  
+  padding: 25, 
+  
+},
 });
 
 export default AbaTarefasTodasWorkspace;

@@ -166,7 +166,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
         </DataTable>
       </Provider>
 
-  {/* --- Modal Editar Workspaces --- */}
+      {/* --- Modal Editar Workspaces --- */}
       <Modal isVisible={openModalEditarWorkspace} onBackdropPress={closeModalEditarWorkspaceHandler}>
           <View style={[styles.modalEditarWorkContainer,]}>
             <Text style={styles.textoEditarWorkspace}>Editar Workspace</Text>
@@ -189,7 +189,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
           </View>
       </Modal>
 
-  {/* --- Modal Adicionar Membros ---  */}
+      {/* --- Modal Adicionar Membros ---  */}
       <Modal isVisible={openModal}>
         <View style={{
           flex: 1,
@@ -228,7 +228,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
         </View>
       </Modal>
 
-  {/* --- Tabs (Filtros) --- */}
+      {/* --- Tabs (Filtros) --- */}
       <Tab.Navigator
         style={styles.tab}
         screenOptions={{
