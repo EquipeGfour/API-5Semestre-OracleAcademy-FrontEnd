@@ -12,6 +12,7 @@ import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
+import { editarTarefaWork } from '../../../service/workspace';
 
 // --- Cores do Sistema ---
 const colors = {
@@ -43,6 +44,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [isModalEditarTarefaVisible, setModalEditarTarefaVisible] = useState(false);
   const [isInputFocused, setInputFocused] = useState(false);
   const openModalEditarHandler = () => {
+    setEditarNome(tarefaSelecionada.nome);
+    setEditarDescricao(tarefaSelecionada.descricao);
+    setEditarDataEstimada(new Date(tarefaSelecionada.data_estimada));
+    setEditarPrioridade(tarefaSelecionada.prioridade)
     setModalEditarTarefaVisible(true);
   }
 
@@ -105,10 +110,35 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   }
 
   // --- Editar Tarefas Worspace ---
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [dataEstimada, setDataEstimada] = useState(new Date()); // Inicialize com a data atual
-  const [prioridade, setPrioridade] = useState("");
+  const [editarNome, setEditarNome] = useState("");
+  const [editarDescricao, setEditarDescricao] = useState("");
+  const [editarDataEstimada, setEditarDataEstimada] = useState(new Date()); // Inicialize com a data atual
+  const [editarPrioridade, setEditarPrioridade] = useState("");
+  const editarTarefaWorkspace = (id) =>{
+    const obj ={
+      titulo: editarNome,
+      descricao: editarDescricao,
+      data_estimada: editarDataEstimada,
+      prioridade: editarPrioridade
+    };
+    console.log(id);
+    editarTarefaWork(id,obj) 
+      .then(res => {
+        Toast.show({
+            type: 'success',
+            text1: 'Tarefa editada com sucesso!',
+        });
+        closeModalEditarHandler();
+        buscarTarefasWorkspace();
+      })
+      .catch((error) => {
+        Toast.show({
+            type: 'error',
+            text1: 'Ocorreu algum problema...',
+        });
+        console.log('Erro', error)
+      });
+  }
 
   // --- Deletar Tarefas Workspace ---
   const deletarTarefaWorkspace = (id) =>{
@@ -250,7 +280,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                   <Icon name="trash" style={styles.icons} marginLeft={16} color={'red'} size={20} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
 
                   {/* ----- Modal Editar Tarefa ----- */}
-                  <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide">
+                  <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide" onBackdropPress={closeModalEditarHandler}>
                     <TouchableWithoutFeedback onPress={closeModalEditarHandler}>
                       <View style={styles.modalEditarContainer}>
                       <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
@@ -258,35 +288,35 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                               style={styles.usuario}
                               mode='outlined'
                               // textColor="#545F71"
-                              placeholder="Insira o nome da Tarefa"
+                              placeholder={tarefaSelecionada?.titulo}
                               label={isInputFocused ? "Titulo" : ""}
                               onFocus={handleInputFocus}
                               onBlur={handleInputBlur}
-                              onChangeText={(text) => setNome(text)}
-                              value={nome}
+                              onChangeText={(e) => setEditarNome(e)}
                           />
                           <TextInput
                               style={styles.usuario}
                               mode='outlined'
                               // textColor="#545F71"
-                              placeholder="Insira o nome da Descrição"
+                              placeholder={tarefaSelecionada?.descricao}
                               label={isInputFocused ? "Descrição" : ""}
                               onFocus={handleInputFocus}
                               onBlur={handleInputBlur}
-                              onChangeText={(text) => setDescricao(text)}
-                              value={descricao}
+                              onChangeText={(e) => setEditarDescricao(e)}
                           />
                           <View style={styles.dataPickerContainer}>
                           <DataPicker
-                              selectedDate={dataEstimada}
-                              onSelectDate={(date) => setDataEstimada(date)}
+                              selectedDate={tarefaSelecionada?.data_estimada}
+                              onSelectDate={(date) => setEditarDataEstimada(date)}
                           />
                           </View>
                           <View style={styles.prioridadeContainer}>
-                          <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
+                          <PrioridadeTarefaWork 
+                            prioridade={editarPrioridade}
+                            setPrioridade={setEditarPrioridade}/>
                           </View>
                           <View style={{ marginTop: 30 }}>
-                              <TouchableOpacity onPress={closeModalEditarHandler} style={styles.botaoCriar}>
+                              <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
                                   <Text style={styles.buttonText}>Salvar</Text>
                               </TouchableOpacity>
                           </View>
