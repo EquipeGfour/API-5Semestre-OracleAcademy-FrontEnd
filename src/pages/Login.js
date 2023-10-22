@@ -84,7 +84,7 @@ const Login = ({ navigation }) => {
                 style={styles.usuario}
                 mode="outlined"
                 textColor="#545F71"
-                label="Usuário"
+                label="E-mail"
                 placeholder="E-mail"
                 selectionColor='#545f71'
                 value={email}
