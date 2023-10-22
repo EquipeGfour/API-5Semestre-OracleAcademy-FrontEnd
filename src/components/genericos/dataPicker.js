@@ -13,7 +13,7 @@ const colors = {
     rosa: "#FFC0CB", // Cor rosa personalizada
 };
 
-const DataPicker = ({ selectedDate, onSelectDate }) => {
+const DataPicker = ({ selectedDate, onSelectDate, stylesProps }) => {
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
 
     const showDatePicker = () => {
@@ -42,7 +42,7 @@ const DataPicker = ({ selectedDate, onSelectDate }) => {
 
     return (
         <View>
-            <TouchableOpacity onPress={showDatePicker} style={[styles.container, { borderColor: 'black' }]}>
+            <TouchableOpacity onPress={showDatePicker} style={[styles.container, { borderColor: 'black' }, stylesProps?.container]}>
                 <View style={styles.container2}>
                     <Text>
                         {formatDateForDisplay(selectedDate)}

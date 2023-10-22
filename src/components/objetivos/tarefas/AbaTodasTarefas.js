@@ -8,7 +8,7 @@ import Login from '../../../pages/Login';
 import { deleteTarefa, getTarefas, editTarefa } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import DataPicker from '../../genericos/dataPicker';
 
 const verdeEscuro = "#346c68";
 
@@ -16,7 +16,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const [editingTitle, setEditingTitle] = useState("");
     const [editingDescription, setEditingDescription] = useState("");
-    const [editingEstimatedDate, setEditingEstimatedDate] = useState("");
+    const [editingEstimatedDate, setEditingEstimatedDate] = useState(new Date());
     const [editingPriority, setEditingPriority] = useState(1);
 
     const [visible, setVisible] = useState(false);
@@ -32,7 +32,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const openEditModal = () => {
         setEditingTitle(tarefa.titulo);
         setEditingDescription(tarefa.descricao);
-        setEditingEstimatedDate(tarefa.data_estimada);
+        setEditingEstimatedDate(new Date (tarefa.data_estimada));
         setEditingPriority(tarefa.prioridade);
         setModalVisible(true);
     };
@@ -44,7 +44,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             data_estimada: editingEstimatedDate,
             prioridade: editingPriority,
         };
-        console.log(editedTarefa)
         editTarefa(tarefa._id, editedTarefa)
             .then((res) => {
                 Toast.show({
@@ -55,7 +54,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                 buscarTarefas();
             })
             .catch((error) => {
-                console.error('Erro ao editar tarefa:', JSON.stringify(error)); // Adicione esta linha para exibir o erro no console
                 Toast.show({
                     type: 'error',
                     text1: 'Ocorreu algum problema...',
@@ -236,7 +234,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         <Text style={{ fontSize: 25, marginBottom: 25 }}>Editar Tarefa</Text>
                         <TextInput
                             mode='outlined'
-                            outlineColor='gray'
+                            outlineColor='black'
                             outlineStyle={{ borderWidth: 0.5 }}
                             style={styles.modalText}
                             placeholder={tarefa.titulo}
@@ -244,19 +242,16 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         />
                         <TextInput
                             mode='outlined'
-                            outlineColor='gray'
+                            outlineColor='black'
                             outlineStyle={{ borderWidth: 0.5 }}
                             style={styles.modalText}
                             placeholder={tarefa.descricao}
                             onChangeText={(e) => setEditingDescription(e)}
                         />
-                        <TextInput
-                            mode='outlined'
-                            outlineColor='gray'
-                            outlineStyle={{ borderWidth: 0.5 }} 
-                            style={styles.modalText}
-                            placeholder={tarefa.data_estimada} 
-                            onChangeText={(e) => setEditingEstimatedDate(e)} 
+                        <DataPicker
+                            selectedDate={editingEstimatedDate}
+                            onSelectDate={(e) => setEditingEstimatedDate(e)}
+                            stylesProps={{container: {borderWidth: 0.5, marginBottom: 25}}} 
                         />
                         <DropdownComponent
                             style={styles.modalText}
@@ -277,6 +272,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 };
 
 const styles = StyleSheet.create({
+    drop:{
+        paddingTop:20
+    },
     listWrapper: {
         flexGrow: 1,
         width: '100%',
