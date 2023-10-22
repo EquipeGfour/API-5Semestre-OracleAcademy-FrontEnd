@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { postTarefa } from '../../../service/tarefa';
-
+import DataPicker from '../../genericos/dataPicker';
 
 const colors = {
     verde: "#346c68",
@@ -23,7 +23,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [dataEstimada, setDataEstimada] = useState("");
+    const [dataEstimada, setDataEstimada] = useState(new Date()); // Inicialize com a data atual
     const [prioridade, setPrioridade] = useState("");
 
     const criarObjetivo = () => {
@@ -101,18 +101,28 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                         onChangeText={(text) => setDescricao(text)}
                         value={descricao}
                     />
-                    <TextInput
+                    {/* <TextInput
                         style={styles.usuario}
                         mode='outlined'
                         // textColor="#545F71"
-                        placeholder="DD / MM / YYYY"
+                        placeholder="DD / MM / YYYsY"
                         label={isInputFocused ? "Data Conclusão" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         onChangeText={(text) => setDataEstimada(text)}
                         value={dataEstimada}
+                    /> */}
+
+                    <View style={styles.dataPickerContainer}>
+                    <DataPicker
+                        selectedDate={dataEstimada}
+                        onSelectDate={(date) => setDataEstimada(date)}
                     />
+                    </View>
+
+                    <View style={styles.prioridadeContainer}>
                     <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
+                    </View>
                     <View style={{ marginTop: 30 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
                             <Text style={styles.buttonText}>Criar</Text>
@@ -125,6 +135,14 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 };
 
 const styles = StyleSheet.create({
+    prioridadeContainer:{
+        marginTop: -15
+    },
+    dataPickerContainer: {
+        left: -55,  
+        padding: 25, 
+        
+    },
     modalText: {
         mode: 'flat',
         backgroundColor: 'white',
