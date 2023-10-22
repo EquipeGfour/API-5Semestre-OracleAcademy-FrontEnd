@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { postTarefa } from '../../../service/tarefa';
-import DataPicker from '../../dataPicker';
+import DataPicker from '../../genericos/dataPicker';
 
 const colors = {
     verde: "#346c68",

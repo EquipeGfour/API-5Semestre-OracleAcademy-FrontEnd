@@ -14,7 +14,7 @@ import DropdownComponent from './DropDownPrioridadeTarefas';
 import BemVindo from '../../../pages/BemVindo';
 import { postTarefa } from '../../../service/tarefa';
 import Toast from 'react-native-toast-message';
-import DataPicker from '../../dataPicker';
+import DataPicker from '../../genericos/dataPicker';
 
 
 const colors = {

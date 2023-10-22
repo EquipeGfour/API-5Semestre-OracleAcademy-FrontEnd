@@ -7,7 +7,7 @@ import { TextInput, PaperProvider, DefaultTheme } from 'react-native-paper';
 import DropdownComponent from './DropDownPrioridadeObjetivo';
 import { postObjetivos } from '../../service/objetivo';
 import { getStorageItem } from '../../functions/encryptedStorageFunctions';
-import DataPicker from '../dataPicker';
+import DataPicker from '../genericos/dataPicker';
 
 const colors = {
     verde: "#51A8A2",
