@@ -22,7 +22,7 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
 
     const [nome, setNome] = useState("");
 
-    const criarObjetivo = async () => {
+    const criarWorkspace = async () => {
         const obj = {
             titulo: nome,
             workspace:true
@@ -83,7 +83,7 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
                         value={nome}
                     />
                     <View style={{ marginTop: 40 }}>
-                        <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
+                        <TouchableOpacity onPress={criarWorkspace} style={styles.botaoCriar}>
                             <Text style={styles.buttonText}>Criar</Text>
                         </TouchableOpacity>
                     </View>

@@ -66,7 +66,7 @@ import { Dropdown } from 'react-native-element-dropdown';
       backgroundColor: 'white',
       padding: 16,
       width: 325,
-      marginTop: -15
+      marginTop: 10
     },
     dropdown: {
       height: 50,

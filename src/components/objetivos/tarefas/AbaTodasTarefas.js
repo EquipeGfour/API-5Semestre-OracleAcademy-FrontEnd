@@ -69,6 +69,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
+
     const getPrioridadeTitle = (prioridade) => {
         if (prioridade === 1) {
             return "Urgente";
@@ -144,35 +145,47 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         }
     }, [flagTarefa])
 
+    const formatarData = (data) => {
+        if (data) {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
+            return formattedDate;
+        }
+        return '';
+    };
+
     return (
         <>
-            <SafeAreaView >
-                <ScrollView style={styles.listWrapper}>
-                    {tarefas.map((tarefa, index) => (
-                        <View style={{ flex: 1 }} key={tarefa.id}>
-                            <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
-                                <View>
-                                    <View style={styles.container}>
-                                        <View style={styles.itemContainer}>
-                                            <Checkbox
-                                                style={styles.iconCheck}
-                                                status={tarefa.checked ? 'checked' : 'unchecked'}
-                                                onPress={() => {
-                                                    toggleSelection(index);
-                                                }}
-                                            />
-                                            <Card.Title
-                                                title={tarefa.titulo}
-                                                subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
-                                            />
-                                        </View>
-                                    </View>
+        <SafeAreaView >
+        <ScrollView style={styles.listWrapper}>
+            {tarefas.map((tarefa, index) => (
+                <View style={{flex:1}} key={tarefa.id}>
+                    <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
+                        <View>
+                            <View style={styles.container}>
+                                <View style={styles.itemContainer}>
+                                    <Checkbox
+                                        style={styles.iconCheck}
+                                        status={tarefa.checked ? 'checked' : 'unchecked'}
+                                        onPress={() => {
+                                            toggleSelection(index);
+                                        }}
+                                    />
+                                    <Card.Title
+                                        title={tarefa.titulo}
+                                        // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
+                                        subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
+
+
+                                    />
                                 </View>
-                            </TouchableWithoutFeedback>
+                            </View>
                         </View>
-                    ))}
-                </ScrollView>
-            </SafeAreaView>
+                    </TouchableWithoutFeedback>
+                </View>
+            ))}
+        </ScrollView>
+        </SafeAreaView>
 
             <Modal visible={visible} onDismiss={hideModal}>
                 <View style={styles.modal}>
@@ -200,7 +213,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                     <View style={styles.espacamento}>
                         <View style={styles.iconContainer}>
                             <Icon name="clock" size={20} style={styles.icon} />
-                            <Text style={styles.textos}>{tarefa.data_estimada}</Text>
+                            <Text style={styles.textos}>{formatarData(tarefa.data_estimada)}</Text>
                         </View>
                     </View>
                     <View style={styles.espacamento}>

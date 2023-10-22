@@ -12,3 +12,7 @@ export const getWorkspaceUser = (token) => {
 export const deleteWork = (id) => {
     return axios.delete(`/objetivo/deletar/${id}`)
 }
+
+export const editarWork = (id,data) => {
+    return axios.patch(`/objetivo/editar/${id}`, data)
+}

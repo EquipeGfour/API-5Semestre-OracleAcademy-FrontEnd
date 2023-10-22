@@ -12,6 +12,15 @@ const verdeEscuro = "#346c68";
 
 const Recentes = ({ navigation }) => {
 
+    const formatarData = (data) => {
+        const dataFormatada = new Date(data).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+        return dataFormatada;
+    };
+
     const [objetivos, setObjetivos] = useState([]);
 
     const buscarObjetivos = async () => {
@@ -42,6 +51,8 @@ const Recentes = ({ navigation }) => {
         buscarObjetivos();
     }, [objetivos])
 
+
+
     return (
         <>
             <BottomBarObjetivos style={{ flex: 1 }} />
@@ -53,8 +64,13 @@ const Recentes = ({ navigation }) => {
                                 title={objetivo.titulo}
                                 titleStyle={{ color: 'white', fontWeight: 'bold' }}
                             />
-                            <Card.Title
+                            {/* <Card.Title
                                 title={objetivo.data_estimada}
+                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                left={(props) => <Icon name="clock" size={30} color="white" />}
+                            /> */}
+                            <Card.Title
+                                title={formatarData(objetivo.data_estimada)}
                                 titleStyle={{ color: 'white', fontWeight: 'bold' }}
                                 left={(props) => <Icon name="clock" size={30} color="white" />}
                             />
