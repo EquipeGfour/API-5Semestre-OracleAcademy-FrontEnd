@@ -36,7 +36,7 @@ const ListaTarefas = ({route, navigation}) => {
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
-
+    const [isInputFocused, setInputFocused] = useState(false);
     const [editingTitle, setEditingTitle] = useState("");
     const [editingEstimatedDate, setEditingEstimatedDate] = useState(new Date());
     const [editingPriority, setEditingPriority] = useState(1);
@@ -51,6 +51,14 @@ const ListaTarefas = ({route, navigation}) => {
         setModalVisible(true);
 
     };
+
+    const handleInputFocus = () => {
+        setInputFocused(true);
+      };
+    
+      const handleInputBlur = () => {
+        setInputFocused(false);
+      };
 
     const saveEditedObjetivo = () => {
         // Obtém o ano, mês e dia do objeto Date
@@ -164,7 +172,9 @@ const ListaTarefas = ({route, navigation}) => {
                     <Text style = {styles.textoEditarObjetivo}>Editar Objetivo</Text>
                     <TextInput 
                         mode='outlined'
-                        outlineColor='gray'
+                        label={isInputFocused ? 'Nome Objetivo' : ""}
+                        onFocus={handleInputFocus}
+                        outlineColor={colors.verde}
                         outlineStyle={{ borderWidth: 0.5 }}
                         style={styles.modalText}
                         value={editingTitle}
@@ -281,6 +291,8 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         alignItems: 'center',
+        borderColor: colors.cinza, // Cor da borda modal
+        borderWidth: 2, // Largura da borda modal
       },
     titleContainer: {
         flexDirection: 'row',
