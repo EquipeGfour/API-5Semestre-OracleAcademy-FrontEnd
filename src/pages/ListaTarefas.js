@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import BemVindo from './BemVindo';
-import { StyleSheet, View, Button, TouchableOpacity } from 'react-native';
-import { DefaultTheme, Text, Searchbar, IconButton, DataTable,Modal,TextInput, Provider, Menu, PaperProvider } from 'react-native-paper';
-import Login from './Login';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { DefaultTheme, Text, IconButton, DataTable,TextInput, Provider, Menu, PaperProvider } from 'react-native-paper';
 import TodasTarefas from '../components/objetivos/tarefas/AbaTodasTarefas';
-import BottomBar from '../components/objetivos/BottomBarObjetivos';
 import BottomBarTarefas from '../components/objetivos/tarefas/BottomBarTarefas';
 import DropdownComponent from '../components/objetivos/DropDownPrioridadeObjetivo'
 import { deleteObjetivo, editObjetivo } from "../service/objetivo"
 import Toast from 'react-native-toast-message';
 import DataPicker from '../components/genericos/dataPicker';
+import Modal from 'react-native-modal';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -57,9 +54,11 @@ const ListaTarefas = ({route, navigation}) => {
 
     const saveEditedObjetivo = () => {
         // Obtém o ano, mês e dia do objeto Date
-        const ano = editingEstimatedDate.getFullYear();
-        const mes = String(editingEstimatedDate.getMonth() + 1).padStart(2, '0'); // Adiciona um zero à esquerda, se necessário
-        const dia = String(editingEstimatedDate.getDate()).padStart(2, '0'); // Adiciona um zero à esquerda, se necessário
+        // const dataUTC = editingEstimatedDate.toISOString();
+        const dataUTC = new Date(editingEstimatedDate.getTime() + editingEstimatedDate.getTimezoneOffset() * 60000);
+        const ano = dataUTC.getFullYear();
+        const mes = String(dataUTC.getMonth() + 1).padStart(2, '0'); // Adiciona um zero à esquerda, se necessário
+        const dia = String(dataUTC.getDate()).padStart(2, '0'); // Adiciona um zero à esquerda, se necessário
 
         // Formata a data no formato "yyyy-mm-dd"
         const dataFormatada = `${ano}-${mes}-${dia}`;
@@ -107,7 +106,7 @@ const ListaTarefas = ({route, navigation}) => {
 
 
     const closeModal = () => {
-        setModalVisible(false);
+       setModalVisible(false);
     };
 
 
@@ -162,7 +161,7 @@ const ListaTarefas = ({route, navigation}) => {
             <Modal visible={isModalVisible} onBackdropPress={closeModal} style={styles.modal}>
             <PaperProvider theme={theme}>
                 <View style={styles.modalContainer}>
-                    <Text style = {{fontSize: 20}}>Editar Objetivo</Text>
+                    <Text style = {styles.textoEditarObjetivo}>Editar Objetivo</Text>
                     <TextInput 
                         mode='outlined'
                         outlineColor='gray'
@@ -182,7 +181,7 @@ const ListaTarefas = ({route, navigation}) => {
                             <Text style={styles.buttonText}>Salvar</Text>
                         </TouchableOpacity>
                         {/* <View style={{ width: '10%' }} /> */}
-                        <Button title="Fechar" onPress={closeModal} color = {colors.verde}/>
+                        {/* <Button title="Fechar" onPress={closeModal} color = {colors.verde}/> */}
                     </View>
                 </View>
             </PaperProvider>
@@ -315,6 +314,13 @@ const styles = StyleSheet.create({
     tab:{
         zIndex:-1,
         marginTop:-500
-    }
+    },
+    textoEditarObjetivo:{
+        textAlign:'center',
+        color:colors.verde,
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 35,
+      }
 });
 export default ListaTarefas;
