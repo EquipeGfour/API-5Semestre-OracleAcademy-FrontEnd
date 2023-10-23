@@ -71,6 +71,7 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
                 <View style={[styles.modalContainer,]}>
+                <Text style={styles.textoCriarWorkspace}>Criar Workspace</Text>
                     <TextInput
                         style={styles.usuario}
                         mode='outlined'
@@ -94,6 +95,12 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
 };
 
 const styles = StyleSheet.create({
+    textoCriarWorkspace:{
+        textAlign:'center',
+        color:colors.roxo,
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
     botaoCriar: {
         width: 150,
         borderRadius: 20,

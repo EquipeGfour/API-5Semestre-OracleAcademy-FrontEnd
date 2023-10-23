@@ -79,6 +79,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
                 <View style={[styles.modalContainer]}>
+                <Text style={styles.textoCriarTarefaWorkspace}>Criar Tarefa</Text>
                     <TextInput
                         style={styles.usuario}
                         mode='outlined'
@@ -136,10 +137,11 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
 const styles = StyleSheet.create({
     prioridadeContainer:{
-        marginTop: -15
+        marginTop: -15,
+        marginLeft: -12
     },
     dataPickerContainer: {
-        left: -55,  
+        left: -64,  
         padding: 25, 
         
     },
@@ -183,6 +185,13 @@ const styles = StyleSheet.create({
     },
     icon: {
         padding: 10,
+    },
+    textoCriarTarefaWorkspace:{
+        marginTop: -20,
+        textAlign:'center',
+        color:colors.roxo,
+        fontSize: 18,
+        fontWeight: 'bold'
     },
     modalContainer: {
         backgroundColor: 'white',
