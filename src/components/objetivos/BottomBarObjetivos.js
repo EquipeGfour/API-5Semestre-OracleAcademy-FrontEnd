@@ -68,6 +68,7 @@ const BottomBarObjetivos = ({ onIconPress }) => {
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
                 <PaperProvider theme={theme}>
                     <View style={styles.modalContainer}>
+                    <Text style = {styles.textoCriarObjetivo}>Criar Objetivo</Text>
                         <TextInput
                             style={styles.modalText}
                             mode='outlined'
@@ -151,6 +152,13 @@ const styles = StyleSheet.create({
         borderColor: colors.cinza,
         
     },
+    textoCriarObjetivo:{
+        textAlign:'center',
+        color:colors.verde,
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 35,
+      }
     
     
 });

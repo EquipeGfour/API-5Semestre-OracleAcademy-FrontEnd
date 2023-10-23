@@ -1,32 +1,101 @@
 import React, { useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import BemVindo from './BemVindo';
-import { StyleSheet, View, Button } from 'react-native';
-import { DefaultTheme, Text, Searchbar, IconButton, DataTable,Modal,TextInput, Provider, Menu } from 'react-native-paper';
-import Login from './Login';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { DefaultTheme, Text, IconButton, DataTable,TextInput, Provider, Menu, PaperProvider } from 'react-native-paper';
 import TodasTarefas from '../components/objetivos/tarefas/AbaTodasTarefas';
-import BottomBar from '../components/objetivos/BottomBarObjetivos';
 import BottomBarTarefas from '../components/objetivos/tarefas/BottomBarTarefas';
 import DropdownComponent from '../components/objetivos/DropDownPrioridadeObjetivo'
-import { deleteObjetivo } from "../service/objetivo"
+import { deleteObjetivo, editObjetivo } from "../service/objetivo"
 import Toast from 'react-native-toast-message';
-
-const verdeEscuro = "#346c68";
+import DataPicker from '../components/genericos/dataPicker';
+import Modal from 'react-native-modal';
 
 const Tab = createMaterialTopTabNavigator();
+
+const colors = {
+    verde: "#51A8A2",
+    azul: "#4974a5",
+    roxo: "#51336b",
+    branco: "#ffffff",
+    cinza: "#9BA5B7"
+};
+
+const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: colors.verde, // Cor de foco
+    },
+  };
 
 const ListaTarefas = ({route, navigation}) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isModalEditarObjectiveVisible, setModalEditarObjectiveVisible] = useState(false);
     const [flagTarefa, setFlagTarefa] = useState(false);
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
+    const [isInputFocused, setInputFocused] = useState(false);
+    const [editingTitle, setEditingTitle] = useState("");
+    const [editingEstimatedDate, setEditingEstimatedDate] = useState(new Date());
+    const [editingPriority, setEditingPriority] = useState(1);
 
-    const openModal = () => {
+    const openEditModal = () => {
+        //titulo, descricao, data_estimada, prioridade, _id
+        setEditingTitle(titulo);
+
+        setEditingEstimatedDate(new Date(data_estimada));
+        setEditingPriority(prioridade);
+
         setModalVisible(true);
+
     };
+
+    const handleInputFocus = () => {
+        setInputFocused(true);
+      };
+    
+      const handleInputBlur = () => {
+        setInputFocused(false);
+      };
+
+    const saveEditedObjetivo = () => {
+        // Obtém o ano, mês e dia do objeto Date
+        // const dataUTC = editingEstimatedDate.toISOString();
+        const dataUTC = new Date(editingEstimatedDate.getTime() + editingEstimatedDate.getTimezoneOffset() * 60000);
+        const ano = dataUTC.getFullYear();
+        const mes = String(dataUTC.getMonth() + 1).padStart(2, '0'); // Adiciona um zero à esquerda, se necessário
+        const dia = String(dataUTC.getDate()).padStart(2, '0'); // Adiciona um zero à esquerda, se necessário
+
+        // Formata a data no formato "yyyy-mm-dd"
+        const dataFormatada = `${ano}-${mes}-${dia}`;
+        const editedObjetivo = {
+            titulo: editingTitle,
+            data_estimada: dataFormatada,
+            prioridade: editingPriority,
+        };
+        console.log(editedObjetivo, _id)
+        editObjetivo(_id, editedObjetivo)
+            .then((res) => {
+                console.log(res.data)
+                Toast.show({
+                    type: 'success',
+                    text1: 'Objetivo editado com sucesso!',
+                });
+                closeModal();
+                // buscarTarefas();
+            })
+            .catch((error) => {
+                console.log(error)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Ocorreu algum problema...',
+                });
+            });
+
+    }; 
+
 
     const getPrioridadeTitle = (prioridade) => {
         if(prioridade === 1){
@@ -45,7 +114,7 @@ const ListaTarefas = ({route, navigation}) => {
 
 
     const closeModal = () => {
-        setModalVisible(false);
+       setModalVisible(false);
     };
 
 
@@ -85,7 +154,7 @@ const ListaTarefas = ({route, navigation}) => {
                             onDismiss={closeMenu}
                             style={{ backgroundColor: 'white' }} // Defina a cor de fundo desejada aqui
                             anchor={<IconButton style={styles.menuObjetivos} icon="dots-vertical"  iconColor={'#51A8A2'} onPress={openMenu}/>}>
-                                <Menu.Item style={styles.opcoesMenu} onPress={() => {}}  title="Editar Objetivo"/>
+                                <Menu.Item style={styles.opcoesMenu} onPress={openEditModal}  title="Editar Objetivo"/>
                                 <Menu.Item style={styles.opcoesMenu2} titleStyle={{color:'red'}} onPress={() => {deletarObjetivo(_id)}}   title="Excluir Objetivo" />
                         </Menu> 
 
@@ -97,20 +166,35 @@ const ListaTarefas = ({route, navigation}) => {
                     </DataTable.Header>                
                 </DataTable>
             </Provider>
-
-            <Modal visible={isModalVisible} onDismiss={closeModal}>
+            <Modal visible={isModalVisible} onBackdropPress={closeModal} style={styles.modal}>
+            <PaperProvider theme={theme}>
                 <View style={styles.modalContainer}>
-                <Text style = {{fontSize: 20}}>Editar Objetivo</Text>
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Nome'  />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='Descrição'  />
-                <TextInput style = {styles.modalText} multiline={true} placeholder='DD-MM-AAAA'/>
-                <DropdownComponent style = {styles.modalText}/>
-                <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
-                    <Button title="Salvar" onPress={closeModal} color = {verdeEscuro}/>
-                    <View style={{ width: '10%' }} />
-                    <Button title="Fechar" onPress={closeModal} color = {verdeEscuro}/>
+                    <Text style = {styles.textoEditarObjetivo}>Editar Objetivo</Text>
+                    <TextInput 
+                        mode='outlined'
+                        label={isInputFocused ? 'Nome Objetivo' : ""}
+                        onFocus={handleInputFocus}
+                        outlineColor={colors.verde}
+                        outlineStyle={{ borderWidth: 0.5 }}
+                        style={styles.modalText}
+                        value={editingTitle}
+                        onChangeText={(e) => setEditingTitle(e)}
+                    />
+                    <DataPicker
+                        selectedDate={editingEstimatedDate}
+                        onSelectDate={(e) => setEditingEstimatedDate(e)}
+                        stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
+                    />
+                    <DropdownComponent style = {styles.modalText} prioridade={editingPriority} setPrioridade={setEditingPriority}/>
+                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
+                        <TouchableOpacity onPress={saveEditedObjetivo} style={styles.botaoSalvar}>
+                            <Text style={styles.buttonText}>Salvar</Text>
+                        </TouchableOpacity>
+                        {/* <View style={{ width: '10%' }} /> */}
+                        {/* <Button title="Fechar" onPress={closeModal} color = {colors.verde}/> */}
+                    </View>
                 </View>
-                </View>
+            </PaperProvider>
             </Modal> 
 
             <Tab.Navigator
@@ -204,27 +288,51 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        padding: 50,
+        padding: 20,
         borderRadius: 10,
         alignItems: 'center',
-        
-    },
+        borderColor: colors.cinza, // Cor da borda modal
+        borderWidth: 2, // Largura da borda modal
+      },
     titleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         
     },
     modalText: {
-        elevation:3,
-        zIndex: 3,
-        mode:"flat",
         backgroundColor : "white",
-        width: 200,
+        width: 325,
         marginBottom: 30
     },
+    botaoSalvar: {
+        width: 150,
+        borderRadius: 20,
+        backgroundColor: colors.verde,
+        alignSelf: 'center', // Centraliza o botão horizontalmente
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+    modal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
     tab:{
         zIndex:-1,
         marginTop:-500
-    }
+    },
+    textoEditarObjetivo:{
+        textAlign:'center',
+        color:colors.verde,
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 35,
+      }
 });
 export default ListaTarefas;
