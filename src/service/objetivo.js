@@ -14,4 +14,4 @@ export const deleteObjetivo = (id) => {
 }
 
 export const editObjetivo = (id, objetivo) => {
-    return axios.put(`/objetivo/editar/${id}`, objetivo)}
+    return axios.patch(`/objetivo/editar/${id}`, objetivo)}
