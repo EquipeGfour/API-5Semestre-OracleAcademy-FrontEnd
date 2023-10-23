@@ -12,3 +12,6 @@ export const postObjetivos = (data,token) => {
 export const deleteObjetivo = (id) => {
     return axios.delete(`/objetivo/deletar/${id}`)
 }
+
+export const editObjetivo = (id, objetivo) => {
+    return axios.put(`/objetivo/editar/${id}`, objetivo)}
