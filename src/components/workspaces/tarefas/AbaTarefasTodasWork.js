@@ -114,21 +114,22 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [editarDescricao, setEditarDescricao] = useState("");
   const [editarDataEstimada, setEditarDataEstimada] = useState(new Date()); // Inicialize com a data atual
   const [editarPrioridade, setEditarPrioridade] = useState("");
-  const editarTarefaWorkspace = (id) =>{
+  const editarTarefaWorkspace = () =>{
     const obj ={
-      titulo: editarNome,
+      titulo: editarNome || tarefaSelecionada?.titulo,
       descricao: editarDescricao,
       data_estimada: editarDataEstimada,
       prioridade: editarPrioridade
     };
-    console.log(id);
-    editarTarefaWork(id,obj) 
+    console.log(obj);
+    editarTarefaWork(tarefaSelecionada._id,obj) 
       .then(res => {
         Toast.show({
             type: 'success',
             text1: 'Tarefa editada com sucesso!',
         });
         closeModalEditarHandler();
+        closeModal()
         buscarTarefasWorkspace();
       })
       .catch((error) => {
@@ -139,7 +140,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
         console.log('Erro', error)
       });
   }
-
+  
   // --- Deletar Tarefas Workspace ---
   const deletarTarefaWorkspace = (id) =>{
     deleteTarefa(id).then(res => {
@@ -160,9 +161,9 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
 }
   useEffect(() => {
     buscarTarefasWorkspace();
-  }, [tarefas])
+  }, [])
 
-   // --- Adicionar Usuário a uma Tarefa ---
+  // --- Adicionar Usuário a uma Tarefa ---
   const adicionarUsuario = (usuario) => {
     if (!usuariosSelecionado.some((u) => u._id === usuario._id)) {
       setUsuariosSelecionado([...usuariosSelecionado, usuario]);
@@ -306,8 +307,8 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                           />
                           <View style={styles.dataPickerContainer}>
                           <DataPicker
-                              selectedDate={tarefaSelecionada?.data_estimada}
-                              onSelectDate={(date) => setEditarDataEstimada(date)}
+                              selectedDate={editarDataEstimada}
+                              onSelectDate={(e) => setEditarDataEstimada(e)}
                           />
                           </View>
                           <View style={styles.prioridadeContainer}>
@@ -363,8 +364,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                         </View>
                       </View>
                     </TouchableWithoutFeedback>
-                  </Modal>
-                
+                  </Modal>                
                 </View>
               </View>
 
