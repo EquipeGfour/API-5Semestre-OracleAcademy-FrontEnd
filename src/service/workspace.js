@@ -16,3 +16,7 @@ export const deleteWork = (id) => {
 export const editarWork = (id,data) => {
     return axios.patch(`/objetivo/editar/${id}`, data)
 }
+
+export const editarTarefaWork = (idTarefa,data) => {
+    return axios.patch(`/tarefa/editar/${idTarefa}`, data)
+}
