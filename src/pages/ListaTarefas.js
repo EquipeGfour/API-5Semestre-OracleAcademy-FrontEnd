@@ -84,7 +84,7 @@ const ListaTarefas = ({route, navigation}) => {
                     text1: 'Objetivo editado com sucesso!',
                 });
                 closeModal();
-                // buscarTarefas();
+                navigation.navigate('Home')
             })
             .catch((error) => {
                 console.log(error)
@@ -172,12 +172,13 @@ const ListaTarefas = ({route, navigation}) => {
                     <Text style = {styles.textoEditarObjetivo}>Editar Objetivo</Text>
                     <TextInput 
                         mode='outlined'
-                        label={isInputFocused ? 'Nome Objetivo' : ""}
+                        value={editingTitle}
+                        label={isInputFocused ? "Nome Objetivo" : ""}
                         onFocus={handleInputFocus}
-                        outlineColor={colors.verde}
+                        onBlur={handleInputBlur}
+                        outlineColor={colors.cinza}
                         outlineStyle={{ borderWidth: 0.5 }}
                         style={styles.modalText}
-                        value={editingTitle}
                         onChangeText={(e) => setEditingTitle(e)}
                     />
                     <DataPicker
