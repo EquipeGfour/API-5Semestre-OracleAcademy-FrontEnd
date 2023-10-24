@@ -247,10 +247,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        marginTop: -218,
+                        marginTop: -200,
                     }}>
                         <View style={styles.modalContainer}>
-                            <Text style={{ fontSize: 25, marginBottom: 25, color: colors.verde }}>Editar Tarefa</Text>
+                            <Text style={styles.textoEditarTarefa}>Editar Tarefa</Text>
                             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                                 <View>
                                     <TextInput
@@ -395,6 +395,13 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         // textAlign: 'right',
         // marginRight:-40
+    },
+    textoEditarTarefa:{
+        textAlign:'center',
+        color:colors.verde,
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
     }
 
 });

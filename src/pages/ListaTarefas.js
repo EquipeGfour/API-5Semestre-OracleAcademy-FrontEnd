@@ -184,7 +184,7 @@ const ListaTarefas = ({route, navigation}) => {
                     <DataPicker
                         selectedDate={editingEstimatedDate}
                         onSelectDate={(e) => setEditingEstimatedDate(e)}
-                        stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
+                        stylesProps={{ container: { borderWidth: 0.5, marginBottom: 5 } }}
                     />
                     <DropdownComponent style = {styles.modalText} prioridade={editingPriority} setPrioridade={setEditingPriority}/>
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>             
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
         color:colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 35,
+        marginBottom: 10,
       }
 });
 export default ListaTarefas;
