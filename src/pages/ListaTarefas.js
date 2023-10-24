@@ -72,8 +72,8 @@ const ListaTarefas = ({route, navigation}) => {
     const { titulo, descricao, data_estimada, prioridade, _id } = route.params;
 
     return (
-        <View style={{ flex:1, backgroundColor: '#FFF' }}>
-            <Provider>
+        <View style={{ flex:1, backgroundColor: '#FFF', zIndex: -1}}>
+            <Provider style={{zIndex: -1}}>
                 <DataTable style={styles.dataTable}>
                     <DataTable.Header style={styles.editar}>
                         <View style={styles.titleContainer}>
@@ -138,6 +138,7 @@ const ListaTarefas = ({route, navigation}) => {
 const styles = StyleSheet.create({
     dataTable:{
         backgroundColor: 'white',
+        zIndex: -1
     }, 
     header: {
         paddingTop: '50%',

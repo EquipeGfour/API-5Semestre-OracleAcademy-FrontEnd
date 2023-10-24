@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableWithoutFeedback, Button, ScrollView, TouchableOpacity } from 'react-native';
-import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, } from 'react-native-paper';
+import { View, TouchableWithoutFeedback, Button, ScrollView, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, DefaultTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
@@ -17,6 +17,14 @@ const colors = {
     roxo: "#51336b",
     branco: "#ffffff",
     cinza: "#9BA5B7"
+};
+
+const theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        primary: colors.verde, // Cor de foco
+    },
 };
 
 const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
@@ -161,36 +169,38 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     return (
         <>
-            <SafeAreaView >
-                <ScrollView style={styles.listWrapper}>
-                    {tarefas.map((tarefa, index) => (
-                        <View style={{ flex: 1 }} key={tarefa.id}>
-                            <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
-                                <View>
-                                    <View style={styles.container}>
-                                        <View style={styles.itemContainer}>
-                                            <Checkbox
-                                                style={styles.iconCheck}
-                                                status={tarefa.checked ? 'checked' : 'unchecked'}
-                                                onPress={() => {
-                                                    toggleSelection(index);
-                                                }}
-                                            />
-                                            <Card.Title
-                                                title={tarefa.titulo}
-                                                // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
-                                                subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+                <SafeAreaView >
+                    <ScrollView style={styles.listWrapper}>
+                        {tarefas.map((tarefa, index) => (
+                            <View style={{ flex: 1 }} key={tarefa.id}>
+                                <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
+                                    <View>
+                                        <View style={styles.container}>
+                                            <View style={styles.itemContainer}>
+                                                <Checkbox
+                                                    style={styles.iconCheck}
+                                                    status={tarefa.checked ? 'checked' : 'unchecked'}
+                                                    onPress={() => {
+                                                        toggleSelection(index);
+                                                    }}
+                                                />
+                                                <Card.Title
+                                                    title={tarefa.titulo}
+                                                    // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
+                                                    subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
 
 
-                                            />
+                                                />
+                                            </View>
                                         </View>
                                     </View>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    ))}
-                </ScrollView>
-            </SafeAreaView>
+                                </TouchableWithoutFeedback>
+                            </View>
+                        ))}
+                    </ScrollView>
+                </SafeAreaView>
+            </KeyboardAvoidingView>
 
             <Modal visible={visible} onDismiss={hideModal}>
                 <View style={styles.modal}>
@@ -230,52 +240,56 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                 </View>
             </Modal>
 
-            <Modal visible={isModalVisible} onDismiss={closeModal}>
-                <View style={{
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: -88
-                }}>
-                    <View style={styles.modalContainer}>
-                        <Text style={{ fontSize: 25, marginBottom: 25 }}>Editar Tarefa</Text>
-                        <TextInput
-                            mode='outlined'
-                            outlineColor='gray'
-                            outlineStyle={{ borderWidth: 0.5 }}
-                            style={styles.modalText}
-                            placeholder={tarefa.titulo}
-                            onChangeText={(e) => setEditingTitle(e)}
-                        />
-                        <TextInput
-                            mode='outlined'
-                            outlineColor='gray'
-                            outlineStyle={{ borderWidth: 0.5 }}
-                            style={styles.modalText}
-                            placeholder={tarefa.descricao}
-                            onChangeText={(e) => setEditingDescription(e)}
-                        />
-                        <DataPicker
-                            selectedDate={editingEstimatedDate}
-                            onSelectDate={(e) => setEditingEstimatedDate(e)}
-                            stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
-                        />
-                        <DropdownComponent
-                            style={styles.modalText}
-                            prioridade={editingPriority}
-                            setPrioridade={setEditingPriority}
-                        />
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
-                                <Text style={styles.buttonText}>Salvar</Text>
-                            </TouchableOpacity>
-                            <View style={{ width: '10%' }} />
-                            <TouchableOpacity onPress={closeModal} style={styles.botaoCriar} >
-                                <Text style={styles.buttonText}>Fechar</Text>
-                            </TouchableOpacity>
+            <Modal visible={isModalVisible} onDismiss={closeModal} style={{ zIndex: 3 }}>
+                <PaperProvider theme={theme}>
+                    <View style={{
+                        position: 'absolute',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: -218,
+                    }}>
+                        <View style={styles.modalContainer}>
+                            <Text style={{ fontSize: 25, marginBottom: 25, color: colors.verde }}>Editar Tarefa</Text>
+                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                                <View>
+                                    <TextInput
+                                        mode='outlined'
+                                        outlineColor='gray'
+                                        outlineStyle={{ borderWidth: 0.5 }}
+                                        style={styles.modalText}
+                                        placeholder={tarefa.titulo}
+                                        onChangeText={(e) => setEditingTitle(e)}
+                                    />
+                                    <TextInput
+                                        mode='outlined'
+                                        outlineColor='gray'
+                                        outlineStyle={{ borderWidth: 0.5 }}
+                                        style={styles.modalText}
+                                        placeholder={tarefa.descricao}
+                                        onChangeText={(e) => setEditingDescription(e)}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <DataPicker
+                                selectedDate={editingEstimatedDate}
+                                onSelectDate={(e) => setEditingEstimatedDate(e)}
+                                stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
+                            />
+                            <DropdownComponent
+                                style={styles.modalText}
+                                prioridade={editingPriority}
+                                setPrioridade={setEditingPriority}
+                            />
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
+                                    <Text style={styles.buttonText}>Salvar</Text>
+                                </TouchableOpacity>
+                            </View>
+
                         </View>
                     </View>
-                </View>
+                </PaperProvider>
             </Modal>
 
         </>
@@ -290,6 +304,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         width: '100%',
         height: 600,
+
     },
     textoCheck: {
         marginRight: '40%',
@@ -308,7 +323,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         textAlign: 'center',
         fontWeight: 'bold'
-      },
+    },
     iconContainer: {
         display: 'flex',
         flexDirection: 'row',
