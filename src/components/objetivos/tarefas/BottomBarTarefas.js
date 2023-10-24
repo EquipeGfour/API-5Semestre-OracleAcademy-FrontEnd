@@ -17,6 +17,7 @@ import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 
 
+
 const colors = {
   verde: "#51A8A2",
   azul: "#4974a5",
@@ -82,6 +83,10 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
 
   const [choseDate, setChosenDate] = useState(new Date());
 
+  const confirmButtonColor = 'pink'; // Change to the color you want
+  const cancelButtonColor = 'red'; // Change to the color you want
+
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -99,7 +104,7 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
       </TouchableOpacity> */}
 
       <Modal isVisible={isModalVisible} onBackdropPress={closeModal} style={styles.modal}>
-        <PaperProvider theme={theme}>
+        
           <View style={styles.modalContainer}>
             <TextInput
               style={styles.modalText}
@@ -107,6 +112,7 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
               label='Nome Tarefa'
               multiline={true}
               placeholder="Nome Tarefa"
+              theme={theme}
               value={nome}
               onChangeText={e => setNome(e)}
             />
@@ -116,25 +122,20 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
               label='Descrição'
               multiline={true}
               placeholder="Descrição"
+              theme={theme}
               value={descricao}
               onChangeText={e => setDescricao(e)}
             />
-            {/* <TextInput
-            style={styles.modalText}
-            mode='outlined'
-            label='Data de Conclusão'
-            multiline={true}
-            placeholder="DD/MM/AAAA"
-            value={dataFinal}
-            onChangeText={e => setDataFinal(e)}
-          /> */}
-
             <DataPicker
+              theme={theme}
               selectedDate={dataFinal}
               onSelectDate={(date) => setDataFinal(date)}
+              confirmButtonColor={confirmButtonColor}
+              cancelButtonColor={cancelButtonColor}
             />
             <TouchableOpacity style = {styles.drop}>
             <DropdownComponent 
+              theme={theme}
               style={styles.drop}
               prioridade={prioridade}
               setPrioridade={setPrioridade}
@@ -145,19 +146,9 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
               <TouchableOpacity onPress={criarTarefa} style={styles.botaoCriar}>
                 <Text style={styles.buttonText}>Criar Tarefa</Text>
               </TouchableOpacity>
-              {/* <Button title="Adicionar Objetivo" onPress={criarObjetivo} color = {colors.verde}/> */}
             </View>
-
-
-            {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Button
-              title="Adicionar"
-              onPress={criarTarefa}
-              color={verdeEscuro}
-            />
-          </View> */}
           </View>
-        </PaperProvider>
+        
       </Modal>
     </View>
   );
@@ -184,7 +175,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   data: {
     flex: 1,

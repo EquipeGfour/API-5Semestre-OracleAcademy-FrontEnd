@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState } from 'react'
+import { Text,StyleSheet,TouchableOpacity,View  } from 'react-native'
+import DatePicker from 'react-native-date-picker'
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const colors = {
+export default () => {
+  const [date, setDate] = useState(new Date())
+  const [open, setOpen] = useState(false)
+
+  const formattedDate = date
+  ? format(date, 'dd/MM/yyyy', { locale: ptBR })
+  : 'Selecione a data';
+
+  const colors = {
     verde: "#51A8A2",
     azul: "#4974a5",
     roxo: "#51336b",
@@ -13,57 +23,35 @@ const colors = {
     rosa: "#FFC0CB", // Cor rosa personalizada
 };
 
-const DataPicker = ({ selectedDate, onSelectDate, stylesProps }) => {
-    const [isDatePickerVisible, setDatePickerVisible] = useState(false);
-
-    const showDatePicker = () => {
-        setDatePickerVisible(true);
-    };
-
-    const hideDatePicker = () => {
-        setDatePickerVisible(false);
-    };
-
-    const handleConfirm = (event, date) => {
-        if (date) {
-            onSelectDate(date);
-        }
-        hideDatePicker();
-    };
-
-    const formatDateForDisplay = (date) => {
-        if (date) {
-            const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-            const formattedDate = date.toLocaleDateString('pt-BR', options);
-            return formattedDate;
-        }
-        return 'Selecione a data';
-    };
-
-    return (
-        <View>
-            <TouchableOpacity onPress={showDatePicker} style={[styles.container, { borderColor: 'black' }, stylesProps?.container]}>
-                <View style={styles.container2}>
-                    <Text>
-                        {formatDateForDisplay(selectedDate)}
-                    </Text>
-                    <Icon name="calendar" size={20} color={colors.cinza} />
-                </View>
-            </TouchableOpacity>
-
-            {isDatePickerVisible && (
-                <DateTimePicker
-                    value={selectedDate}
-                    format="DD-MM-YYYY"
-                    mode="date"
-                    display="default"
-                    onChange={handleConfirm}
-                    locale="pt-BR"
-                />
-            )}
+  
+  return (
+    <>
+      <DatePicker
+        modal
+        open={open}
+        date={date}
+        mode = 'date'
+        title='Selecione a data'
+        confirmText="Confirmar" 
+        cancelText="Fechar" 
+        locale='pt-BR'
+        onConfirm={(date) => {
+            setOpen(false)
+            setDate(date)
+        }}
+        onCancel={() => {
+            setOpen(false)
+        }}
+      />
+        <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'black' }]}>
+        <View style={styles.container2}>
+            <Text>{formattedDate}</Text>
+            <Icon name="calendar" size={20} color={colors.cinza} />
         </View>
-    );
-};
+        </TouchableOpacity>
+    </>
+  )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -80,5 +68,3 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-
-export default DataPicker;
