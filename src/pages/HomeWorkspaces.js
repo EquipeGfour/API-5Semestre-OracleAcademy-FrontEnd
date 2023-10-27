@@ -10,6 +10,8 @@ import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-pape
 import AbaWorkspaces from "../components/workspaces/AbaTodasWorkspaces";
 import BottomBarTarefasWork from "../components/workspaces/tarefas/BottomBarTarefasWork";
 import { clearStorageItem, getStorageItem } from "../functions/encryptedStorageFunctions";
+import AbaCriadosWorkspace from "../components/workspaces/AbaCriadosWorkspace";
+import AbaFinalizadosWorkspace from "../components/workspaces/AbaFinalizadosWorkspace";
 
 
 
@@ -54,12 +56,12 @@ const HomeWorkspaces = ({ navigation }) => {
                 tabBarLabelStyle: { fontSize: 15 },
                 tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
                 tabBarIndicatorStyle: {
-                    backgroundColor: colors.roxo,
+                backgroundColor: colors.roxo,
                 },
             }}>
                 <Tab.Screen name="Workspaces" component={AbaWorkspaces}/>                
-                {/* <Tab.Screen name="Criados" component={Login} />
-                <Tab.Screen name="Finalizados" component={Login} /> */}
+                <Tab.Screen name="Criados" component={AbaCriadosWorkspace} />
+                <Tab.Screen name="Finalizados" component={AbaFinalizadosWorkspace} />
             </Tab.Navigator>
             <BottomBarWorkspaces/>
         </>
