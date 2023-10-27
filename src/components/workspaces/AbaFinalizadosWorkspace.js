@@ -4,8 +4,9 @@ import { Text } from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Card, Avatar } from 'react-native-paper';
 import { getStorageItem } from "../../functions/encryptedStorageFunctions";
-import { getWorkspaceCriados } from "../../service/workspace";
+import { getWorkspaceCriados, getWorkspaceFinalizados } from "../../service/workspace";
 import UserAvatar from "../genericos/UserAvatar";
+import { useIsFocused } from "@react-navigation/native";
 
 const colors = {
     verde: "#346c68",
@@ -19,9 +20,13 @@ const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 const AbaFinalizadosWorkspace = ({ navigation }) => {
 
     const [workspaces, setWorkspaces] = useState([]);
+
+    const isFocused = useIsFocused();
+
+
     const buscarWorkspace = async () => {
         const token = await getStorageItem('token');
-        getWorkspaceCriados(token).then((res) => {
+        getWorkspaceFinalizados(token).then((res) => {
             setWorkspaces(res.data)
             console.log(res.data)
         }).catch(error => {
@@ -31,7 +36,7 @@ const AbaFinalizadosWorkspace = ({ navigation }) => {
 
     useEffect(() => {
         buscarWorkspace();
-    }, [workspaces])
+    }, [isFocused])
 
 
 

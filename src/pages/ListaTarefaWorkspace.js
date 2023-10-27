@@ -11,6 +11,10 @@ import { getStorageItem } from '../functions/encryptedStorageFunctions';
 import { addUserToWorkspace, deleteWork, editarWork } from '../service/workspace';
 import { getTarefas } from '../service/tarefa';
 import Toast from 'react-native-toast-message';
+import AbaTarefasIniciadasWork from '../components/workspaces/tarefas/AbaTarefasIniciadasWork';
+import AbaTarefasValidacaoWork from '../components/workspaces/tarefas/AbaTarefasValidacaoWork';
+import AbaTarefasAtrasadasWork from '../components/workspaces/tarefas/AbaTarefasAtrasadasWork';
+import AbaTarefasConcluidasWork from '../components/workspaces/tarefas/AbaTarefasConcluidasWork';
 
 // --- Cores do Sistema ---
 const colors = {
@@ -243,16 +247,16 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
           {() => <AbaTodasWorkspace _id={_id} workspaceUsuarios={workspaceUsuarios} />}
         </Tab.Screen>
         <Tab.Screen name="Iniciadas" style={styles.filtros}>
-          {() => <AbaTodasWorkspace _id={_id} workspaceUsuarios={workspaceUsuarios} />}
+          {() => <AbaTarefasIniciadasWork _id={_id} workspaceUsuarios={workspaceUsuarios} />}
         </Tab.Screen>
         <Tab.Screen name="Validação" style={styles.filtros}>
-          {() => <AbaTodasWorkspace _id={_id} workspaceUsuarios={workspaceUsuarios} />}
+          {() => <AbaTarefasValidacaoWork _id={_id} workspaceUsuarios={workspaceUsuarios} />}
         </Tab.Screen>
         <Tab.Screen name="Atrasadas" style={styles.filtros}>
-          {() => <AbaTodasWorkspace _id={_id} workspaceUsuarios={workspaceUsuarios} />}
+          {() => <AbaTarefasAtrasadasWork _id={_id} workspaceUsuarios={workspaceUsuarios} />}
         </Tab.Screen>
         <Tab.Screen name="Concluidas" style={styles.filtros}>
-          {() => <AbaTodasWorkspace _id={_id} workspaceUsuarios={workspaceUsuarios} />}
+          {() => <AbaTarefasConcluidasWork _id={_id} workspaceUsuarios={workspaceUsuarios} />}
         </Tab.Screen>
       </Tab.Navigator>
       <BottomBarTarefasWork id={_id} style={{ flex: 1 }} />
