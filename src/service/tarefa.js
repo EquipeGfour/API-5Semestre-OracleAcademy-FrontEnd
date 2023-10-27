@@ -9,7 +9,7 @@ export const getTarefas = (id) => {
     return axios.get(`/tarefa/buscarTarefas/${id}`);
 }
 
-export const getTarefaById = (id) => {
+export const getTarefaById = (id, status) => {
     return axios.get(`/tarefa/buscarTarefa/${id}`);
 }
 
