@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {SafeAreaView, StyleSheet, Text, View, TouchableHighlight} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View,TouchableWithoutFeedback} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer'
 
 const colors = {
@@ -13,53 +14,13 @@ const colors = {
 };
 
 const Cronometro = () => {
-    const [isTimerStart, setIsTimerStart] = useState(false);
     const [isStopwatchStart, setIsStopwatchStart] = useState(false);
-    const [timerDuration, setTimerDuration] = useState(90000);
-    const [resetTimer, setResetTimer] = useState(false);
     const [resetStopwatch, setResetStopwatch] = useState(false);
 
-
-
 return (
-        <SafeAreaView style={styles.container}>
           <View style={styles.container}>
             <Text style={styles.title}>
-              TIMER
-            </Text>
-            <View style={styles.sectionStyle}>
-              <Timer
-                totalDuration={timerDuration}
-                msecs
-                start={isTimerStart}
-                reset={resetTimer}
-                options={options}
-                handleFinish={() => {
-                  alert('Timer Concluído!');
-                }}
-                getTime={(time) => {
-                  console.log(typeof(time));
-                }}
-              />
-              <TouchableHighlight
-                onPress={() => {
-                  setIsTimerStart(!isTimerStart);
-                  setResetTimer(false);
-                }}>
-                <Text style={styles.buttonText}>
-                  {!isTimerStart ? 'START' : 'STOP'}
-                </Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                onPress={() => {
-                  setIsTimerStart(false);
-                  setResetTimer(true);
-                }}>
-                <Text style={styles.buttonText}>RESET</Text>
-              </TouchableHighlight>
-            </View>
-            <Text style={styles.title}>
-              CRONÔMETRO
+              Cronômetro
             </Text>
             <View style={styles.sectionStyle}>
               <Stopwatch
@@ -72,64 +33,63 @@ return (
                   console.log(time);
                 }}
               />
-              <TouchableHighlight
+              <TouchableWithoutFeedback
                 onPress={() => {
                   setIsStopwatchStart(!isStopwatchStart);
                   setResetStopwatch(false);
                 }}>
-                <Text style={styles.buttonText}>
-                  {!isStopwatchStart ? 'START' : 'STOP'}
-                </Text>
-              </TouchableHighlight>
-              <TouchableHighlight
+                <Icon  style={styles.iconePlay} >                  
+                  {!isStopwatchStart ? <Icon name='play' size={20}/> :<Icon name='pause' size={20}/>}
+                </Icon>
+              </TouchableWithoutFeedback>
+              {/* <TouchableHighlight
                 onPress={() => {
                   setIsStopwatchStart(false);
                   setResetStopwatch(true);
                 }}>
                 <Text style={styles.buttonText}>RESET</Text>
-              </TouchableHighlight>
+              </TouchableHighlight> */}
             </View>
           </View>
-        </SafeAreaView>
+
       );
 
 };
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 20,
+      padding: 13,
+      marginTop:10
     },
     title: {
-      textAlign: 'center',
-      fontSize: 25,
+      fontSize: 16,
       fontWeight: 'bold',
-      padding: 20,
     },
     sectionStyle: {
-      flex: 1,
-      marginTop: 30,
-      alignItems: 'center',
+      marginTop:5,
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'right',
     },
-    buttonText: {
-      fontSize: 20,
-      marginTop: 10,
+    iconePlay: {
+      marginTop: 5,
+      marginLeft: 10,
+      color:colors.verde
     },
-  });
-  
+  });  
   const options = {
     container: {
-      backgroundColor: 'blue',
-      padding: 5,
+      marginLeft:10,
+      height: 30,
+      width: 150,
+      borderColor: 'black',
+      borderWidth: 0.7,
       borderRadius: 5,
-      width: 200,
-      alignItems: 'center',
+      paddingHorizontal: 8,    
     },
     text: {
-      fontSize: 25,
-      color: 'white',
+      fontSize: 20,
+      color: colors.cinza,
       marginLeft: 7,
     },
   };
