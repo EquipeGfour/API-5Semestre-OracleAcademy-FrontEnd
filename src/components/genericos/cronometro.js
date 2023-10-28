@@ -13,7 +13,7 @@ const colors = {
     rosa: "#FFC0CB", // Cor rosa personalizada
 };
 
-const Cronometro = () => {
+const Cronometro = (props) => {
     const [isStopwatchStart, setIsStopwatchStart] = useState(false);
     const [resetStopwatch, setResetStopwatch] = useState(false);
 
@@ -26,10 +26,11 @@ return (
               <Stopwatch
                 laps
                 msecs
+                // startTime={1000}
                 start={isStopwatchStart}
                 reset={resetStopwatch}
                 options={options}
-                getTime={(time) => {
+                getMsecs={(time) => {
                   console.log(time);
                 }}
               />
@@ -39,7 +40,7 @@ return (
                   setResetStopwatch(false);
                 }}>
                 <Icon style={styles.iconePlay} >                  
-                  {!isStopwatchStart ? <Icon name='play' size={20}/> :<Icon name='pause' size={20}/>}
+                  {!isStopwatchStart ? <Icon name='play' size={20} color={props.btnColor}/> : <Icon name='pause' size={20}/>}
                 </Icon>
               </TouchableWithoutFeedback>
               {/* <TouchableHighlight

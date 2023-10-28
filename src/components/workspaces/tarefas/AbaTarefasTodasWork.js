@@ -401,7 +401,8 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                     <Cronometro
                       onPress={() => {
                       setIsStopwatchStart(!isStopwatchStart);
-                      setResetStopwatch(false)}}>                    
+                      setResetStopwatch(false)}}
+                      btnColor={colors.roxo}>                    
                     </Cronometro>
                 </View>
               </View>

@@ -248,7 +248,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                     onPress={() => {
                                     setIsStopwatchStart(!isStopwatchStart);
                                     setResetStopwatch(false);
-                                    }}>
+                                    }}
+                                    btnColor={colors.verde}
+                                    >
+
                                 </Cronometro>
                         </View>
                     </View>
