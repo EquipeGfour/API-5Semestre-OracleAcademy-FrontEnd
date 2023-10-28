@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import BemVindo from "./BemVindo";
-import Login from "./Login";
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text } from "react-native-paper";
 import BottomBarObjetivos from "../components/objetivos/BottomBarObjetivos";
 import Recentes from "../components/objetivos/AbaRecentes";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { clearStorageItem, getStorageItem } from "../functions/encryptedStorageFunctions";
+import Concluidas from "../components/objetivos/AbaConcluidas";
+import Atrasasdas from "../components/objetivos/AbaAtrasadas";
+
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -53,10 +54,9 @@ const Home = ({ navigation }) => {
                 },
             }}>
                 <Tab.Screen name="Recentes" component={Recentes} />
-                {/*
-                    <Tab.Screen name="Concluidas" component={Recentes} />
-                    <Tab.Screen name="Atrasadas" component={Recentes} />
-                */}
+                <Tab.Screen name="Concluidas" component={Concluidas} />
+                <Tab.Screen name="Atrasadas" component={Atrasasdas} />
+               
             </Tab.Navigator>
             <BottomBarObjetivos style={styles.container}/>
         </>
