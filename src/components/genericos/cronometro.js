@@ -20,7 +20,7 @@ const Cronometro = () => {
 return (
           <View style={styles.container}>
             <Text style={styles.title}>
-              Cronômetro
+              Timer
             </Text>
             <View style={styles.sectionStyle}>
               <Stopwatch
@@ -38,7 +38,7 @@ return (
                   setIsStopwatchStart(!isStopwatchStart);
                   setResetStopwatch(false);
                 }}>
-                <Icon  style={styles.iconePlay} >                  
+                <Icon style={styles.iconePlay} >                  
                   {!isStopwatchStart ? <Icon name='play' size={20}/> :<Icon name='pause' size={20}/>}
                 </Icon>
               </TouchableWithoutFeedback>
@@ -51,35 +51,32 @@ return (
               </TouchableHighlight> */}
             </View>
           </View>
-
       );
 
 };
 
 const styles = StyleSheet.create({
     container: {
-      padding: 13,
-      marginTop:10
+      padding: 9,
+      marginTop:0
     },
     title: {
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: 'bold',
     },
     sectionStyle: {
-      marginTop:5,
+      marginTop:2,
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'right',
     },
     iconePlay: {
       marginTop: 5,
-      marginLeft: 10,
-      color:colors.verde
+      marginLeft: 15,
     },
   });  
   const options = {
     container: {
-      marginLeft:10,
       height: 30,
       width: 150,
       borderColor: 'black',

@@ -9,6 +9,7 @@ import { deleteTarefa, getTarefas, editTarefa } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
+import Cronometro from '../../genericos/cronometro';
 
 const verdeEscuro = "#346c68";
 const colors = {
@@ -33,6 +34,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const [editingDescription, setEditingDescription] = useState("");
     const [editingEstimatedDate, setEditingEstimatedDate] = useState(new Date());
     const [editingPriority, setEditingPriority] = useState(1);
+
+    // ----- Timer -----
+    const [isStopwatchStart, setIsStopwatchStart] = useState(false);
+    const [resetStopwatch, setResetStopwatch] = useState(false);
 
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -237,6 +242,16 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                             <Text style={styles.textos}>{getPrioridadeTitle(tarefa.prioridade)}</Text>
                         </View>
                     </View>
+                    <View style={styles.espacamentoTimer}>
+                        <View style={styles.iconContainer}>
+                                <Cronometro
+                                    onPress={() => {
+                                    setIsStopwatchStart(!isStopwatchStart);
+                                    setResetStopwatch(false);
+                                    }}>
+                                </Cronometro>
+                        </View>
+                    </View>
                 </View>
             </Modal>
 
@@ -338,10 +353,16 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     espacamento: {
-        marginTop: 45,
+        marginTop: 35,
         flexDirection: 'row',
         alignItems: 'center',
         marginLeft: 10
+    },
+    espacamentoTimer: {
+        marginTop: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 0
     },
     modal: {
         backgroundColor: 'white',

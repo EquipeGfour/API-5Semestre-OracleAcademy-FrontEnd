@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { editarTarefaWork } from '../../../service/workspace';
+import Cronometro from '../../genericos/cronometro';
 
 // --- Cores do Sistema ---
 const colors = {
@@ -26,6 +27,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
+
+  // ----- Timer -----
+  const [isStopwatchStart, setIsStopwatchStart] = useState(false);
+  const [resetStopwatch, setResetStopwatch] = useState(false);
 
   // --- Modal Visualizar Tarefa Workspace ---
   const [tarefaSelecionada, setTarefaSelecionado] = useState(null)
@@ -391,6 +396,15 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                   <DropdwnGenerico data={data} label="Status" />
                 </View>
               </View>
+              <View style={styles.espacamentoTimer}>
+                <View style={styles.iconContainer}>
+                    <Cronometro
+                      onPress={() => {
+                      setIsStopwatchStart(!isStopwatchStart);
+                      setResetStopwatch(false)}}>                    
+                    </Cronometro>
+                </View>
+              </View>
               <View style={styles.espacamento}>
                 <View style={styles.iconContainer}>
                   <Text>Membros</Text>
@@ -435,10 +449,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 10,
   },
+  espacamentoTimer: {
+    marginTop: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 0
+  },
   textoCheck: {
     marginRight: '50%',
   },
-   iconContainerTittle: {
+  iconContainerTittle: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'right',
@@ -551,8 +571,7 @@ prioridadeContainer:{
 },
 dataPickerContainer: {
   left: -23,  
-  padding: 25, 
-  
+  padding: 25,   
 },
 });
 

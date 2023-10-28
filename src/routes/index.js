@@ -18,7 +18,7 @@ export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(
         <NavigationContainer>
-            <Stack.Navigator initialRouteName = "Cronometro" screenOptions={{headerShown:false}} >
+            <Stack.Navigator initialRouteName = "Bem-vindo" screenOptions={{headerShown:false}} >
                 <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
                 <Stack.Screen name ='Home' component={Home}/>
                 <Stack.Screen name = "Login" component = {Login} />
