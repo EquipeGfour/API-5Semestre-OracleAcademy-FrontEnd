@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-export default () => {
+export default (props) => {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
 
@@ -29,20 +29,25 @@ export default () => {
       <DatePicker
         modal
         open={open}
-        date={date}
-        mode = 'date'
-        title='Selecione a data'
-        confirmText="Confirmar" 
-        cancelText="Fechar" 
-        locale='pt-BR'
-        onConfirm={(date) => {
-            setOpen(false)
-            setDate(date)
+        date={props.selectedDate?new Date(props.selectedDate):new Date()}
+        mode="date"
+        title="Selecione a data"
+        confirmText="Confirmar"
+        cancelText="Fechar"
+        locale="pt-BR"
+        onConfirm={(dataFinal) => {
+          setOpen(false);
+          props.onSelectDate(dataFinal)
+          setDate(dataFinal); // Atualize a variável date com a data selecionada
+          console.log(dataFinal, 'datepicker')
         }}
         onCancel={() => {
-            setOpen(false)
+          setOpen(false);
         }}
       />
+
+
+      
         <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'black' }]}>
         <View style={styles.container2}>
             <Text>{formattedDate}</Text>

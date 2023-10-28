@@ -14,7 +14,7 @@ import DropdownComponent from './DropDownPrioridadeTarefas';
 import BemVindo from '../../../pages/BemVindo';
 import { postTarefa } from '../../../service/tarefa';
 import Toast from 'react-native-toast-message';
-import DataPicker from '../../genericos/dataPicker';
+import DatePicker from '../../genericos/dataPicker';
 
 
 
@@ -126,12 +126,13 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
               value={descricao}
               onChangeText={e => setDescricao(e)}
             />
-            <DataPicker
+            <DatePicker
               theme={theme}
               selectedDate={dataFinal}
               onSelectDate={(date) => setDataFinal(date)}
               confirmButtonColor={confirmButtonColor}
               cancelButtonColor={cancelButtonColor}
+              
             />
             <TouchableOpacity style = {styles.drop}>
             <DropdownComponent 
