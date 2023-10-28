@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdwnGenerico from '../../genericos/DropdownGenerico';
 import UserAvatar from '../../genericos/UserAvatar';
 import { getStorageItem } from "../../../functions/encryptedStorageFunctions";
-import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas } from '../../../service/tarefa';
+import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, getTarefasConclidasWorkspace } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
@@ -102,7 +102,7 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
 
   // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
-    getTarefas(_id).then((res) => {
+    getTarefasConclidasWorkspace(_id).then((res) => {
       setTarefas(res.data);
     }).catch(error => {
       console.error('Erro', error)
