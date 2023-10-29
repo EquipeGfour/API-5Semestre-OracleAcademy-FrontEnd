@@ -26,3 +26,11 @@ export const deleteTarefa = (idTarefa) => {
 export const editTarefa = (idTarefa, tarefaEdited) => {
     return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited)
 }
+
+export const getTarefaTime = (idTarefa) => {
+    return axios.get(`/tarefa/buscarCronometro/${idTarefa}`)
+}
+
+export const updateTarefaTime = (idTarefa, data) => {
+    return axios.put(`/tarefa/atualizarCronometro/${idTarefa}`, data)
+}

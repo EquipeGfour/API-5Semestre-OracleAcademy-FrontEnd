@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,memo } from 'react';
 import { View, TouchableWithoutFeedback, Button, ScrollView, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, DefaultTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../../../pages/Login';
-import { deleteTarefa, getTarefas, editTarefa } from '../../../service/tarefa';
+import { deleteTarefa, getTarefas, editTarefa, getTarefaTime, updateTarefaTime } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
 import Cronometro from '../../genericos/cronometro';
+
 
 const verdeEscuro = "#346c68";
 const colors = {
@@ -38,6 +39,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     // ----- Timer -----
     const [isStopwatchStart, setIsStopwatchStart] = useState(false);
     const [resetStopwatch, setResetStopwatch] = useState(false);
+    const [tempoDecorrido, setTempoDecorrido] = useState(0)
 
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -82,10 +84,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     };
 
-    const closeModal = () => { setModalVisible(false) };
-
+    const closeModal = () => {setModalVisible(false)};
     const showModal = () => setVisible(true);
-    const hideModal = () => setVisible(false);
+    const hideModal = () => {setVisible(false); buscarTarefas(); setTarefa("")};
 
 
     const getPrioridadeTitle = (prioridade) => {
@@ -123,6 +124,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const buscarTarefas = () => {
         setFlagTarefa(false)
         getTarefas(id).then((res) => {
+            console.log(res.data);
             const novaLista = res.data.map((tarefa) => ({
                 ...tarefa,
                 checked: false,
@@ -132,6 +134,21 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             console.error(error)
         });
     }
+
+    // --- Buscar Tempo Cronometro ---
+
+    const putTime = (time) => {
+        const obj ={
+            cronometro: time
+        }
+        console.log(time,'logo do time');
+        updateTarefaTime(tarefa._id, obj).then((res) => {
+            console.log(obj,res.data, "UPDATEEEEEEEEEEEEEEEEE");
+        }).catch(error => {
+            console.error(error.response, 'tem ')
+        });
+    }
+
 
     const toggleSelection = (index) => {
         const updatedProdutos = tarefas.map((tarefa, i) => {
@@ -151,7 +168,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         setTarefa(tarefa)
         showModal()
     };
-
 
     useEffect(() => {
         buscarTarefas();
@@ -244,15 +260,17 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                     </View>
                     <View style={styles.espacamentoTimer}>
                         <View style={styles.iconContainer}>
-                                <Cronometro
-                                    onPress={() => {
-                                    setIsStopwatchStart(!isStopwatchStart);
-                                    setResetStopwatch(false);
-                                    }}
+                            {tarefa!==""?(<Cronometro
+                                    // onPress={() => {                                                    
+                                    // setIsStopwatchStart(!isStopwatchStart);
+                                    // setResetStopwatch(false);
+                                    // }}
                                     btnColor={colors.verde}
+                                    tempoInicial={tarefa.cronometro || 0}
+                                    // id={tarefa._id}
+                                    getTarefaTime={putTime}
                                     >
-
-                                </Cronometro>
+                                </Cronometro>):<></>}
                         </View>
                     </View>
                 </View>
@@ -304,7 +322,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                     <Text style={styles.buttonText}>Salvar</Text>
                                 </TouchableOpacity>
                             </View>
-
                         </View>
                     </View>
                 </PaperProvider>
@@ -314,6 +331,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     );
 };
 
+const teste = memo(AbaTodasTarefas)
 const styles = StyleSheet.create({
     drop: {
         paddingTop: 20
@@ -430,4 +448,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AbaTodasTarefas;
+export default teste;

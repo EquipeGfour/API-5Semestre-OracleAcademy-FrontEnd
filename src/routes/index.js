@@ -14,6 +14,7 @@ import AbaTarefasWorkspace from '../components/workspaces/tarefas/AbaTarefasToda
 import CadastroUsuario from '../pages/CadastroUsuario';
 import Cronometro from '../components/genericos/cronometro';
 
+
 export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(

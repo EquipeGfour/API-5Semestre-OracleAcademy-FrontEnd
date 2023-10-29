@@ -398,12 +398,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
               </View>
               <View style={styles.espacamentoTimer}>
                 <View style={styles.iconContainer}>
-                    <Cronometro
-                      onPress={() => {
-                      setIsStopwatchStart(!isStopwatchStart);
-                      setResetStopwatch(false)}}
-                      btnColor={colors.roxo}>                    
-                    </Cronometro>
+                  <Cronometro></Cronometro>
                 </View>
               </View>
               <View style={styles.espacamento}>

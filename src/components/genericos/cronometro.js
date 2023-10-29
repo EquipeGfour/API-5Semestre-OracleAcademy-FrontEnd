@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import {SafeAreaView, StyleSheet, Text, View,TouchableWithoutFeedback} from 'react-native';
+import React, { useState,useEffect, memo } from 'react';
+import {SafeAreaView, StyleSheet, Text, View,TouchableWithoutFeedback, TouchableHighlight} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer'
+import { updateTarefaTime } from '../../service/tarefa';
+import { Button } from 'react-native-paper';
 
 const colors = {
     verde: "#51A8A2",
@@ -16,6 +18,22 @@ const colors = {
 const Cronometro = (props) => {
     const [isStopwatchStart, setIsStopwatchStart] = useState(false);
     const [resetStopwatch, setResetStopwatch] = useState(false);
+    const [time,setTime] = useState(0);
+    const [tempoInicial, setTempoInicial] = useState(0)
+    const [timeSend,setTimeSend] = useState(false)
+
+    const sendTime = (t) => {
+        if (!isStopwatchStart && timeSend){
+          console.log(t, 'log do T');
+          props.getTarefaTime && props.getTarefaTime(t)
+        }
+        setTimeSend(false)
+      }    
+
+    useEffect(() => {
+      console.log(props.tempoInicial, 'TESTEE');
+      setTempoInicial(props.tempoInicial);
+  }, [props.tempoInicial])
 
 return (
           <View style={styles.container}>
@@ -23,34 +41,23 @@ return (
               Timer
             </Text>
             <View style={styles.sectionStyle}>
-              <Stopwatch
-                laps
-                msecs
-                // startTime={1000}
-                start={isStopwatchStart}
-                reset={resetStopwatch}
-                options={options}
-                getMsecs={(time) => {
-                  console.log(time);
-                }}
-              />
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  setIsStopwatchStart(!isStopwatchStart);
-                  setResetStopwatch(false);
-                }}>
-                <Icon style={styles.iconePlay} >                  
-                  {!isStopwatchStart ? <Icon name='play' size={20} color={props.btnColor}/> : <Icon name='pause' size={20}/>}
-                </Icon>
-              </TouchableWithoutFeedback>
-              {/* <TouchableHighlight
-                onPress={() => {
-                  setIsStopwatchStart(false);
-                  setResetStopwatch(true);
-                }}>
-                <Text style={styles.buttonText}>RESET</Text>
-              </TouchableHighlight> */}
-            </View>
+          <Stopwatch
+            laps
+            msecs
+            startTime={props.tempoInicial}
+            start={isStopwatchStart}
+            options={options}
+            getMsecs={sendTime}
+          />
+          <Button
+            onPress={() => {
+              setTimeSend(true)
+              setIsStopwatchStart(!isStopwatchStart);
+            }}>
+              <Icon style={styles.iconePlay} name={!isStopwatchStart ? "play":"pause"} size={20} color={props.btnColor}>                  
+              </Icon>
+          </Button>
+        </View>
           </View>
       );
 
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
       borderColor: 'black',
       borderWidth: 0.7,
       borderRadius: 5,
-      paddingHorizontal: 8,    
+      paddingHorizontal: 8,
     },
     text: {
       fontSize: 20,
