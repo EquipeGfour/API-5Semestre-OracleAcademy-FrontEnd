@@ -22,17 +22,18 @@ const Cronometro = (props) => {
     const [tempoInicial, setTempoInicial] = useState(0)
     const [timeSend,setTimeSend] = useState(false)
 
-    const sendTime = (t) => {
-        if (!isStopwatchStart && timeSend){
-          console.log(t, 'log do T');
-          props.getTarefaTime && props.getTarefaTime(t)
-        }
-        setTimeSend(false)
-      }    
+    // const sendTime = (t) => {
+    //     if (!isStopwatchStart && timeSend){
+    //       console.log(t, 'log do T');
+
+    //     }
+    //     setTimeSend(false)
+    //   }    
 
     useEffect(() => {
-      console.log(props.tempoInicial, 'TESTEE');
+      console.log(props.play, 'TESTEE');
       setTempoInicial(props.tempoInicial);
+      setIsStopwatchStart(props.play)
   }, [props.tempoInicial])
 
 return (
@@ -47,11 +48,11 @@ return (
             startTime={props.tempoInicial}
             start={isStopwatchStart}
             options={options}
-            getMsecs={sendTime}
           />
           <Button
             onPress={() => {
-              setTimeSend(true)
+              // setTimeSend(true)
+              props.getTarefaTime && props.getTarefaTime()
               setIsStopwatchStart(!isStopwatchStart);
             }}>
               <Icon style={styles.iconePlay} name={!isStopwatchStart ? "play":"pause"} size={20} color={props.btnColor}>                  

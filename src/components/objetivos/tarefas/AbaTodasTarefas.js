@@ -135,15 +135,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         });
     }
 
-    // --- Buscar Tempo Cronometro ---
-
-    const putTime = (time) => {
-        const obj ={
-            cronometro: time
-        }
-        console.log(time,'logo do time');
-        updateTarefaTime(tarefa._id, obj).then((res) => {
-            console.log(obj,res.data, "UPDATEEEEEEEEEEEEEEEEE");
+    // --- Cronometro ---
+    const putTime = () => {
+        updateTarefaTime(tarefa._id).then((res) => {
+            console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
         }).catch(error => {
             console.error(error.response, 'tem ')
         });
@@ -265,6 +260,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                     // setIsStopwatchStart(!isStopwatchStart);
                                     // setResetStopwatch(false);
                                     // }}
+                                    play={tarefa.play || false}
                                     btnColor={colors.verde}
                                     tempoInicial={tarefa.cronometro || 0}
                                     // id={tarefa._id}

@@ -31,6 +31,6 @@ export const getTarefaTime = (idTarefa) => {
     return axios.get(`/tarefa/buscarCronometro/${idTarefa}`)
 }
 
-export const updateTarefaTime = (idTarefa, data) => {
-    return axios.put(`/tarefa/atualizarCronometro/${idTarefa}`, data)
+export const updateTarefaTime = (idTarefa) => {
+    return axios.put(`/tarefa/atualizarCronometro/${idTarefa}`)
 }
