@@ -59,9 +59,9 @@ const HomeWorkspaces = ({ navigation }) => {
                 backgroundColor: colors.roxo,
                 },
             }}>
-                <Tab.Screen name="Workspaces" component={AbaWorkspaces}/>                
-                <Tab.Screen name="Criados" component={AbaCriadosWorkspace} />
-                <Tab.Screen name="Finalizados" component={AbaFinalizadosWorkspace} />
+                <Tab.Screen name="Todos" component={AbaWorkspaces}/>                
+                <Tab.Screen name="Meus Workspaces" component={AbaCriadosWorkspace} />
+                <Tab.Screen name="Workspaces faço parte" component={AbaFinalizadosWorkspace} />
             </Tab.Navigator>
             <BottomBarWorkspaces/>
         </>

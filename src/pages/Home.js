@@ -53,9 +53,7 @@ const Home = ({ navigation }) => {
                     backgroundColor: "#51A8A2"
                 },
             }}>
-                <Tab.Screen name="Recentes" component={Recentes} />
-                <Tab.Screen name="Concluidas" component={Concluidas} />
-                <Tab.Screen name="Atrasadas" component={Atrasasdas} />
+                <Tab.Screen name="Todas" component={Recentes} />
                
             </Tab.Navigator>
             <BottomBarObjetivos style={styles.container}/>
