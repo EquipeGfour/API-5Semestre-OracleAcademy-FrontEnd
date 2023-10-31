@@ -11,22 +11,32 @@ export const getTarefas = (id) => {
 
 //Usado em components/workspace/tarefas/AbaTarefasConcluidasWorkspace
 export const getTarefasConclidasWorkspace = (id) => {
-    return axios.get(`tarefa/buscarTarefasStatus`);
+    return axios.get(`tarefa/buscarTarefasStatus/`, {params:{id, status:1}});
 }
+
+/*
+enum STATUS{
+    COMPLETO = 1,
+    EM_ANDAMENTO = 2,
+    NAO_INICIADO = 3,
+    ATRASADO = 4 , 
+    AGUARDANDO_VALIDACAO = 5
+}
+*/
 
 //Usado em components/workspace/tarefas/AbaTarefasAtrasadasWorkspace
 export const getTarefasAtrasadasWorkspace = (id) => {
-    return axios.get(`tarefa/buscarTarefasStatus`);
+    return axios.get(`tarefa/buscarTarefasStatus/`, {params:{id, status:4}});
 }
 
 //Usado em components/workspace/tarefas/AbaTarefasIniciadasWorkspace
 export const getTarefasIniciadasWorkspace = (id) => {
-    return axios.get(`tarefa/buscarTarefasStatus`);
+    return axios.get(`tarefa/buscarTarefasStatus/`, {params:{id, status:2}});
 }
 
 //Usado em components/workspace/tarefas/AbaTarefasValidacaoWorkspace
 export const getTarefasValidacaoWorkspace = (id) => {
-    return axios.get(`tarefa/buscarTarefasStatus`);
+    return axios.get(`tarefa/buscarTarefasStatus/`, {params:{id, status:5}});
 }
 
 //Usado em components/objetivos/tarefas/AbaHojeTarefas
@@ -36,12 +46,12 @@ export const getTarefasHoje = (id) => {
 
 //Usado em components/objetivos/tarefas/AbaAtrasadasTarefas
 export const getTarefasAtrasadas = (id) => {
-    return axios.get(`/tarefa/buscarTarefas/${id}`);
+    return axios.get(`/tarefa/buscarTarefasStatus/`, {params:{id, status:4}});
 }
 
 //Usado em components/objetivos/tarefas/AbaConcluidasTarefas
 export const getTarefasConclidas = (id) => {
-    return axios.get(`/tarefa/buscarTarefas/${id}`);
+    return axios.get(`/tarefa/buscarTarefasStatus/`, {params:{id, status:1}});
 }
 
 export const getTarefaById = (id, status) => {

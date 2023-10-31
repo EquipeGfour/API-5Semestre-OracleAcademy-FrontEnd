@@ -13,6 +13,8 @@ import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { editarTarefaWork } from '../../../service/workspace';
+import { useIsFocused } from "@react-navigation/native";
+
 
 // --- Cores do Sistema ---
 const colors = {
@@ -26,6 +28,8 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
+  const isFocused = useIsFocused();
+
 
   // --- Modal Visualizar Tarefa Workspace ---
   const [tarefaSelecionada, setTarefaSelecionado] = useState(null)
@@ -160,8 +164,8 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
     })
 }
   useEffect(() => {
-    buscarTarefasWorkspace();
-  }, [])
+    if (isFocused) buscarTarefasWorkspace();
+  }, [isFocused])
 
   // --- Adicionar Usuário a uma Tarefa ---
   const adicionarUsuario = (usuario) => {

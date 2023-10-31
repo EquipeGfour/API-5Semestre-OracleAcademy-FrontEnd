@@ -25,7 +25,6 @@ const AbaCriadosWorkspace = ({ navigation }) => {
         const token = await getStorageItem('token');
         getWorkspaceCriados(token).then((res) => {
             setWorkspaces(res.data)
-            console.log('sjfjsa',res.data)
         }).catch(error => {
             console.error('Erro', error.response);
         });

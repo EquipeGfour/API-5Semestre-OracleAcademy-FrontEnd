@@ -211,9 +211,9 @@ const ListaTarefas = ({route, navigation}) => {
                         backgroundColor: '#51A8A2',
                     },
                 }}>
-                <Tab.Screen name="Hoje">
+                {/* <Tab.Screen name="Hoje">
                     {() => <AbaHojeTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
-                </Tab.Screen>
+                </Tab.Screen> */}
                 <Tab.Screen name="Todas">
                     {() => <AbaTodasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
                 </Tab.Screen>
@@ -223,9 +223,6 @@ const ListaTarefas = ({route, navigation}) => {
                 <Tab.Screen name="Concluídas">
                     {() => <AbaConcluidasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
                 </Tab.Screen>
-                {/* <Tab.Screen name="Todas" component={Login} /> */}
-                {/* <Tab.Screen name="Atrasadas" component={BemVindo} />
-                <Tab.Screen name="Concluídas" component={BemVindo} /> */}
             </Tab.Navigator>
             <BottomBarTarefas criouTarefa={criouTarefa} objetivo={{titulo, descricao, data_estimada, prioridade, _id}}/>
         </View>
