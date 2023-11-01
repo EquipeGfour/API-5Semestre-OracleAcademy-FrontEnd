@@ -22,6 +22,7 @@ const BemVindo = ({ navigation }) => (
             <Text style={styles.textobtn}>Cadastre-se</Text>
         </TouchableOpacity>
         <Text style={styles.empresa}>Desenvolvido por GFour Soluções Digitais</Text>
+
     </View>
 );
 
