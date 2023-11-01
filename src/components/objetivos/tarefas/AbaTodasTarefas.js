@@ -256,14 +256,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                     <View style={styles.espacamentoTimer}>
                         <View style={styles.iconContainer}>
                             {tarefa!==""?(<Cronometro
-                                    // onPress={() => {                                                    
-                                    // setIsStopwatchStart(!isStopwatchStart);
-                                    // setResetStopwatch(false);
-                                    // }}
                                     play={tarefa.play || false}
                                     btnColor={colors.verde}
                                     tempoInicial={tarefa.cronometro || 0}
-                                    // id={tarefa._id}
                                     getTarefaTime={putTime}
                                     >
                                 </Cronometro>):<></>}

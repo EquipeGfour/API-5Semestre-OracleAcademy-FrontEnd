@@ -17,18 +17,6 @@ const colors = {
 
 const Cronometro = (props) => {
     const [isStopwatchStart, setIsStopwatchStart] = useState(false);
-    const [resetStopwatch, setResetStopwatch] = useState(false);
-    const [time,setTime] = useState(0);
-    const [tempoInicial, setTempoInicial] = useState(0)
-    const [timeSend,setTimeSend] = useState(false)
-
-    // const sendTime = (t) => {
-    //     if (!isStopwatchStart && timeSend){
-    //       console.log(t, 'log do T');
-
-    //     }
-    //     setTimeSend(false)
-    //   }    
 
     useEffect(() => {
       console.log(props.play, 'TESTEE');
@@ -51,7 +39,6 @@ return (
           />
           <Button
             onPress={() => {
-              // setTimeSend(true)
               props.getTarefaTime && props.getTarefaTime()
               setIsStopwatchStart(!isStopwatchStart);
             }}>
