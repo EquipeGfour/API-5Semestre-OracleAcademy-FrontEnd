@@ -138,10 +138,9 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 const styles = StyleSheet.create({
     prioridadeContainer:{
         marginTop: -15,
-        marginLeft: -12
     },
     dataPickerContainer: {
-        left: -64,  
+        left: -55,  
         padding: 25, 
         
     },
