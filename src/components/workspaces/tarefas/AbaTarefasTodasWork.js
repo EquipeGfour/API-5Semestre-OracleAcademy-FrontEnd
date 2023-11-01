@@ -5,14 +5,14 @@ import BottomBarTarefasWork from './BottomBarTarefasWork';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdwnGenerico from '../../genericos/DropdownGenerico';
 import UserAvatar from '../../genericos/UserAvatar';
-import { getStorageItem } from "../../../functions/encryptedStorageFunctions";
+import { getStorageItem, storageItem } from "../../../functions/encryptedStorageFunctions";
 import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, updateTarefaTime } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
-import { editarTarefaWork } from '../../../service/workspace';
+import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
 import Cronometro from '../../genericos/cronometro';
 
 // --- Cores do Sistema ---
@@ -27,6 +27,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
+  const [status,setStatus] = useState(3)
 
   // ----- Timer -----
   const [isStopwatchStart, setIsStopwatchStart] = useState(false);
@@ -38,11 +39,13 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     getTarefaById(_id).then((res) => {
       setModalVisible(!isModalVisible);
       setTarefaSelecionado(res.data)
+      setStatus(res.data.status)
     })
   };
 
   const closeModal = () => {
     setModalVisible(false);
+    editarStatusTarefa()
     buscarTarefasWorkspace();
     setTarefaSelecionado("")
   };
@@ -166,6 +169,27 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
         console.log(id);
     })
 }
+
+// --- Alterar Status da Tarefa ---
+const editarStatusTarefa = async() => {
+  const token = await getStorageItem('token');
+  const obj = {
+    status: status
+  }
+  console.log(_id, 'AQuiiii');
+  editarStatusTarefaWork(_id,tarefaSelecionada._id, obj, token).then(res =>{
+  }).catch(error => {
+    console.log(error);
+    Toast.show({
+        type: 'error',
+        text1: 'Ocorreu algum problema...',
+    })
+  })
+
+}
+// --- UseEffect Status ---
+
+
   useEffect(() => {
     buscarTarefasWorkspace();
   }, [])
@@ -404,7 +428,12 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
               </View>
               <View style={styles.espacamento}>
                 <View style={styles.iconContainer}>
-                  <DropdwnGenerico data={data} label="Status" />
+                  <DropdwnGenerico 
+                    data={data} 
+                    label="Status" 
+                    status={status}
+                    setStatus={setStatus}
+                  />
                 </View>
               </View>
               <View style={styles.espacamentoTimer}>
