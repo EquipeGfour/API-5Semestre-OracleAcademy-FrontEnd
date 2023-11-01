@@ -26,7 +26,7 @@ const FileUpload = ({ onFileSelected }) => {
   return (
     <View>
       <TouchableOpacity onPress={handleFileSelect}>
-      <Icon name="home" style={styles.icons} size={20} />
+      <Icon name="file" style={styles.icons} size={20} />
 
       </TouchableOpacity>
     </View>

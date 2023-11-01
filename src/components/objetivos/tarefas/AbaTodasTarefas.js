@@ -174,11 +174,14 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             console.log('Nome do arquivo:', file[0].name);
             setSelectedFileName(file[0].name);
         } else {
-            // Lida com o caso em que o nome do arquivo não está disponível
             setSelectedFileName('Nome do arquivo não disponível');
         }
     };
 
+    const handleClearAttachment = () => {
+        setSelectedFileName('');
+    };
+    
     return (
         <>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
@@ -214,6 +217,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
             <Modal visible={visible} onDismiss={hideModal}>
                 <View style={styles.modal}>
+                
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ ...styles.iconContainer, width: '75%' }} >
                             <Checkbox
@@ -225,11 +229,11 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                             <Text style={styles.textoCheck}>{tarefa.titulo}</Text>
                         </View>
                         <View style={styles.iconContainerTittle}>
-                            <Icon name="edit" style={styles.icons} size={20} onPress={openEditModal} />
-                            <Icon name="trash" style={styles.icons} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
                             <View style={styles.icons}>
                                 <FileUpload onFileSelected={handleFileSelected} />
                             </View>
+                            <Icon name="edit" style={styles.icons} size={20} onPress={openEditModal} />
+                            <Icon name="trash" style={styles.icons} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
                         </View>
                     </View>
                     <View style={styles.espacamento}>
@@ -251,8 +255,15 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         </View>
                     </View>
                     <View style={styles.espacamento}>
-                        {selectedFileName && <Text style={styles.fileNameText}>Selecionado: {selectedFileName}</Text>}
+                        <Text style= {styles.fileNameText}>Anexos:</Text>
+                        {selectedFileName && <Text style={styles.textos}>{selectedFileName}</Text>}
+                        {selectedFileName && (
+                            <TouchableOpacity onPress={handleClearAttachment}>
+                                <Icon name="times-circle" size={20} color='red' marginLeft = {10} />
+                            </TouchableOpacity>
+                        )}
                     </View>
+
 
                 </View>
             </Modal>
@@ -314,6 +325,19 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 };
 
 const styles = StyleSheet.create({
+
+    anexoContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+
+    detailsContainer: {
+        flexDirection: 'column',
+    },
+
+    
+
     fileNameText: {
         color: 'black',
         fontSize: 17,
