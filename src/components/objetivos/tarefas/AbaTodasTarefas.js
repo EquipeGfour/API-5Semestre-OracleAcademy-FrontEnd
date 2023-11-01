@@ -9,6 +9,7 @@ import { deleteTarefa, getTarefas, editTarefa } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
+import FileUpload from '../../genericos/Upload';
 
 const verdeEscuro = "#346c68";
 const colors = {
@@ -167,6 +168,17 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         return '';
     };
 
+    const [selectedFileName, setSelectedFileName] = useState('');
+    const handleFileSelected = (file) => {
+        if (file && Array.isArray(file) && file.length > 0 && file[0].name) {
+            console.log('Nome do arquivo:', file[0].name);
+            setSelectedFileName(file[0].name);
+        } else {
+            // Lida com o caso em que o nome do arquivo não está disponível
+            setSelectedFileName('Nome do arquivo não disponível');
+        }
+    };
+
     return (
         <>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
@@ -189,8 +201,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                                     title={tarefa.titulo}
                                                     // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
                                                     subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
-
-
                                                 />
                                             </View>
                                         </View>
@@ -217,6 +227,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         <View style={styles.iconContainerTittle}>
                             <Icon name="edit" style={styles.icons} size={20} onPress={openEditModal} />
                             <Icon name="trash" style={styles.icons} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
+                            <View style={styles.icons}>
+                                <FileUpload onFileSelected={handleFileSelected} />
+                            </View>
                         </View>
                     </View>
                     <View style={styles.espacamento}>
@@ -237,6 +250,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                             <Text style={styles.textos}>{getPrioridadeTitle(tarefa.prioridade)}</Text>
                         </View>
                     </View>
+                    <View style={styles.espacamento}>
+                        {selectedFileName && <Text style={styles.fileNameText}>Selecionado: {selectedFileName}</Text>}
+                    </View>
+
                 </View>
             </Modal>
 
@@ -297,6 +314,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 };
 
 const styles = StyleSheet.create({
+    fileNameText: {
+        color: 'black',
+        fontSize: 17,
+    },
     drop: {
         paddingTop: 20
     },
@@ -396,9 +417,9 @@ const styles = StyleSheet.create({
         // textAlign: 'right',
         // marginRight:-40
     },
-    textoEditarTarefa:{
-        textAlign:'center',
-        color:colors.verde,
+    textoEditarTarefa: {
+        textAlign: 'center',
+        color: colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
