@@ -17,6 +17,7 @@ const colors = {
 
 const Cronometro = (props) => {
     const [isStopwatchStart, setIsStopwatchStart] = useState(false);
+    const [tempoInicial,setTempoInicial] = useState(0)
 
     useEffect(() => {
       console.log(props.play, 'TESTEE');
