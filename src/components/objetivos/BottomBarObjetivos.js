@@ -66,7 +66,6 @@ const BottomBarObjetivos = ({ onIconPress }) => {
             </TouchableOpacity>
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
-                <PaperProvider theme={theme}>
                     <View style={styles.modalContainer}>
                     <Text style = {styles.textoCriarObjetivo}>Criar Objetivo</Text>
                         <TextInput
@@ -75,6 +74,7 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                             label='Nome'
                             placeholder='Nome'
                             value={nome}
+                            theme={theme}
                             onChangeText={(e) => setNome(e)}
                         />
                         <TextInput
@@ -84,13 +84,15 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                             multiline={true}
                             placeholder='Descrição'
                             value={descricao}
+                            theme={theme}
                             onChangeText={(e) => setDescricao(e)}
                         />
                         <DataPicker
+                            theme={theme}
                             selectedDate={dataEstimada}
                             onSelectDate={(date) => setDataEstimada(date)}
                         />
-                        <DropdownComponent prioridade={prioridade} setPrioridade={setPrioridade} style={styles.modalText} />
+                        <DropdownComponent prioridade={prioridade} theme={theme}setPrioridade={setPrioridade} style={styles.modalText} />
 
                         <View style={{ marginTop: 20 }}>
                             <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
@@ -98,7 +100,6 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </PaperProvider>
             </Modal>
         </View>
     );

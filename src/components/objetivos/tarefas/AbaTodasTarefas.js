@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,memo } from 'react';
 import { View, TouchableWithoutFeedback, Button, ScrollView, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, DefaultTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../../../pages/Login';
-import { deleteTarefa, getTarefas, editTarefa } from '../../../service/tarefa';
+import { deleteTarefa, getTarefas, editTarefa, getTarefaTime, updateTarefaTime } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
 import FileUpload from '../../genericos/Upload';
+import Cronometro from '../../genericos/cronometro';
+
 
 const verdeEscuro = "#346c68";
 const colors = {
@@ -34,6 +36,11 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const [editingDescription, setEditingDescription] = useState("");
     const [editingEstimatedDate, setEditingEstimatedDate] = useState(new Date());
     const [editingPriority, setEditingPriority] = useState(1);
+
+    // ----- Timer -----
+    const [isStopwatchStart, setIsStopwatchStart] = useState(false);
+    const [resetStopwatch, setResetStopwatch] = useState(false);
+    const [tempoDecorrido, setTempoDecorrido] = useState(0)
 
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -78,10 +85,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     };
 
-    const closeModal = () => { setModalVisible(false) };
-
+    const closeModal = () => {setModalVisible(false)};
     const showModal = () => setVisible(true);
-    const hideModal = () => setVisible(false);
+    const hideModal = () => {setVisible(false); buscarTarefas(); setTarefa("")};
 
 
     const getPrioridadeTitle = (prioridade) => {
@@ -119,6 +125,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const buscarTarefas = () => {
         setFlagTarefa(false)
         getTarefas(id).then((res) => {
+            console.log(res.data);
             const novaLista = res.data.map((tarefa) => ({
                 ...tarefa,
                 checked: false,
@@ -128,6 +135,16 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             console.error(error)
         });
     }
+
+    // --- Cronometro ---
+    const putTime = () => {
+        updateTarefaTime(tarefa._id).then((res) => {
+            console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
+        }).catch(error => {
+            console.error(error.response, 'tem ')
+        });
+    }
+
 
     const toggleSelection = (index) => {
         const updatedProdutos = tarefas.map((tarefa, i) => {
@@ -147,7 +164,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         setTarefa(tarefa)
         showModal()
     };
-
 
     useEffect(() => {
         buscarTarefas();
@@ -265,6 +281,17 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                     </View>
 
 
+                    <View style={styles.espacamentoTimer}>
+                        <View style={styles.iconContainer}>
+                            {tarefa!==""?(<Cronometro
+                                    play={tarefa.play || false}
+                                    btnColor={colors.verde}
+                                    tempoInicial={tarefa.cronometro || 0}
+                                    getTarefaTime={putTime}
+                                    >
+                                </Cronometro>):<></>}
+                        </View>
+                    </View>
                 </View>
             </Modal>
 
@@ -314,7 +341,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                     <Text style={styles.buttonText}>Salvar</Text>
                                 </TouchableOpacity>
                             </View>
-
                         </View>
                     </View>
                 </PaperProvider>
@@ -324,6 +350,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     );
 };
 
+const teste = memo(AbaTodasTarefas)
 const styles = StyleSheet.create({
 
     anexoContainer: {
@@ -383,10 +410,16 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     espacamento: {
-        marginTop: 45,
+        marginTop: 35,
         flexDirection: 'row',
         alignItems: 'center',
         marginLeft: 10
+    },
+    espacamentoTimer: {
+        marginTop: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 0
     },
     modal: {
         backgroundColor: 'white',
@@ -451,4 +484,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AbaTodasTarefas;
+export default teste;

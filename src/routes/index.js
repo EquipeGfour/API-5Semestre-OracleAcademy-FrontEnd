@@ -12,6 +12,8 @@ import BottomBarWorkspaces from '../components/workspaces/BotomBarWorkspaces';
 import ListaTarefaWorkspace from '../pages/ListaTarefaWorkspace';
 import AbaTarefasWorkspace from '../components/workspaces/tarefas/AbaTarefasTodasWork';
 import CadastroUsuario from '../pages/CadastroUsuario';
+import Cronometro from '../components/genericos/cronometro';
+
 
 export default function Routes(){
     const Stack = createNativeStackNavigator();
@@ -31,6 +33,7 @@ export default function Routes(){
                 <Stack.Screen name = 'HomeWorkspaces' component={HomeWorkspaces}/>
                 <Stack.Screen name = 'BottomBarWorkspaces' component={BottomBarWorkspaces}/>
                 <Stack.Screen name = 'AbaTodasWorkspace' component={AbaTarefasWorkspace}/>
+                <Stack.Screen name = 'Cronometro' component={Cronometro}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

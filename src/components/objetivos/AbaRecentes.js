@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
 import BottomBarObjetivos from "./BottomBarObjetivos";
@@ -87,7 +87,6 @@ const Recentes = ({ navigation }) => {
                                 <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
                             </Card.Content>
                         </View>
-
                         
                     </TouchableOpacity>
                 ))}
@@ -95,7 +94,7 @@ const Recentes = ({ navigation }) => {
         </>
     );
 }
-
+const teste = memo(Recentes)
 const styles = StyleSheet.create({
     cardContent: {
         alignItems: 'center',
@@ -136,4 +135,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Recentes;
+export default teste;
