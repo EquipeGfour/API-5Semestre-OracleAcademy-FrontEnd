@@ -25,6 +25,7 @@
     "react-native": "0.72.4",
     "react-native-date-picker": "^4.3.3",
     "react-native-datepicker": "^1.7.2",
+    "react-native-document-picker": "^9.0.1",
     "react-native-element-dropdown": "^2.10.0",
     "react-native-encrypted-storage": "^4.0.3",
     "react-native-ico-material-design": "^4.1.4",

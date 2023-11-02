@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
+import FileUpload from '../../genericos/Upload';
 import Cronometro from '../../genericos/cronometro';
 
 // --- Cores do Sistema ---
@@ -258,6 +259,19 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
       });
       console.error('Erro ao atualizar o status da tarefa', error);
     }
+  }
+  const [selectedFileName, setSelectedFileName] = useState('');
+  const handleFileSelected = (file) => {
+      if (file && Array.isArray(file) && file.length > 0 && file[0].name) {
+          console.log('Nome do arquivo:', file[0].name);
+          setSelectedFileName(file[0].name);
+      } else {
+          setSelectedFileName('Nome do arquivo não disponível');
+      }
+  };
+
+  const handleClearAttachment = () => {
+      setSelectedFileName('');
   };
 
 
@@ -316,10 +330,15 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
                 <View style={styles.iconContainerTittle}>
 
                   {/* ----- Opções da Tarefa ----- */}
-                  <Icon name="edit" style={styles.icons} marginLeft={-10} color={'#51336b'} size={20} onPress={openModalEditarHandler} />
-                  <Icon name="user-plus" style={styles.icons} marginLeft={16} color={'#51336b'} size={20} onPress={openModalHandler} />
-                  <Icon name="trash" style={styles.icons} marginLeft={16} color={'red'} size={20} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
+                  <View style={styles.iconContainerTittle}>
 
+                    <View style={styles.fileUpload} marginLeft={-80}>
+                      <FileUpload onFileSelected={handleFileSelected} marginLeft={20} />
+                    </View>
+                    <Icon name="edit" style={styles.icons} marginLeft={10} color={'#51336b'} size={20} onPress={openModalEditarHandler}/>
+                    <Icon name="user-plus" style={styles.icons} marginLeft={10} color={'#51336b'} size={20} onPress={openModalHandler} />
+                    <Icon name="trash" style={styles.icons} marginLeft={10} color={'red'} size={20} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
+                  </View>
                   {/* ----- Modal Editar Tarefa ----- */}
                   <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide" onBackdropPress={closeModalEditarHandler}>
                     <TouchableWithoutFeedback onPress={closeModalEditarHandler}>
@@ -451,6 +470,15 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
               <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
                 {tarefaSelecionada?.usuarios?.map((n) => <UserAvatar name={n.usuario?.nome || ''} />)}
               </View>
+              <View style={styles.espacamento}>
+                <Text style= {styles.fileNameText}>Anexos:</Text>
+                {selectedFileName && <Text style={styles.textos}>{selectedFileName}</Text>}
+                {selectedFileName && (
+                    <TouchableOpacity onPress={handleClearAttachment}>
+                        <Icon name="times-circle" size={20} color='red' marginLeft = {10} />
+                    </TouchableOpacity>
+                )}
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -461,6 +489,9 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
 };
 
 const styles = StyleSheet.create({
+  fileUpload:{
+    marginRight:'10%'
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
