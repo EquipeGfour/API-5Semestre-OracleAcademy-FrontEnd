@@ -18,11 +18,15 @@ enum STATUS{
 }
 */
 export const getWorkspaceCriados = (token) => {
-    return axios.get(`/workspace/buscarWorkspaceStatus` ,{ headers: { Authorization: token }, params: {status:3} });
+    return axios.get(`/workspace/buscarWorkspaceProprietario/` ,{ headers: { Authorization: token }});
+}
+
+export const editarStatusTarefaWork = (id,idTarefa,data, token) => {
+    return axios.put(`/workspace/changestatus/?id=${id}&idTarefa=${idTarefa}`, data, { headers: { Authorization: token } })
 }
 
 export const getWorkspaceFinalizados = (token) => {
-    return axios.get(`/workspace/buscarWorkspaceStatus` ,{ headers: { Authorization: token }, params: {status:1} });
+    return axios.get(`/workspace/buscarWorkspaceUsuario` ,{ headers: { Authorization: token }});
 }
 
 export const deleteWork = (id) => {

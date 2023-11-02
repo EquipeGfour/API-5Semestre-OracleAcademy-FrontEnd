@@ -21,6 +21,8 @@ const AbaCriadosWorkspace = ({ navigation }) => {
 
     const [workspaces, setWorkspaces] = useState([]);
     const isFocused = useIsFocused();
+
+    
     const buscarWorkspace = async () => {
         const token = await getStorageItem('token');
         getWorkspaceCriados(token).then((res) => {
