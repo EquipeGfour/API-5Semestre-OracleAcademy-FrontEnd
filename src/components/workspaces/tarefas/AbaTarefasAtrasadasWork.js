@@ -125,7 +125,6 @@ const AbaTarefasAtrasadasWork = ({ _id, workspaceUsuarios }) => {
       data_estimada: editarDataEstimada,
       prioridade: editarPrioridade
     };
-    console.log(obj);
     editarTarefaWork(tarefaSelecionada._id,obj) 
       .then(res => {
         Toast.show({
@@ -160,7 +159,6 @@ const AbaTarefasAtrasadasWork = ({ _id, workspaceUsuarios }) => {
             text1: 'Ocorreu algum problema...',
         });
         console.error('Erro', error.response);
-        console.log(id);
     })
 }
   useEffect(() => {

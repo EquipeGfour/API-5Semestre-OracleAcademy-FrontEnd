@@ -13,6 +13,7 @@ import FileUpload from '../../genericos/Upload';
 import Cronometro from '../../genericos/cronometro';
 import { UploadFile } from '../../../service/tarefa';
 import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
+import ListaAnexos from '../../genericos/ListaAnexos';
 
 
 const verdeEscuro = "#346c68";
@@ -127,7 +128,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const buscarTarefas = () => {
         setFlagTarefa(false)
         getTarefas(id).then((res) => {
-            console.log(res.data);
             const novaLista = res.data.map((tarefa) => ({
                 ...tarefa,
                 checked: false,
@@ -141,7 +141,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     // --- Cronometro ---
     const putTime = () => {
         updateTarefaTime(tarefa._id).then((res) => {
-            console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
         }).catch(error => {
             console.error(error.response, 'tem ')
         });
@@ -164,7 +163,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const getSelectedTarefas = (i) => {
         const tarefa = tarefas[i];
         setTarefa(tarefa)
-        console.log('tarefinha:' ,tarefa);
         showModal()
     };
 
@@ -297,15 +295,15 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                             </TouchableOpacity>
                         )}
                     </View>
-
-                    <View style={{marginLeft:10}}>
+                    <ListaAnexos tarefa={tarefa} />        
+                    {/* <View style={{marginLeft:10}}>
                         <Text style= {styles.fileNameText}>Anexos: </Text>
                         <View style= {styles.viewAnexos}>
                         {tarefa?.arquivos?.map((arquivo, index)=>(
                             <Text style={[styles.textos, styles.textoAnexo, index===tarefa.arquivos.length -1?{width:'45%'}:null]}>{arquivo?.nome}</Text>
                         ))}
                         </View>
-                    </View>
+                    </View> */}
                 </ScrollView>
             </Modal>
 

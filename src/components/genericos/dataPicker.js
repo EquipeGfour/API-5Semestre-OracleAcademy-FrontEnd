@@ -39,7 +39,6 @@ export default (props) => {
           setOpen(false);
           props.onSelectDate(dataFinal)
           setDate(dataFinal); // Atualize a variável date com a data selecionada
-          console.log(dataFinal, 'datepicker')
         }}
         onCancel={() => {
           setOpen(false);

@@ -28,7 +28,6 @@ const AbaFinalizadosWorkspace = ({ navigation }) => {
         const token = await getStorageItem('token');
         getWorkspaceFinalizados(token).then((res) => {
             setWorkspaces(res.data)
-            console.log(res.data)
         }).catch(error => {
             console.error('Erro', error.response);
         });

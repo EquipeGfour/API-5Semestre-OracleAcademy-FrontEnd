@@ -107,7 +107,6 @@ const AbaTarefasIniciadasWork = ({ _id, workspaceUsuarios }) => {
   const buscarTarefasWorkspace = () => {
     getTarefasIniciadasWorkspace(_id).then((res) => {
       setTarefas(res.data);
-      console.log('=)', res.data)
     }).catch(error => {
       console.error('Erro', error)
     })
@@ -160,7 +159,6 @@ const AbaTarefasIniciadasWork = ({ _id, workspaceUsuarios }) => {
             text1: 'Ocorreu algum problema...',
         });
         console.error('Erro', error.response);
-        console.log(id);
     })
 }
   useEffect(() => {
@@ -288,7 +286,7 @@ const AbaTarefasIniciadasWork = ({ _id, workspaceUsuarios }) => {
                   <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide" onBackdropPress={closeModalEditarHandler}>
                     <TouchableWithoutFeedback onPress={closeModalEditarHandler}>
                       <View style={styles.modalEditarContainer}>
-                      <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
+                        <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
                           <TextInput
                               style={styles.usuario}
                               mode='outlined'
