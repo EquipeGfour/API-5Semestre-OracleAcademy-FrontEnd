@@ -23,18 +23,16 @@ const DropdwnGenerico = (props) => {
                 // activeColor='pink' // (se quiser colocar cor quando seleciona o item)
                 iconStyle={styles.iconStyle}
                 data={props.data}
-                
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder={!isFocus ? 'Selecione' : '...'}
-                
-                value={props.prioridade}
+                placeholder={!isFocus ? 'Selecione' : '...'}                
+                value={props.status}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
-                props.setPrioridade(item.value);
-                setIsFocus(false);
+                    setIsFocus(false);
+                    props.setStatus(item.value)
                 }}
             />
         </View>
