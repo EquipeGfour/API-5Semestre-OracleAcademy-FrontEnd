@@ -5,11 +5,12 @@ import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../../../pages/Login';
-import { deleteTarefa, editTarefa, getTarefasAtrasadas, getTarefasConclidas, getTarefasHoje } from '../../../service/tarefa';
+import { deleteTarefa, editTarefa, getTarefasAtrasadas, getTarefasConclidas, getTarefasHoje, updateTarefaStatus } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
 import { useIsFocused } from '@react-navigation/native';
+
 
 const verdeEscuro = "#346c68";
 const colors = {
@@ -28,7 +29,7 @@ const theme = {
     },
 };
 
-const AbaConcluidasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
+const AbaConcluidasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const [editingTitle, setEditingTitle] = useState("");
     const [editingDescription, setEditingDescription] = useState("");
@@ -40,6 +41,7 @@ const AbaConcluidasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) =>
     const [checked, setChecked] = useState(false);
     const [tarefas, setTarefas] = useState([]);
     const [tarefa, setTarefa] = useState("");
+    const [tarefaStatus, setTarefaStatus] = useState({});
 
     const isFocused = useIsFocused();
 
@@ -152,7 +154,7 @@ const AbaConcluidasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) =>
 
 
     useEffect(() => {
-        if(isFocused) buscarTarefas();
+        if (isFocused) buscarTarefas();
     }, [isFocused])
 
     useEffect(() => {
@@ -170,6 +172,18 @@ const AbaConcluidasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) =>
         return '';
     };
 
+    const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
+        try {
+            const response = await updateTarefaStatus(tarefaId, novoStatus)
+            setTarefaStatus((prevStatus) => ({
+                ...prevStatus,
+                [tarefaId]: !prevStatus[tarefaId],
+            }));
+        } catch (error) {
+            console.error('Erro ao atualizar o status da tarefa', error);
+        }
+    };
+
     return (
         <>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
@@ -183,9 +197,13 @@ const AbaConcluidasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) =>
                                             <View style={styles.itemContainer}>
                                                 <Checkbox
                                                     style={styles.iconCheck}
-                                                    status={tarefa.checked ? 'checked' : 'unchecked'}
+                                                    status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
                                                     onPress={() => {
-                                                        toggleSelection(index);
+                                                        if (tarefa.status === 2) {
+                                                            atualizarStatusTarefa(tarefa._id, 1);
+                                                        } else {
+                                                            atualizarStatusTarefa(tarefa._id, 2);
+                                                        }
                                                     }}
                                                 />
                                                 <Card.Title
@@ -399,9 +417,9 @@ const styles = StyleSheet.create({
         // textAlign: 'right',
         // marginRight:-40
     },
-    textoEditarTarefa:{
-        textAlign:'center',
-        color:colors.verde,
+    textoEditarTarefa: {
+        textAlign: 'center',
+        color: colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
@@ -409,4 +427,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AbaConcluidasTarefas ;
+export default AbaConcluidasTarefas;

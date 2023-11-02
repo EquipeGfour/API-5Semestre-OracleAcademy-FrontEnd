@@ -40,7 +40,3 @@ export const editarWork = (id,data) => {
 export const editarTarefaWork = (idTarefa,data) => {
     return axios.patch(`/tarefa/editar/${idTarefa}`, data)
 }
-
-export const editarStatusTarefaWork = (id,idTarefa,data, token) => {
-    return axios.put(`/workspace/changestatus/?id=${id}&idTarefa=${idTarefa}`, data, { headers: { Authorization: token } })
-}

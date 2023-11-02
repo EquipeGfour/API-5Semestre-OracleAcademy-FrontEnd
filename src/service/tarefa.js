@@ -78,6 +78,10 @@ export const getTarefaTime = (idTarefa) => {
     return axios.get(`/tarefa/buscarCronometro/${idTarefa}`)
 }
 
+export const updateTarefaStatus = (idTarefa, status) => {
+    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status})
+}
+
 export const updateTarefaTime = (idTarefa) => {
     return axios.put(`/tarefa/atualizarCronometro/${idTarefa}`)
 }

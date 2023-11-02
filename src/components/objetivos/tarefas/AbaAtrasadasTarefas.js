@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../../../pages/Login';
-import { deleteTarefa, editTarefa, getTarefasAtrasadas, getTarefasHoje } from '../../../service/tarefa';
+import { deleteTarefa, editTarefa, getTarefasAtrasadas, getTarefasHoje, updateTarefaStatus } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
@@ -28,7 +28,7 @@ const theme = {
     },
 };
 
-const AbaAtrasadasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
+const AbaAtrasadasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const [editingTitle, setEditingTitle] = useState("");
     const [editingDescription, setEditingDescription] = useState("");
@@ -40,6 +40,7 @@ const AbaAtrasadasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => 
     const [checked, setChecked] = useState(false);
     const [tarefas, setTarefas] = useState([]);
     const [tarefa, setTarefa] = useState("");
+    const [tarefaStatus, setTarefaStatus] = useState({});
 
     const isFocused = useIsFocused();
 
@@ -170,6 +171,18 @@ const AbaAtrasadasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => 
         return '';
     };
 
+    const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
+        try {
+            const response = await updateTarefaStatus(tarefaId, novoStatus)
+            setTarefaStatus((prevStatus) => ({
+                ...prevStatus,
+                [tarefaId]: !prevStatus[tarefaId],
+            }));
+        } catch (error) {
+            console.error('Erro ao atualizar o status da tarefa', error);
+        }
+    };
+
     return (
         <>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
@@ -182,10 +195,11 @@ const AbaAtrasadasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => 
                                         <View style={styles.container}>
                                             <View style={styles.itemContainer}>
                                                 <Checkbox
+                                                    disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
                                                     style={styles.iconCheck}
-                                                    status={tarefa.checked ? 'checked' : 'unchecked'}
+                                                    status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
                                                     onPress={() => {
-                                                        toggleSelection(index);
+                                                        atualizarStatusTarefa(tarefa._id, 1);
                                                     }}
                                                 />
                                                 <Card.Title
@@ -399,9 +413,9 @@ const styles = StyleSheet.create({
         // textAlign: 'right',
         // marginRight:-40
     },
-    textoEditarTarefa:{
-        textAlign:'center',
-        color:colors.verde,
+    textoEditarTarefa: {
+        textAlign: 'center',
+        color: colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
@@ -409,4 +423,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AbaAtrasadasTarefas ;
+export default AbaAtrasadasTarefas;

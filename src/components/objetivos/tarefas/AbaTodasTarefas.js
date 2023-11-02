@@ -1,4 +1,4 @@
-import React, { useState, useEffect,memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { View, TouchableWithoutFeedback, Button, ScrollView, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, DefaultTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
@@ -13,6 +13,7 @@ import FileUpload from '../../genericos/Upload';
 import Cronometro from '../../genericos/cronometro';
 import { UploadFile } from '../../../service/tarefa';
 import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
+import { updateTarefaStatus } from '../../../service/tarefa';
 
 
 const verdeEscuro = "#346c68";
@@ -49,6 +50,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const [checked, setChecked] = useState(false);
     const [tarefas, setTarefas] = useState([]);
     const [tarefa, setTarefa] = useState("");
+    const [tarefaStatus, setTarefaStatus] = useState({});
 
     const openModal = () => { setModalVisible(true) };
     const abrirModal = () => { setModalVisible(true) };
@@ -87,9 +89,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     };
 
-    const closeModal = () => {setModalVisible(false)};
+    const closeModal = () => { setModalVisible(false) };
     const showModal = () => setVisible(true);
-    const hideModal = () => {setVisible(false); buscarTarefas(); setTarefa("")};
+    const hideModal = () => { setVisible(false); buscarTarefas(); setTarefa("") };
 
 
     const getPrioridadeTitle = (prioridade) => {
@@ -106,6 +108,15 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             return "Baixo";
         }
     }
+
+    // --- Status das Tarefas ---
+    const data = [
+        { label: 'Completo', value: 1 },
+        { label: 'Em Andamento', value: 2 },
+        { label: 'Não Iniciado', value: 3 },
+        { label: 'Atrasado', value: 4 },
+        { label: 'Aguardando Validação', value: 5 },
+    ];
 
     const deletarTarefa = (id) => {
         deleteTarefa(id).then(res => {
@@ -164,7 +175,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const getSelectedTarefas = (i) => {
         const tarefa = tarefas[i];
         setTarefa(tarefa)
-        console.log('tarefinha:' ,tarefa);
+        console.log('tarefinha:', tarefa);
         showModal()
     };
 
@@ -192,8 +203,8 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         if (file && Array.isArray(file) && file.length > 0 && file[0].name) {
             const token = await getStorageItem('token');
             setSelectedFileName(file[0]);
-            UploadFile(tarefa._id, file[0], token).then((res)=>{
-            }).catch((error)=>{
+            UploadFile(tarefa._id, file[0], token).then((res) => {
+            }).catch((error) => {
             })
         } else {
             setSelectedFileName('Nome do arquivo não disponível');
@@ -203,7 +214,19 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     const handleClearAttachment = () => {
         setSelectedFileName('');
     };
-    
+
+    const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
+        try {
+            const response = await updateTarefaStatus(tarefaId, novoStatus)
+            setTarefaStatus((prevStatus) => ({
+                ...prevStatus,
+                [tarefaId]: !prevStatus[tarefaId],
+            }));
+        } catch (error) {
+            console.error('Erro ao atualizar o status da tarefa', error);
+        }
+    };
+
     return (
         <>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
@@ -216,10 +239,11 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                         <View style={styles.container}>
                                             <View style={styles.itemContainer}>
                                                 <Checkbox
+                                                    disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
                                                     style={styles.iconCheck}
-                                                    status={tarefa.checked ? 'checked' : 'unchecked'}
+                                                    status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
                                                     onPress={() => {
-                                                        toggleSelection(index);
+                                                        atualizarStatusTarefa(tarefa._id, 1);
                                                     }}
                                                 />
                                                 <Card.Title
@@ -238,7 +262,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             </KeyboardAvoidingView>
 
             <Modal visible={visible} onDismiss={hideModal}>
-                <ScrollView style={[styles.modal, {maxHeight: 400}]}>
+                <ScrollView style={[styles.modal, { maxHeight: 400 }]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ ...styles.iconContainer, width: '75%' }} >
                             <Checkbox
@@ -279,31 +303,31 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
                     <View style={styles.espacamentoTimer}>
                         <View style={styles.iconContainer}>
-                            {tarefa!==""?(<Cronometro
-                                    play={tarefa.play || false}
-                                    btnColor={colors.verde}
-                                    tempoInicial={tarefa.cronometro || 0}
-                                    getTarefaTime={putTime}
-                                    >
-                                </Cronometro>):<></>}
+                            {tarefa !== "" ? (<Cronometro
+                                play={tarefa.play || false}
+                                btnColor={colors.verde}
+                                tempoInicial={tarefa.cronometro || 0}
+                                getTarefaTime={putTime}
+                            >
+                            </Cronometro>) : <></>}
                         </View>
                     </View>
                     <View style={styles.espacamento}>
-                        <Text style= {styles.fileNameText}>Arquivo selecionado:</Text>
+                        <Text style={styles.fileNameText}>Arquivo selecionado:</Text>
                         {selectedFileName?.name && <Text style={styles.textos}>{selectedFileName?.name}</Text>}
                         {selectedFileName?.name && (
                             <TouchableOpacity onPress={handleClearAttachment}>
-                                <Icon name="times-circle" size={20} color='red' marginLeft = {10} />
+                                <Icon name="times-circle" size={20} color='red' marginLeft={10} />
                             </TouchableOpacity>
                         )}
                     </View>
 
-                    <View style={{marginLeft:10}}>
-                        <Text style= {styles.fileNameText}>Anexos: </Text>
-                        <View style= {styles.viewAnexos}>
-                        {tarefa?.arquivos?.map((arquivo, index)=>(
-                            <Text style={[styles.textos, styles.textoAnexo, index===tarefa.arquivos.length -1?{width:'45%'}:null]}>{arquivo?.nome}</Text>
-                        ))}
+                    <View style={{ marginLeft: 10 }}>
+                        <Text style={styles.fileNameText}>Anexos: </Text>
+                        <View style={styles.viewAnexos}>
+                            {tarefa?.arquivos?.map((arquivo, index) => (
+                                <Text style={[styles.textos, styles.textoAnexo, index === tarefa.arquivos.length - 1 ? { width: '45%' } : null]}>{arquivo?.nome}</Text>
+                            ))}
                         </View>
                     </View>
                 </ScrollView>
@@ -366,13 +390,13 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
 const teste = memo(AbaTodasTarefas)
 const styles = StyleSheet.create({
-    viewAnexos:{
-        flex:1,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        minHeight:200,
-        width:'100%',
-        flexWrap:'wrap'
+    viewAnexos: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        minHeight: 200,
+        width: '100%',
+        flexWrap: 'wrap'
     },
 
     anexoContainer: {
@@ -486,18 +510,18 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         flex: 1
     },
-    textoAnexo:{
+    textoAnexo: {
         borderColor: colors.verde,
         backgroundColor: colors.verde,
-        marginTop:4,
-        paddingHorizontal:10,
-        paddingVertical:4,
-        color:'white',
-        borderStyle:'solid',
+        marginTop: 4,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        color: 'white',
+        borderStyle: 'solid',
         borderWidth: 1,
-        flex:1,
-        borderRadius:50,
-        flexBasis:'40%'
+        flex: 1,
+        borderRadius: 50,
+        flexBasis: '40%'
     },
     btncolor: {
         color: verdeEscuro
