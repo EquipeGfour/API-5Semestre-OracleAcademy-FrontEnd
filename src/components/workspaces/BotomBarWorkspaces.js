@@ -28,6 +28,7 @@ const BottomBarWorkspaces = ({ onIconPress }) => {
             workspace:true
         };
         const token = await getStorageItem('token');
+        console.log(token);
         postObjetivos(obj,token)
             .then((res) => {
                 setNome('')
