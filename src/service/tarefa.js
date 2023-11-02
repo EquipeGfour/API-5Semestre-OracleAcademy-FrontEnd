@@ -71,3 +71,17 @@ export const deleteTarefa = (idTarefa) => {
 export const editTarefa = (idTarefa, tarefaEdited) => {
     return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited)
 }
+
+export const getTarefaTime = (idTarefa) => {
+    return axios.get(`/tarefa/buscarCronometro/${idTarefa}`)
+}
+
+export const updateTarefaTime = (idTarefa) => {
+    return axios.put(`/tarefa/atualizarCronometro/${idTarefa}`)
+}
+
+export const UploadFile = (idTarefa, file, token) => {
+    const data = new FormData()
+    data.append('file', file)
+    return axios.post(`/upload/tarefa/${idTarefa}`, data ,{ headers: { Authorization: token, 'Content-Type': 'multipart/form-data' } })
+}
