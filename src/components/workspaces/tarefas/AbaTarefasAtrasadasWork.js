@@ -12,7 +12,7 @@ import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
-import { editarTarefaWork } from '../../../service/workspace';
+import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
 import { useIsFocused } from "@react-navigation/native";
 
 
@@ -28,6 +28,7 @@ const AbaTarefasAtrasadasWork = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
+  const [tarefaStatus, setTarefaStatus] = useState({});
   const isFocused = useIsFocused();
 
 
@@ -227,6 +228,24 @@ const AbaTarefasAtrasadasWork = ({ _id, workspaceUsuarios }) => {
     }, 500)
   }, [nomeUsuario])
 
+  const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
+    console.log(novoStatus, tarefaId)
+    try {
+      // Faça uma solicitação para a rota do backend para atualizar o status da tarefa.
+      const token = await getStorageItem('token');
+      const response = await editarStatusTarefaWork(_id, tarefaId, { status: novoStatus }, token)
+      setTarefaStatus((prevStatus) => ({
+        ...prevStatus,
+        [tarefaId]: !prevStatus[tarefaId],
+      }));
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Você não tem permissão !!!',
+      });
+      console.error('Erro ao atualizar o status da tarefa', error);
+    }
+  };
 
   return (
     <>
@@ -236,9 +255,12 @@ const AbaTarefasAtrasadasWork = ({ _id, workspaceUsuarios }) => {
           <View style={styles.filtros}>
             <Card style={styles.Cardcontainer} onPress={() => {toggleModal(tarefa._id)}}>
               <Card.Content style={styles.contentContainer}>
-                <Checkbox
+              <Checkbox
+                  disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
                   style={styles.iconCheck}
+                  status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
                   onPress={() => {
+                    atualizarStatusTarefa(tarefa._id, 1);
                   }}
                 />
                 <Card.Title

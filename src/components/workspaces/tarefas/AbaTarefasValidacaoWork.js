@@ -12,7 +12,7 @@ import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
-import { editarTarefaWork } from '../../../service/workspace';
+import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
 import { useIsFocused } from "@react-navigation/native";
 
 
@@ -28,6 +28,7 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
+  const [tarefaStatus, setTarefaStatus] = useState({});
   const isFocused = useIsFocused();
 
 
@@ -76,8 +77,8 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
   const closeModalHandler = () => {
     setModalUserVisible(false);
     setUsuariosSelecionado([])
-    setUsuariosBusca([])    
-  };  
+    setUsuariosBusca([])
+  };
 
   // --- Prioridades Tarefa Workspace ---
   const getPrioridadeTitle = (prioridade) => {
@@ -118,19 +119,19 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
   const [editarDescricao, setEditarDescricao] = useState("");
   const [editarDataEstimada, setEditarDataEstimada] = useState(new Date()); // Inicialize com a data atual
   const [editarPrioridade, setEditarPrioridade] = useState("");
-  const editarTarefaWorkspace = () =>{
-    const obj ={
+  const editarTarefaWorkspace = () => {
+    const obj = {
       titulo: editarNome || tarefaSelecionada?.titulo,
       descricao: editarDescricao,
       data_estimada: editarDataEstimada,
       prioridade: editarPrioridade
     };
     console.log(obj);
-    editarTarefaWork(tarefaSelecionada._id,obj) 
+    editarTarefaWork(tarefaSelecionada._id, obj)
       .then(res => {
         Toast.show({
-            type: 'success',
-            text1: 'Tarefa editada com sucesso!',
+          type: 'success',
+          text1: 'Tarefa editada com sucesso!',
         });
         closeModalEditarHandler();
         closeModal()
@@ -138,31 +139,31 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
       })
       .catch((error) => {
         Toast.show({
-            type: 'error',
-            text1: 'Ocorreu algum problema...',
+          type: 'error',
+          text1: 'Ocorreu algum problema...',
         });
         console.log('Erro', error)
       });
   }
-  
+
   // --- Deletar Tarefas Workspace ---
-  const deletarTarefaWorkspace = (id) =>{
+  const deletarTarefaWorkspace = (id) => {
     deleteTarefa(id).then(res => {
-        Toast.show({
-            type: 'success',
-            text1: 'Tarefa excluida com sucesso!',
-        });
-        buscarTarefasWorkspace()
-        setModalVisible(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Tarefa excluida com sucesso!',
+      });
+      buscarTarefasWorkspace()
+      setModalVisible(false);
     }).catch(error => {
-        Toast.show({
-            type: 'error',
-            text1: 'Ocorreu algum problema...',
-        });
-        console.error('Erro', error.response);
-        console.log(id);
+      Toast.show({
+        type: 'error',
+        text1: 'Ocorreu algum problema...',
+      });
+      console.error('Erro', error.response);
+      console.log(id);
     })
-}
+  }
   useEffect(() => {
     if (isFocused) buscarTarefasWorkspace();
   }, [isFocused])
@@ -201,7 +202,7 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
   const [usuariosSelecionado, setUsuariosSelecionado] = useState([])
   const buscaUsuario = async () => {
     const busca = workspaceUsuarios.filter(u => {
-      return u.usuario.nome.toLowerCase().includes(userQuery.toLowerCase()) 
+      return u.usuario.nome.toLowerCase().includes(userQuery.toLowerCase())
     })
     setUsuariosBusca(busca)
   }
@@ -209,12 +210,12 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
   // --- DatePicker Tarefas Workspace --- 
   const formatarData = (data) => {
     if (data) {
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
-        return formattedDate;
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
+      return formattedDate;
     }
     return '';
-  }; 
+  };
 
   // --- Use Effects --- 
   useEffect(() => {
@@ -227,6 +228,24 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
     }, 500)
   }, [nomeUsuario])
 
+  const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
+    console.log(novoStatus, tarefaId)
+    try {
+      // Faça uma solicitação para a rota do backend para atualizar o status da tarefa.
+      const token = await getStorageItem('token');
+      const response = await editarStatusTarefaWork(_id, tarefaId, { status: novoStatus }, token)
+      setTarefaStatus((prevStatus) => ({
+        ...prevStatus,
+        [tarefaId]: !prevStatus[tarefaId],
+      }));
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Você não tem permissão !!!',
+      });
+      console.error('Erro ao atualizar o status da tarefa', error);
+    }
+  };
 
   return (
     <>
@@ -234,11 +253,14 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
       <ScrollView>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
-            <Card style={styles.Cardcontainer} onPress={() => {toggleModal(tarefa._id)}}>
+            <Card style={styles.Cardcontainer} onPress={() => { toggleModal(tarefa._id) }}>
               <Card.Content style={styles.contentContainer}>
                 <Checkbox
+                  disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
                   style={styles.iconCheck}
+                  status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
                   onPress={() => {
+                    atualizarStatusTarefa(tarefa._id, 1);
                   }}
                 />
                 <Card.Title
@@ -280,7 +302,7 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
                 <View style={styles.iconContainerTittle}>
 
                   {/* ----- Opções da Tarefa ----- */}
-                  <Icon name="edit" style={styles.icons} marginLeft={-10} color={'#51336b'} size={20} onPress={openModalEditarHandler}/>
+                  <Icon name="edit" style={styles.icons} marginLeft={-10} color={'#51336b'} size={20} onPress={openModalEditarHandler} />
                   <Icon name="user-plus" style={styles.icons} marginLeft={16} color={'#51336b'} size={20} onPress={openModalHandler} />
                   <Icon name="trash" style={styles.icons} marginLeft={16} color={'red'} size={20} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
 
@@ -288,48 +310,48 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
                   <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide" onBackdropPress={closeModalEditarHandler}>
                     <TouchableWithoutFeedback onPress={closeModalEditarHandler}>
                       <View style={styles.modalEditarContainer}>
-                      <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
-                          <TextInput
-                              style={styles.usuario}
-                              mode='outlined'
-                              // textColor="#545F71"
-                              placeholder={tarefaSelecionada?.titulo}
-                              label={isInputFocused ? "Titulo" : ""}
-                              onFocus={handleInputFocus}
-                              onBlur={handleInputBlur}
-                              onChangeText={(e) => setEditarNome(e)}
-                          />
-                          <TextInput
-                              style={styles.usuario}
-                              mode='outlined'
-                              // textColor="#545F71"
-                              placeholder={tarefaSelecionada?.descricao}
-                              label={isInputFocused ? "Descrição" : ""}
-                              onFocus={handleInputFocus}
-                              onBlur={handleInputBlur}
-                              onChangeText={(e) => setEditarDescricao(e)}
-                          />
-                          <View style={styles.dataPickerContainer}>
+                        <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
+                        <TextInput
+                          style={styles.usuario}
+                          mode='outlined'
+                          // textColor="#545F71"
+                          placeholder={tarefaSelecionada?.titulo}
+                          label={isInputFocused ? "Titulo" : ""}
+                          onFocus={handleInputFocus}
+                          onBlur={handleInputBlur}
+                          onChangeText={(e) => setEditarNome(e)}
+                        />
+                        <TextInput
+                          style={styles.usuario}
+                          mode='outlined'
+                          // textColor="#545F71"
+                          placeholder={tarefaSelecionada?.descricao}
+                          label={isInputFocused ? "Descrição" : ""}
+                          onFocus={handleInputFocus}
+                          onBlur={handleInputBlur}
+                          onChangeText={(e) => setEditarDescricao(e)}
+                        />
+                        <View style={styles.dataPickerContainer}>
                           <DataPicker
-                              selectedDate={editarDataEstimada}
-                              onSelectDate={(e) => setEditarDataEstimada(e)}
+                            selectedDate={editarDataEstimada}
+                            onSelectDate={(e) => setEditarDataEstimada(e)}
                           />
-                          </View>
-                          <View style={styles.prioridadeContainer}>
-                          <PrioridadeTarefaWork 
+                        </View>
+                        <View style={styles.prioridadeContainer}>
+                          <PrioridadeTarefaWork
                             prioridade={editarPrioridade}
-                            setPrioridade={setEditarPrioridade}/>
-                          </View>
-                          <View style={{ marginTop: 30 }}>
-                              <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
-                                  <Text style={styles.buttonText}>Salvar</Text>
-                              </TouchableOpacity>
-                          </View>
+                            setPrioridade={setEditarPrioridade} />
+                        </View>
+                        <View style={{ marginTop: 30 }}>
+                          <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
+                            <Text style={styles.buttonText}>Salvar</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </TouchableWithoutFeedback>
-                  </Modal>  
+                  </Modal>
 
-                  {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
+                  {/* ----- Modal Adicionar Usuário a Tarefa ----- */}
                   <Modal visible={isModalUserVisible} transparent animationType="slide">
                     <TouchableWithoutFeedback onPress={closeModalHandler}>
                       <View style={{
@@ -368,7 +390,7 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
                         </View>
                       </View>
                     </TouchableWithoutFeedback>
-                  </Modal>                
+                  </Modal>
                 </View>
               </View>
 
@@ -442,7 +464,7 @@ const styles = StyleSheet.create({
   textoCheck: {
     marginRight: '50%',
   },
-   iconContainerTittle: {
+  iconContainerTittle: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'right',
@@ -516,48 +538,48 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 125,
     padding: 20, // tamanho modal
-    marginLeft:10,
-    marginRight:10,
+    marginLeft: 10,
+    marginRight: 10,
     borderRadius: 10,
     borderColor: colors.cinza, // Cor da borda modal
     borderWidth: 1, // Largura da borda modal
-},
-textoEditarTarefaWorkspace:{
-  textAlign:'center',
-  color:colors.roxo,
-  fontSize: 18,
-  fontWeight: 'bold'
-},
-botaoCriar: {
-  width: 150,
-  borderRadius: 20,
-  backgroundColor: colors.roxo,
-  alignSelf: 'center', // Centraliza o botão horizontalmente
-},
-buttonText: {
-  color: 'white',
-  fontSize: 16,
-  paddingVertical: 10,
-  paddingHorizontal: 20,
-  textAlign: 'center',
-  fontWeight: 'bold'
-},
-usuario: {
-  marginTop: 20,
-  alignSelf: 'center',
-  width: 325,
-  backgroundColor: 'transparent'
-},
-prioridadeContainer:{
-  marginTop: -15,
-  marginLeft: 30,
-  backgroundColor: 'transparent'
-},
-dataPickerContainer: {
-  left: -23,  
-  padding: 25, 
-  
-},
+  },
+  textoEditarTarefaWorkspace: {
+    textAlign: 'center',
+    color: colors.roxo,
+    fontSize: 18,
+    fontWeight: 'bold'
+  },
+  botaoCriar: {
+    width: 150,
+    borderRadius: 20,
+    backgroundColor: colors.roxo,
+    alignSelf: 'center', // Centraliza o botão horizontalmente
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  usuario: {
+    marginTop: 20,
+    alignSelf: 'center',
+    width: 325,
+    backgroundColor: 'transparent'
+  },
+  prioridadeContainer: {
+    marginTop: -15,
+    marginLeft: 30,
+    backgroundColor: 'transparent'
+  },
+  dataPickerContainer: {
+    left: -23,
+    padding: 25,
+
+  },
 });
 
 export default AbaTarefasValidacaoWork;

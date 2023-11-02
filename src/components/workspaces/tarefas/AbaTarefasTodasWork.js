@@ -12,7 +12,7 @@ import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
-import { editarTarefaWork } from '../../../service/workspace';
+import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
 import Cronometro from '../../genericos/cronometro';
 
 // --- Cores do Sistema ---
@@ -211,14 +211,14 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     setUsuariosBusca(busca)
   }
 
-      // --- Cronometro ---
-      const putTime = () => {
-        updateTarefaTime(tarefaSelecionada._id).then((res) => {
-            console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
-        }).catch(error => {
-            console.error(error.response, 'tem ')
-        });
-    }
+  // --- Cronometro ---
+  const putTime = () => {
+    updateTarefaTime(tarefaSelecionada._id).then((res) => {
+      console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
+    }).catch(error => {
+      console.error(error.response, 'tem ')
+    });
+  }
 
   // --- DatePicker Tarefas Workspace --- 
   const formatarData = (data) => {
@@ -245,9 +245,17 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     console.log(novoStatus, tarefaId)
     try {
       // Faça uma solicitação para a rota do backend para atualizar o status da tarefa.
-      const response = await fetch(`/mudarStatus/${tarefaId}`)
-        
+      const token = await getStorageItem('token');
+      const response = await editarStatusTarefaWork(_id, tarefaId, { status: novoStatus }, token)
+      setTarefaStatus((prevStatus) => ({
+        ...prevStatus,
+        [tarefaId]: !prevStatus[tarefaId],
+      }));
     } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Você não tem permissão !!!',
+      });
       console.error('Erro ao atualizar o status da tarefa', error);
     }
   };
@@ -262,18 +270,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
             <Card style={styles.Cardcontainer} onPress={() => { toggleModal(tarefa._id) }}>
               <Card.Content style={styles.contentContainer}>
                 <Checkbox
-                  disabled={tarefaStatus[tarefa._id]}
+                  disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
                   style={styles.iconCheck}
-                  status={tarefaStatus[tarefa._id] ? 'checked' : 'unchecked'}
+                  status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    // Inverta o status da tarefa ao clicar no Checkbox
-                    setTarefaStatus((prevStatus) => ({
-                      ...prevStatus,
-                      [tarefa._id]: !prevStatus[tarefa._id],
-                    }));
-                    // Envie uma solicitação ao backend para atualizar o status da tarefa
-                    const newStatus = tarefaStatus[tarefa._id] ? 1 : 0; // 1 para completo, 0 para não completo
-                    // Faça uma solicitação ao backend para atualizar o status da tarefa
                     atualizarStatusTarefa(tarefa._id, 1);
                   }}
                 />
@@ -433,14 +433,14 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
               </View>
               <View style={styles.espacamentoTimer}>
                 <View style={styles.iconContainer}>
-                {tarefaSelecionada!==""?(
-                <Cronometro
-                    play={tarefaSelecionada.play || false}
-                    btnColor={colors.roxo}
-                    tempoInicial={tarefaSelecionada.cronometro || 0}
-                    getTarefaTime={putTime}
-                  >
-                  </Cronometro>):<></>}
+                  {tarefaSelecionada !== "" ? (
+                    <Cronometro
+                      play={tarefaSelecionada.play || false}
+                      btnColor={colors.roxo}
+                      tempoInicial={tarefaSelecionada.cronometro || 0}
+                      getTarefaTime={putTime}
+                    >
+                    </Cronometro>) : <></>}
                 </View>
               </View>
               <View style={styles.espacamento}>
