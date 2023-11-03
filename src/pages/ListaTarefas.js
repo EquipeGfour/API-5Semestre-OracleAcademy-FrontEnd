@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { DefaultTheme, Text, IconButton, DataTable,TextInput, Provider, Menu, PaperProvider } from 'react-native-paper';
-import TodasTarefas from '../components/objetivos/tarefas/AbaTodasTarefas';
 import BottomBarTarefas from '../components/objetivos/tarefas/BottomBarTarefas';
 import DropdownComponent from '../components/objetivos/DropDownPrioridadeObjetivo'
 import { deleteObjetivo, editObjetivo } from "../service/objetivo"
 import Toast from 'react-native-toast-message';
 import DataPicker from '../components/genericos/dataPicker';
 import Modal from 'react-native-modal';
+import AbaTodasTarefas from '../components/objetivos/tarefas/AbaTodasTarefas';
+import AbaHojeTarefas from '../components/objetivos/tarefas/AbaHojeTarefas ';
+import AbaAtrasadasTarefas from '../components/objetivos/tarefas/AbaAtrasadasTarefas';
+import AbaConcluidasTarefas from '../components/objetivos/tarefas/AbaConcluidasTarefas';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -208,12 +211,18 @@ const ListaTarefas = ({route, navigation}) => {
                         backgroundColor: '#51A8A2',
                     },
                 }}>
+                {/* <Tab.Screen name="Hoje">
+                    {() => <AbaHojeTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
+                </Tab.Screen> */}
                 <Tab.Screen name="Todas">
-                    {() => <TodasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
+                    {() => <AbaTodasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
                 </Tab.Screen>
-                {/* <Tab.Screen name="Todas" component={Login} /> */}
-                {/* <Tab.Screen name="Atrasadas" component={BemVindo} />
-                <Tab.Screen name="Concluídas" component={BemVindo} /> */}
+                <Tab.Screen name="Atrasadas">
+                    {() => <AbaAtrasadasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
+                </Tab.Screen>
+                <Tab.Screen name="Concluídas">
+                    {() => <AbaConcluidasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
+                </Tab.Screen>
             </Tab.Navigator>
             <BottomBarTarefas criouTarefa={criouTarefa} objetivo={{titulo, descricao, data_estimada, prioridade, _id}}/>
         </View>

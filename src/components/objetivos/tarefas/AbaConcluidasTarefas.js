@@ -1,20 +1,15 @@
-import React, { useState, useEffect,memo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableWithoutFeedback, Button, ScrollView, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider, TextInput, DefaultTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
 import Login from '../../../pages/Login';
-import { deleteTarefa, getTarefas, editTarefa, getTarefaTime, updateTarefaTime } from '../../../service/tarefa';
+import { deleteTarefa, editTarefa, getTarefasAtrasadas, getTarefasConclidas, getTarefasHoje } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
-import FileUpload from '../../genericos/Upload';
-import Cronometro from '../../genericos/cronometro';
-import { UploadFile } from '../../../service/tarefa';
-import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
-import ListaAnexos from '../../genericos/ListaAnexos';
-
+import { useIsFocused } from '@react-navigation/native';
 
 const verdeEscuro = "#346c68";
 const colors = {
@@ -33,23 +28,20 @@ const theme = {
     },
 };
 
-const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
+const AbaConcluidasTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const [editingTitle, setEditingTitle] = useState("");
     const [editingDescription, setEditingDescription] = useState("");
     const [editingEstimatedDate, setEditingEstimatedDate] = useState(new Date());
     const [editingPriority, setEditingPriority] = useState(1);
 
-    // ----- Timer -----
-    const [isStopwatchStart, setIsStopwatchStart] = useState(false);
-    const [resetStopwatch, setResetStopwatch] = useState(false);
-    const [tempoDecorrido, setTempoDecorrido] = useState(0)
-
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
     const [checked, setChecked] = useState(false);
     const [tarefas, setTarefas] = useState([]);
     const [tarefa, setTarefa] = useState("");
+
+    const isFocused = useIsFocused();
 
     const openModal = () => { setModalVisible(true) };
     const abrirModal = () => { setModalVisible(true) };
@@ -88,9 +80,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     };
 
-    const closeModal = () => {setModalVisible(false)};
+    const closeModal = () => { setModalVisible(false) };
+
     const showModal = () => setVisible(true);
-    const hideModal = () => {setVisible(false); buscarTarefas(); setTarefa("")};
+    const hideModal = () => setVisible(false);
 
 
     const getPrioridadeTitle = (prioridade) => {
@@ -127,7 +120,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const buscarTarefas = () => {
         setFlagTarefa(false)
-        getTarefas(id).then((res) => {
+        getTarefasConclidas(id).then((res) => {
             const novaLista = res.data.map((tarefa) => ({
                 ...tarefa,
                 checked: false,
@@ -137,15 +130,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             console.error(error)
         });
     }
-
-    // --- Cronometro ---
-    const putTime = () => {
-        updateTarefaTime(tarefa._id).then((res) => {
-        }).catch(error => {
-            console.error(error.response, 'tem ')
-        });
-    }
-
 
     const toggleSelection = (index) => {
         const updatedProdutos = tarefas.map((tarefa, i) => {
@@ -166,9 +150,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         showModal()
     };
 
+
     useEffect(() => {
-        buscarTarefas();
-    }, [])
+        if(isFocused) buscarTarefas();
+    }, [isFocused])
 
     useEffect(() => {
         if (flagTarefa) {
@@ -185,23 +170,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
         return '';
     };
 
-    const [selectedFileName, setSelectedFileName] = useState('');
-    const handleFileSelected = async (file) => {
-        if (file && Array.isArray(file) && file.length > 0 && file[0].name) {
-            const token = await getStorageItem('token');
-            setSelectedFileName(file[0]);
-            UploadFile(tarefa._id, file[0], token).then((res)=>{
-            }).catch((error)=>{
-            })
-        } else {
-            setSelectedFileName('Nome do arquivo não disponível');
-        }
-    };
-
-    const handleClearAttachment = () => {
-        setSelectedFileName('');
-    };
-    
     return (
         <>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
@@ -224,6 +192,8 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                                     title={tarefa.titulo}
                                                     // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
                                                     subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
+
+
                                                 />
                                             </View>
                                         </View>
@@ -236,7 +206,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
             </KeyboardAvoidingView>
 
             <Modal visible={visible} onDismiss={hideModal}>
-                <ScrollView style={[styles.modal, {maxHeight: 400}]}>
+                <View style={styles.modal}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ ...styles.iconContainer, width: '75%' }} >
                             <Checkbox
@@ -248,9 +218,6 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                             <Text style={styles.textoCheck}>{tarefa.titulo}</Text>
                         </View>
                         <View style={styles.iconContainerTittle}>
-                            <View style={styles.icons}>
-                                <FileUpload onFileSelected={handleFileSelected} />
-                            </View>
                             <Icon name="edit" style={styles.icons} size={20} onPress={openEditModal} />
                             <Icon name="trash" style={styles.icons} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
                         </View>
@@ -273,38 +240,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                             <Text style={styles.textos}>{getPrioridadeTitle(tarefa.prioridade)}</Text>
                         </View>
                     </View>
-
-
-                    <View style={styles.espacamentoTimer}>
-                        <View style={styles.iconContainer}>
-                            {tarefa!==""?(<Cronometro
-                                    play={tarefa.play || false}
-                                    btnColor={colors.verde}
-                                    tempoInicial={tarefa.cronometro || 0}
-                                    getTarefaTime={putTime}
-                                    >
-                                </Cronometro>):<></>}
-                        </View>
-                    </View>
-                    <View style={styles.espacamento}>
-                        <Text style= {styles.fileNameText}>Arquivo selecionado:</Text>
-                        {selectedFileName?.name && <Text style={styles.textos}>{selectedFileName?.name}</Text>}
-                        {selectedFileName?.name && (
-                            <TouchableOpacity onPress={handleClearAttachment}>
-                                <Icon name="times-circle" size={20} color='red' marginLeft = {10} />
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                    <ListaAnexos tarefa={tarefa} />        
-                    {/* <View style={{marginLeft:10}}>
-                        <Text style= {styles.fileNameText}>Anexos: </Text>
-                        <View style= {styles.viewAnexos}>
-                        {tarefa?.arquivos?.map((arquivo, index)=>(
-                            <Text style={[styles.textos, styles.textoAnexo, index===tarefa.arquivos.length -1?{width:'45%'}:null]}>{arquivo?.nome}</Text>
-                        ))}
-                        </View>
-                    </View> */}
-                </ScrollView>
+                </View>
             </Modal>
 
             <Modal visible={isModalVisible} onDismiss={closeModal} style={{ zIndex: 3 }}>
@@ -353,6 +289,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                     <Text style={styles.buttonText}>Salvar</Text>
                                 </TouchableOpacity>
                             </View>
+
                         </View>
                     </View>
                 </PaperProvider>
@@ -362,30 +299,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     );
 };
 
-const teste = memo(AbaTodasTarefas)
 const styles = StyleSheet.create({
-    viewAnexos:{
-        flex:1,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        minHeight:200,
-        width:'100%',
-        flexWrap:'wrap'
-    },
-
-    anexoContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-
-    detailsContainer: {
-        flexDirection: 'column',
-    },
-    fileNameText: {
-        color: 'black',
-        fontSize: 17,
-    },
     drop: {
         paddingTop: 20
     },
@@ -427,16 +341,10 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     espacamento: {
-        marginTop: 35,
+        marginTop: 45,
         flexDirection: 'row',
         alignItems: 'center',
         marginLeft: 10
-    },
-    espacamentoTimer: {
-        marginTop: 15,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 0
     },
     modal: {
         backgroundColor: 'white',
@@ -480,22 +388,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     },
     textos: {
-        marginLeft: 10,
-        flexWrap: 'wrap',
-        flex: 1
-    },
-    textoAnexo:{
-        borderColor: colors.verde,
-        backgroundColor: colors.verde,
-        marginTop:4,
-        paddingHorizontal:10,
-        paddingVertical:4,
-        color:'white',
-        borderStyle:'solid',
-        borderWidth: 1,
-        flex:1,
-        borderRadius:50,
-        flexBasis:'40%'
+        marginLeft: 10
     },
     btncolor: {
         color: verdeEscuro
@@ -506,9 +399,9 @@ const styles = StyleSheet.create({
         // textAlign: 'right',
         // marginRight:-40
     },
-    textoEditarTarefa: {
-        textAlign: 'center',
-        color: colors.verde,
+    textoEditarTarefa:{
+        textAlign:'center',
+        color:colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
@@ -516,4 +409,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default teste;
+export default AbaConcluidasTarefas ;

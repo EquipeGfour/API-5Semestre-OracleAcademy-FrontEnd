@@ -8,6 +8,22 @@ export const addUserToWorkspace = (id, usuarios, token) => {
 export const getWorkspaceUser = (token) => {
     return axios.get(`/workspace/buscar` , { headers: { Authorization: token } });
 }
+/*
+enum STATUS{
+    COMPLETO = 1,
+    EM_ANDAMENTO = 2,
+    NAO_INICIADO = 3,
+    ATRASADO = 4 , 
+    AGUARDANDO_VALIDACAO = 5
+}
+*/
+export const getWorkspaceCriados = (token) => {
+    return axios.get(`/workspace/buscarWorkspaceStatus` ,{ headers: { Authorization: token }, params: {status:3} });
+}
+
+export const getWorkspaceFinalizados = (token) => {
+    return axios.get(`/workspace/buscarWorkspaceStatus` ,{ headers: { Authorization: token }, params: {status:1} });
+}
 
 export const deleteWork = (id) => {
     return axios.delete(`/objetivo/deletar/${id}`)

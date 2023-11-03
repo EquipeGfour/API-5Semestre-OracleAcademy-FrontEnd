@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
-import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Modal, Chip } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Modal, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
+import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Chip } from 'react-native-paper';
 import BottomBarTarefasWork from './BottomBarTarefasWork';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdwnGenerico from '../../genericos/DropdownGenerico';
 import UserAvatar from '../../genericos/UserAvatar';
-import { getStorageItem, storageItem } from "../../../functions/encryptedStorageFunctions";
-import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, updateTarefaTime } from '../../../service/tarefa';
+import { getStorageItem } from "../../../functions/encryptedStorageFunctions";
+import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, getTarefasConclidasWorkspace } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
 import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
-import FileUpload from '../../genericos/Upload';
-import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
-import Cronometro from '../../genericos/cronometro';
-import ListaAnexos from '../../genericos/ListaAnexos';
+import { editarTarefaWork } from '../../../service/workspace';
 import { useIsFocused } from "@react-navigation/native";
-import ModalGenerico from '../../genericos/ModalGenerico';
 import ConteudoModalTarefaWork from './ConteudoModalTarefaWork';
+import ModalGenerico from '../../genericos/ModalGenerico';
+
 
 // --- Cores do Sistema ---
 const colors = {
@@ -28,19 +26,16 @@ const colors = {
   branco: "#ffffff"
 };
 
-const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
+const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
   const [status,setStatus] = useState(3)
   const isFocused = useIsFocused();
 
-  // ----- Timer -----
-  const [isStopwatchStart, setIsStopwatchStart] = useState(false);
-  const [resetStopwatch, setResetStopwatch] = useState(false);
 
   // --- Modal Visualizar Tarefa Workspace ---
-  const [tarefaSelecionada, setTarefaSelecionado] = useState("")
+  const [tarefaSelecionada, setTarefaSelecionado] = useState(null)
   const toggleModal = (_id) => {
     getTarefaById(_id).then((res) => {
       setModalVisible(!isModalVisible);
@@ -51,9 +46,6 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
 
   const closeModal = () => {
     setModalVisible(false);
-    editarStatusTarefa()
-    buscarTarefasWorkspace();
-    setTarefaSelecionado("")
   };
 
   // --- Modal Editar Tarefa Workspace ---
@@ -115,17 +107,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     { label: 'Atrasado', value: 4 },
     { label: 'Aguardando Validação', value: 5 },
   ];
-  const statusLabel = {
-    1: 'Completo',
-    2: 'Em Andamento',
-    3: 'Não Iniciado',
-    4: 'Atrasado',
-    5: 'Aguardando Validação'
-  }
 
   // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
-    getTarefas(_id).then((res) => {
+    getTarefasConclidasWorkspace(_id).then((res) => {
       setTarefas(res.data);
     }).catch(error => {
       console.error('Erro', error)
@@ -178,32 +163,10 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
             text1: 'Ocorreu algum problema...',
         });
         console.error('Erro', error.response);
-        console.log(id);
     })
 }
-
-// --- Alterar Status da Tarefa ---
-const editarStatusTarefa = async() => {
-  const token = await getStorageItem('token');
-  const obj = {
-    status: status
-  }
-  console.log(_id, 'AQuiiii');
-  editarStatusTarefaWork(_id,tarefaSelecionada._id, obj, token).then(res =>{
-  }).catch(error => {
-    console.log(error);
-    Toast.show({
-        type: 'error',
-        text1: 'Ocorreu algum problema...',
-    })
-  })
-
-}
-// --- UseEffect Status ---
-
-
   useEffect(() => {
-    buscarTarefasWorkspace();
+    if (isFocused) buscarTarefasWorkspace();
   }, [isFocused])
 
   // --- Adicionar Usuário a uma Tarefa ---
@@ -245,15 +208,6 @@ const editarStatusTarefa = async() => {
     setUsuariosBusca(busca)
   }
 
-      // --- Cronometro ---
-      const putTime = () => {
-        updateTarefaTime(tarefaSelecionada._id).then((res) => {
-            console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
-        }).catch(error => {
-            console.error(error.response, 'tem ')
-        });
-    }
-
   // --- DatePicker Tarefas Workspace --- 
   const formatarData = (data) => {
     if (data) {
@@ -275,20 +229,6 @@ const editarStatusTarefa = async() => {
     }, 500)
   }, [nomeUsuario])
 
-  const [selectedFileName, setSelectedFileName] = useState('');
-  const handleFileSelected = (file) => {
-      if (file && Array.isArray(file) && file.length > 0 && file[0].name) {
-          console.log('Nome do arquivo:', file[0].name);
-          setSelectedFileName(file[0].name);
-      } else {
-          setSelectedFileName('Nome do arquivo não disponível');
-      }
-  };
-
-  const handleClearAttachment = () => {
-      setSelectedFileName('');
-  };
-
 
   return (
     <>
@@ -305,7 +245,7 @@ const editarStatusTarefa = async() => {
                 />
                 <Card.Title
                   title={tarefa?.titulo}
-                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}\nStatus: ${statusLabel[tarefa.status]}`}
+                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}`}
                   subtitleNumberOfLines={3}
                   style={styles.title}
                 />
@@ -327,26 +267,26 @@ const editarStatusTarefa = async() => {
 
       {/* ----- Modal Visualizar Tarefa Workspace ----- */}
       <ModalGenerico isModalVisible={isModalVisible} closeModal={closeModal} altura={400}>
-        
+
         <ConteudoModalTarefaWork 
-          tarefaSelecionada={tarefaSelecionada}
-          openModalEditarHandler={openModalEditarHandler}
-          openModalHandler={openModalHandler}
-          deletarTarefaWorkspace={deletarTarefaWorkspace}
-          status={status}
-          setStatus={setStatus}workspace
-        />
+            tarefaSelecionada={tarefaSelecionada}
+            openModalEditarHandler={openModalEditarHandler}
+            openModalHandler={openModalHandler}
+            deletarTarefaWorkspace={deletarTarefaWorkspace}
+            status={status}
+            setStatus={setStatus}
+          />
       </ModalGenerico>
 
       {/* ----- Modal Editar Tarefa ----- */}
-        <ModalGenerico isModalVisible={isModalEditarTarefaVisible} closeModal={closeModalEditarHandler} altura={400}>
+      <ModalGenerico isModalVisible={isModalEditarTarefaVisible} closeModal={closeModalEditarHandler} altura={400}>
           <View style={styles.modal}>
-            <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
+          <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
               <TextInput
                   style={styles.usuario}
                   mode='outlined'
                   // textColor="#545F71"
-                  value={editarNome}
+                  placeholder={tarefaSelecionada?.titulo}
                   label={isInputFocused ? "Titulo" : ""}
                   onFocus={handleInputFocus}
                   onBlur={handleInputBlur}
@@ -356,7 +296,7 @@ const editarStatusTarefa = async() => {
                   style={styles.usuario}
                   mode='outlined'
                   // textColor="#545F71"
-                  value={editarDescricao}
+                  placeholder={tarefaSelecionada?.descricao}
                   label={isInputFocused ? "Descrição" : ""}
                   onFocus={handleInputFocus}
                   onBlur={handleInputBlur}
@@ -379,53 +319,54 @@ const editarStatusTarefa = async() => {
                   </TouchableOpacity>
               </View>
           </View>
-        </ModalGenerico>
+      </ModalGenerico>
 
       {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
-      <ModalGenerico isModalVisible={isModalUserVisible} closeModal={closeModalHandler} altura={400} >
-        <View style={styles.modal}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
-          <TextInput
-            style={styles.modalText}
-            multiline={true}
-            placeholder='Digite o nome do usuário'
-            value={nomeUsuario}
-            onChangeText={(e) => setNomeUsuario(e)}
-            onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
-          />
-          <FlatList
-            data={usuariosBusca}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
-                <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
-              </TouchableOpacity>
-            )}
-          />
-          {usuariosSelecionado.map((user) => (
-            <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)} style={{ marginTop: 5 }}>
-              {user.nome}
-            </Chip>
-          ))}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
-              <TouchableOpacity onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)}  style={styles.botaoCriar}>
-                  <Text style={styles.buttonText}>Adicionar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={closeModalHandler}  style={styles.botaoCriar}>
-                  <Text style={styles.buttonText}>Fechar</Text>
-              </TouchableOpacity>
+      <ModalGenerico isModalVisible={isModalUserVisible} closeModal={closeModalHandler} altura={400}>
+          <View style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <View style={styles.modalAddUserContainer}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
+              <TextInput
+                style={styles.modalText}
+                multiline={true}
+                placeholder='Digite o nome do usuário'
+                value={nomeUsuario}
+                onChangeText={(e) => setNomeUsuario(e)}
+                onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
+              />
+              <FlatList
+                data={usuariosBusca}
+                renderItem={({ item }) => (
+                  <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
+                    <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              {usuariosSelecionado.map((user) => (
+                <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)} style={{ marginTop: 5 }}>
+                  {user.nome}
+                </Chip>
+              ))}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
+                <Button title="Adicionar" onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)} color={colors.roxo} style={styles.btn} />
+                <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} style={styles.btn} />
+              </View>
+            </View>
           </View>
-        </View>
       </ModalGenerico>
+
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  fileUpload:{
-    marginRight:'10%'
-  },
   modalContainer: {
-    flexDirection: 'row',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -437,25 +378,23 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: 'white',
-    padding: 10,
+    margin: 10,
+    padding: 20,
     borderRadius: 20,
-  },  
+    elevation: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
   espacamento: {
     marginTop: 45,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 10,
   },
-  espacamentoTimer: {
-    marginTop: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 0
-  },
   textoCheck: {
     marginRight: '50%',
   },
-  iconContainerTittle: {
+   iconContainerTittle: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'right',
@@ -568,8 +507,9 @@ prioridadeContainer:{
 },
 dataPickerContainer: {
   left: -23,  
-  padding: 25,   
+  padding: 25, 
+  
 },
 });
 
-export default AbaTarefasTodasWorkspace;
+export default AbaTarefasConcluidasWork;
