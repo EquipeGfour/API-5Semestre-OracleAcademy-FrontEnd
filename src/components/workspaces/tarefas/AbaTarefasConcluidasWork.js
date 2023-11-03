@@ -31,6 +31,7 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
   const [status,setStatus] = useState(3)
+  const [tarefaStatus, setTarefaStatus] = useState({});
   const isFocused = useIsFocused();
 
 

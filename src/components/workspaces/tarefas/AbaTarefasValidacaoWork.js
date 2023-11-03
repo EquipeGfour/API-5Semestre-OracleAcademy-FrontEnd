@@ -30,7 +30,8 @@ const AbaTarefasValidacaoWork = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
-  const [status,setStatus] = useState(3)
+  const [status,setStatus] = useState(3)  
+  const [tarefaStatus, setTarefaStatus] = useState({});
   const isFocused = useIsFocused();
 
 
