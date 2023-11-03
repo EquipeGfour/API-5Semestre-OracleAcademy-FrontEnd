@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Modal, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
-import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Chip } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
+import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Modal, Chip } from 'react-native-paper';
 import BottomBarTarefasWork from './BottomBarTarefasWork';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdwnGenerico from '../../genericos/DropdownGenerico';
@@ -15,6 +15,10 @@ import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
 import FileUpload from '../../genericos/Upload';
 import Cronometro from '../../genericos/cronometro';
+import ListaAnexos from '../../genericos/ListaAnexos';
+import { useIsFocused } from "@react-navigation/native";
+import ModalGenerico from '../../genericos/ModalGenerico';
+import ConteudoModalTarefaWork from './ConteudoModalTarefaWork';
 
 // --- Cores do Sistema ---
 const colors = {
@@ -30,6 +34,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [tarefas, setTarefas] = useState([]);
   const [tarefaStatus, setTarefaStatus] = useState({});
   const [status,setStatus] = useState(3)
+  const isFocused = useIsFocused();
 
   // ----- Timer -----
   const [isStopwatchStart, setIsStopwatchStart] = useState(false);
@@ -111,6 +116,13 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     { label: 'Atrasado', value: 4 },
     { label: 'Aguardando Validação', value: 5 },
   ];
+  const statusLabel = {
+    1: 'Completo',
+    2: 'Em Andamento',
+    3: 'Não Iniciado',
+    4: 'Atrasado',
+    5: 'Aguardando Validação'
+  }
 
   // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
@@ -134,8 +146,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
       data_estimada: editarDataEstimada,
       prioridade: editarPrioridade
     };
-    console.log(obj);
-    editarTarefaWork(tarefaSelecionada._id, obj)
+    editarTarefaWork(tarefaSelecionada._id,obj) 
       .then(res => {
         Toast.show({
           type: 'success',
@@ -195,7 +206,7 @@ const editarStatusTarefa = async() => {
 
   useEffect(() => {
     buscarTarefasWorkspace();
-  }, [])
+  }, [isFocused])
 
   // --- Adicionar Usuário a uma Tarefa ---
   const adicionarUsuario = (usuario) => {
@@ -301,7 +312,7 @@ const editarStatusTarefa = async() => {
   return (
     <>
       {/* ----- Card de Tarefas Workspace ----- */}
-      <ScrollView>
+      <ScrollView style={{marginBottom: 70}}>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
             <Card style={styles.Cardcontainer} onPress={() => { toggleModal(tarefa._id) }}>
@@ -316,7 +327,7 @@ const editarStatusTarefa = async() => {
                 />
                 <Card.Title
                   title={tarefa?.titulo}
-                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}`}
+                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}\nStatus: ${statusLabel[tarefa.status]}`}
                   subtitleNumberOfLines={3}
                   style={styles.title}
                 />
@@ -337,181 +348,96 @@ const editarStatusTarefa = async() => {
       </ScrollView>
 
       {/* ----- Modal Visualizar Tarefa Workspace ----- */}
-      <Modal visible={isModalVisible} transparent animationType="slide">
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modal}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ ...styles.iconContainer, width: '75%' }} >
-                  <Checkbox
-                    onPress={() => {
-                      // Lógica para a seleção
-                    }}
-                  />
-                  <Text style={styles.textoCheck}>{tarefaSelecionada?.titulo}</Text>
-                </View>
-                <View style={styles.iconContainerTittle}>
+      <ModalGenerico isModalVisible={isModalVisible} closeModal={closeModal} altura={400}>
+        
+        <ConteudoModalTarefaWork 
+          tarefaSelecionada={tarefaSelecionada}
+          openModalEditarHandler={openModalEditarHandler}
+          openModalHandler={openModalHandler}
+          deletarTarefaWorkspace={deletarTarefaWorkspace}
+          status={status}
+          setStatus={setStatus}workspace
+        />
+      </ModalGenerico>
 
-                  {/* ----- Opções da Tarefa ----- */}
-                  <View style={styles.iconContainerTittle}>
-
-                    <View style={styles.fileUpload} marginLeft={-80}>
-                      <FileUpload onFileSelected={handleFileSelected} marginLeft={20} />
-                    </View>
-                    <Icon name="edit" style={styles.icons} marginLeft={10} color={'#51336b'} size={20} onPress={openModalEditarHandler}/>
-                    <Icon name="user-plus" style={styles.icons} marginLeft={10} color={'#51336b'} size={20} onPress={openModalHandler} />
-                    <Icon name="trash" style={styles.icons} marginLeft={10} color={'red'} size={20} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
-                  </View>
-                  {/* ----- Modal Editar Tarefa ----- */}
-                  <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide" onBackdropPress={closeModalEditarHandler}>
-                    <TouchableWithoutFeedback onPress={closeModalEditarHandler}>
-                      <View style={styles.modalEditarContainer}>
-                        <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
-                        <TextInput
-                          style={styles.usuario}
-                          mode='outlined'
-                          // textColor="#545F71"
-                          placeholder={tarefaSelecionada?.titulo}
-                          label={isInputFocused ? "Titulo" : ""}
-                          onFocus={handleInputFocus}
-                          onBlur={handleInputBlur}
-                          onChangeText={(e) => setEditarNome(e)}
-                        />
-                        <TextInput
-                          style={styles.usuario}
-                          mode='outlined'
-                          // textColor="#545F71"
-                          placeholder={tarefaSelecionada?.descricao}
-                          label={isInputFocused ? "Descrição" : ""}
-                          onFocus={handleInputFocus}
-                          onBlur={handleInputBlur}
-                          onChangeText={(e) => setEditarDescricao(e)}
-                        />
-                        <View style={styles.dataPickerContainer}>
-                          <DataPicker
-                            selectedDate={editarDataEstimada}
-                            onSelectDate={(e) => setEditarDataEstimada(e)}
-                          />
-                        </View>
-                        <View style={styles.prioridadeContainer}>
-                          <PrioridadeTarefaWork
-                            prioridade={editarPrioridade}
-                            setPrioridade={setEditarPrioridade} />
-                        </View>
-                        <View style={{ marginTop: 30 }}>
-                          <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
-                            <Text style={styles.buttonText}>Salvar</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  </Modal>
-
-                  {/* ----- Modal Adicionar Usuário a Tarefa ----- */}
-                  <Modal visible={isModalUserVisible} transparent animationType="slide">
-                    <TouchableWithoutFeedback onPress={closeModalHandler}>
-                      <View style={{
-                        flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}>
-                        <View style={styles.modalAddUserContainer}>
-                          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
-                          <TextInput
-                            style={styles.modalText}
-                            multiline={true}
-                            placeholder='Digite o nome do usuário'
-                            value={nomeUsuario}
-                            onChangeText={(e) => setNomeUsuario(e)}
-                            onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
-                          />
-                          <FlatList
-                            data={usuariosBusca}
-                            renderItem={({ item }) => (
-                              <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
-                                <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
-                              </TouchableOpacity>
-                            )}
-                          />
-                          {usuariosSelecionado.map((user) => (
-                            <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)} style={{ marginTop: 5 }}>
-                              {user.nome}
-                            </Chip>
-                          ))}
-                          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
-                            <Button title="Adicionar" onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)} color={colors.roxo} style={styles.btn} />
-                            <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} style={styles.btn} />
-                          </View>
-                        </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  </Modal>
-                </View>
+      {/* ----- Modal Editar Tarefa ----- */}
+        <ModalGenerico isModalVisible={isModalEditarTarefaVisible} closeModal={closeModalEditarHandler} altura={400}>
+          <View style={styles.modal}>
+            <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
+              <TextInput
+                  style={styles.usuario}
+                  mode='outlined'
+                  // textColor="#545F71"
+                  value={editarNome}
+                  label={isInputFocused ? "Titulo" : ""}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                  onChangeText={(e) => setEditarNome(e)}
+              />
+              <TextInput
+                  style={styles.usuario}
+                  mode='outlined'
+                  // textColor="#545F71"
+                  value={editarDescricao}
+                  label={isInputFocused ? "Descrição" : ""}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                  onChangeText={(e) => setEditarDescricao(e)}
+              />
+              <View style={styles.dataPickerContainer}>
+              <DataPicker
+                  selectedDate={editarDataEstimada}
+                  onSelectDate={(e) => setEditarDataEstimada(e)}
+              />
               </View>
-
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Icon name="bars" size={20} style={styles.icon} />
-                  <Text>{tarefaSelecionada?.descricao}</Text>
-                </View>
+              <View style={styles.prioridadeContainer}>
+              <PrioridadeTarefaWork 
+                prioridade={editarPrioridade}
+                setPrioridade={setEditarPrioridade}/>
               </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Icon name="clock" size={20} style={styles.icon} />
-                  <Text>{formatarData(tarefaSelecionada?.data_estimada)}</Text>
-                </View>
+              <View style={{ marginTop: 30 }}>
+                  <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
+                      <Text style={styles.buttonText}>Salvar</Text>
+                  </TouchableOpacity>
               </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Icon name="flag" size={20} style={styles.icon} />
-                  <Text>{getPrioridadeTitle(tarefaSelecionada?.prioridade)}</Text>
-                </View>
-              </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <DropdwnGenerico 
-                    data={data} 
-                    label="Status" 
-                    status={status}
-                    setStatus={setStatus}
-                  />
-                </View>
-              </View>
-              <View style={styles.espacamentoTimer}>
-                <View style={styles.iconContainer}>
-                  {tarefaSelecionada !== "" ? (
-                    <Cronometro
-                      play={tarefaSelecionada.play || false}
-                      btnColor={colors.roxo}
-                      tempoInicial={tarefaSelecionada.cronometro || 0}
-                      getTarefaTime={putTime}
-                    >
-                    </Cronometro>) : <></>}
-                </View>
-              </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Text>Membros</Text>
-                </View>
-              </View>
-              <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
-                {tarefaSelecionada?.usuarios?.map((n) => <UserAvatar name={n.usuario?.nome || ''} />)}
-              </View>
-              <View style={styles.espacamento}>
-                <Text style= {styles.fileNameText}>Anexos:</Text>
-                {selectedFileName && <Text style={styles.textos}>{selectedFileName}</Text>}
-                {selectedFileName && (
-                    <TouchableOpacity onPress={handleClearAttachment}>
-                        <Icon name="times-circle" size={20} color='red' marginLeft = {10} />
-                    </TouchableOpacity>
-                )}
-              </View>
-            </View>
           </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+        </ModalGenerico>
 
+      {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
+      <ModalGenerico isModalVisible={isModalUserVisible} closeModal={closeModalHandler} altura={400} >
+        <View style={styles.modal}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
+          <TextInput
+            style={styles.modalText}
+            multiline={true}
+            placeholder='Digite o nome do usuário'
+            value={nomeUsuario}
+            onChangeText={(e) => setNomeUsuario(e)}
+            onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
+          />
+          <FlatList
+            data={usuariosBusca}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
+                <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
+              </TouchableOpacity>
+            )}
+          />
+          {usuariosSelecionado.map((user) => (
+            <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)} style={{ marginTop: 5 }}>
+              {user.nome}
+            </Chip>
+          ))}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
+              <TouchableOpacity onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)}  style={styles.botaoCriar}>
+                  <Text style={styles.buttonText}>Adicionar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={closeModalHandler}  style={styles.botaoCriar}>
+                  <Text style={styles.buttonText}>Fechar</Text>
+              </TouchableOpacity>
+          </View>
+        </View>
+      </ModalGenerico>
     </>
   );
 };
@@ -521,7 +447,7 @@ const styles = StyleSheet.create({
     marginRight:'10%'
   },
   modalContainer: {
-    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -533,13 +459,9 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: 'white',
-    margin: 10,
-    padding: 20,
+    padding: 10,
     borderRadius: 20,
-    elevation: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-  },
+  },  
   espacamento: {
     marginTop: 45,
     flexDirection: 'row',

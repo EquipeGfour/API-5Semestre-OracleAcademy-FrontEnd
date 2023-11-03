@@ -20,7 +20,6 @@ const Cronometro = (props) => {
     const [tempoInicial,setTempoInicial] = useState(0)
 
     useEffect(() => {
-      console.log(props.play, 'TESTEE');
       setTempoInicial(props.tempoInicial);
       setIsStopwatchStart(props.play)
   }, [props.tempoInicial])

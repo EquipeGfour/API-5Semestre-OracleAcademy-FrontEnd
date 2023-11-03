@@ -26,11 +26,11 @@ const AbaFinalizadosWorkspace = ({ navigation }) => {
 
     const buscarWorkspace = async () => {
         const token = await getStorageItem('token');
+        // TODO verificar erro ao chamar a rota
         getWorkspaceFinalizados(token).then((res) => {
             setWorkspaces(res.data)
-            console.log(res.data)
         }).catch(error => {
-            console.error('Erro', error.response);
+            console.error('Erro buscarWorkspace AbaFinalizadosWorkspace', error.response);
         });
     }
 

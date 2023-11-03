@@ -25,10 +25,11 @@ const AbaCriadosWorkspace = ({ navigation }) => {
     
     const buscarWorkspace = async () => {
         const token = await getStorageItem('token');
+        // TODO verificar erro ao chamar a rota
         getWorkspaceCriados(token).then((res) => {
             setWorkspaces(res.data)
         }).catch(error => {
-            console.error('Erro', error.response);
+            console.error('buscarWorkspace AbaCriadosWorkspace', error.response);
         });
     }
 
