@@ -12,8 +12,8 @@ import { getUserByNameOrEmail } from '../../../service/usuario';
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
-import FileUpload from '../../genericos/Upload';
 import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
+import FileUpload from '../../genericos/Upload';
 import Cronometro from '../../genericos/cronometro';
 import ListaAnexos from '../../genericos/ListaAnexos';
 import { useIsFocused } from "@react-navigation/native";
@@ -32,6 +32,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
+  const [tarefaStatus, setTarefaStatus] = useState({});
   const [status,setStatus] = useState(3)
   const isFocused = useIsFocused();
 
@@ -88,8 +89,8 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const closeModalHandler = () => {
     setModalUserVisible(false);
     setUsuariosSelecionado([])
-    setUsuariosBusca([])    
-  };  
+    setUsuariosBusca([])
+  };
 
   // --- Prioridades Tarefa Workspace ---
   const getPrioridadeTitle = (prioridade) => {
@@ -137,8 +138,9 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [editarDescricao, setEditarDescricao] = useState("");
   const [editarDataEstimada, setEditarDataEstimada] = useState(new Date()); // Inicialize com a data atual
   const [editarPrioridade, setEditarPrioridade] = useState("");
-  const editarTarefaWorkspace = () =>{
-    const obj ={
+
+  const editarTarefaWorkspace = () => {
+    const obj = {
       titulo: editarNome || tarefaSelecionada?.titulo,
       descricao: editarDescricao,
       data_estimada: editarDataEstimada,
@@ -147,8 +149,8 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     editarTarefaWork(tarefaSelecionada._id,obj) 
       .then(res => {
         Toast.show({
-            type: 'success',
-            text1: 'Tarefa editada com sucesso!',
+          type: 'success',
+          text1: 'Tarefa editada com sucesso!',
         });
         closeModalEditarHandler();
         closeModal()
@@ -156,31 +158,31 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
       })
       .catch((error) => {
         Toast.show({
-            type: 'error',
-            text1: 'Ocorreu algum problema...',
+          type: 'error',
+          text1: 'Ocorreu algum problema...',
         });
         console.log('Erro', error)
       });
   }
-  
+
   // --- Deletar Tarefas Workspace ---
-  const deletarTarefaWorkspace = (id) =>{
+  const deletarTarefaWorkspace = (id) => {
     deleteTarefa(id).then(res => {
-        Toast.show({
-            type: 'success',
-            text1: 'Tarefa excluida com sucesso!',
-        });
-        buscarTarefasWorkspace()
-        setModalVisible(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Tarefa excluida com sucesso!',
+      });
+      buscarTarefasWorkspace()
+      setModalVisible(false);
     }).catch(error => {
-        Toast.show({
-            type: 'error',
-            text1: 'Ocorreu algum problema...',
-        });
-        console.error('Erro', error.response);
-        console.log(id);
+      Toast.show({
+        type: 'error',
+        text1: 'Ocorreu algum problema...',
+      });
+      console.error('Erro', error.response);
+      console.log(id);
     })
-}
+  }
 
 // --- Alterar Status da Tarefa ---
 const editarStatusTarefa = async() => {
@@ -240,29 +242,29 @@ const editarStatusTarefa = async() => {
   const [usuariosSelecionado, setUsuariosSelecionado] = useState([])
   const buscaUsuario = async () => {
     const busca = workspaceUsuarios.filter(u => {
-      return u.usuario.nome.toLowerCase().includes(userQuery.toLowerCase()) 
+      return u.usuario.nome.toLowerCase().includes(userQuery.toLowerCase())
     })
     setUsuariosBusca(busca)
   }
 
-      // --- Cronometro ---
-      const putTime = () => {
-        updateTarefaTime(tarefaSelecionada._id).then((res) => {
-            console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
-        }).catch(error => {
-            console.error(error.response, 'tem ')
-        });
-    }
+  // --- Cronometro ---
+  const putTime = () => {
+    updateTarefaTime(tarefaSelecionada._id).then((res) => {
+      console.log(res.data, "UPDATEEEEEEEEEEEEEEEEE");
+    }).catch(error => {
+      console.error(error.response, 'tem ')
+    });
+  }
 
   // --- DatePicker Tarefas Workspace --- 
   const formatarData = (data) => {
     if (data) {
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
-        return formattedDate;
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
+      return formattedDate;
     }
     return '';
-  }; 
+  };
 
   // --- Use Effects --- 
   useEffect(() => {
@@ -275,6 +277,23 @@ const editarStatusTarefa = async() => {
     }, 500)
   }, [nomeUsuario])
 
+  const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
+    try {
+      // Faça uma solicitação para a rota do backend para atualizar o status da tarefa.
+      const token = await getStorageItem('token');
+      const response = await editarStatusTarefaWork(_id, tarefaId, { status: novoStatus }, token)
+      setTarefaStatus((prevStatus) => ({
+        ...prevStatus,
+        [tarefaId]: !prevStatus[tarefaId],
+      }));
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Você não tem permissão !!!',
+      });
+      console.error('Erro ao atualizar o status da tarefa', error);
+    }
+  }
   const [selectedFileName, setSelectedFileName] = useState('');
   const handleFileSelected = (file) => {
       if (file && Array.isArray(file) && file.length > 0 && file[0].name) {
@@ -296,11 +315,14 @@ const editarStatusTarefa = async() => {
       <ScrollView style={{marginBottom: 70}}>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
-            <Card style={styles.Cardcontainer} onPress={() => {toggleModal(tarefa._id)}}>
+            <Card style={styles.Cardcontainer} onPress={() => { toggleModal(tarefa._id) }}>
               <Card.Content style={styles.contentContainer}>
                 <Checkbox
+                  disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
                   style={styles.iconCheck}
+                  status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
                   onPress={() => {
+                    atualizarStatusTarefa(tarefa._id, 1);
                   }}
                 />
                 <Card.Title
@@ -529,47 +551,48 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 125,
     padding: 20, // tamanho modal
-    marginLeft:10,
-    marginRight:10,
+    marginLeft: 10,
+    marginRight: 10,
     borderRadius: 10,
     borderColor: colors.cinza, // Cor da borda modal
     borderWidth: 1, // Largura da borda modal
-},
-textoEditarTarefaWorkspace:{
-  textAlign:'center',
-  color:colors.roxo,
-  fontSize: 18,
-  fontWeight: 'bold'
-},
-botaoCriar: {
-  width: 150,
-  borderRadius: 20,
-  backgroundColor: colors.roxo,
-  alignSelf: 'center', // Centraliza o botão horizontalmente
-},
-buttonText: {
-  color: 'white',
-  fontSize: 16,
-  paddingVertical: 10,
-  paddingHorizontal: 20,
-  textAlign: 'center',
-  fontWeight: 'bold'
-},
-usuario: {
-  marginTop: 20,
-  alignSelf: 'center',
-  width: 325,
-  backgroundColor: 'transparent'
-},
-prioridadeContainer:{
-  marginTop: -15,
-  marginLeft: 30,
-  backgroundColor: 'transparent'
-},
-dataPickerContainer: {
-  left: -23,  
-  padding: 25,   
-},
+  },
+  textoEditarTarefaWorkspace: {
+    textAlign: 'center',
+    color: colors.roxo,
+    fontSize: 18,
+    fontWeight: 'bold'
+  },
+  botaoCriar: {
+    width: 150,
+    borderRadius: 20,
+    backgroundColor: colors.roxo,
+    alignSelf: 'center', // Centraliza o botão horizontalmente
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  usuario: {
+    marginTop: 20,
+    alignSelf: 'center',
+    width: 325,
+    backgroundColor: 'transparent'
+  },
+  prioridadeContainer: {
+    marginTop: -15,
+    marginLeft: 30,
+    backgroundColor: 'transparent'
+  },
+  dataPickerContainer: {
+    left: -23,
+    padding: 25,
+
+  },
 });
 
 export default AbaTarefasTodasWorkspace;

@@ -24,6 +24,8 @@ enum STATUS{
 }
 */
 
+
+
 //Usado em components/workspace/tarefas/AbaTarefasAtrasadasWorkspace
 export const getTarefasAtrasadasWorkspace = (id) => {
     return axios.get(`tarefa/buscarTarefasStatus/`, {params:{id, status:4}});
@@ -74,6 +76,10 @@ export const editTarefa = (idTarefa, tarefaEdited) => {
 
 export const getTarefaTime = (idTarefa) => {
     return axios.get(`/tarefa/buscarCronometro/${idTarefa}`)
+}
+
+export const updateTarefaStatus = (idTarefa, status) => {
+    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status})
 }
 
 export const updateTarefaTime = (idTarefa) => {

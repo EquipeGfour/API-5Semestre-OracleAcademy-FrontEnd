@@ -61,7 +61,7 @@ const HomeWorkspaces = ({ navigation }) => {
             }}>
                 <Tab.Screen name="Todos" component={AbaWorkspaces}/>                
                 <Tab.Screen name="Meus Workspaces" component={AbaCriadosWorkspace} />
-                <Tab.Screen name="Workspaces faço parte" component={AbaFinalizadosWorkspace} />
+                <Tab.Screen name="Convidado" component={AbaFinalizadosWorkspace} />
             </Tab.Navigator>
             <BottomBarWorkspaces/>
         </>

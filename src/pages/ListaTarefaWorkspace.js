@@ -237,7 +237,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
         style={styles.tab}
         screenOptions={{
           tabBarActiveTintColor: '#51336b',
-          tabBarLabelStyle: { fontSize: 11 },
+          tabBarLabelStyle: { fontSize: 8.35 },
           tabBarStyle: { backgroundColor: 'white' },
           tabBarIndicatorStyle: {
             backgroundColor: '#51336b',
