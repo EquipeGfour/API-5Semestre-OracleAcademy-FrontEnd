@@ -115,6 +115,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
     getTarefas(_id).then((res) => {
+      console.log('get tarefas', res.data)
       setTarefas(res.data);
     }).catch(error => {
       console.error('Erro', error)
@@ -267,7 +268,6 @@ const editarStatusTarefa = async() => {
   }, [nomeUsuario])
 
   const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
-    console.log(novoStatus, tarefaId)
     try {
       // Faça uma solicitação para a rota do backend para atualizar o status da tarefa.
       const token = await getStorageItem('token');

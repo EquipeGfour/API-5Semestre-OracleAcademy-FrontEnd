@@ -205,6 +205,7 @@ const AbaConcluidasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => 
                                                             atualizarStatusTarefa(tarefa._id, 2);
                                                         }
                                                     }}
+                                                    color={colors.verde}
                                                 />
                                                 <Card.Title
                                                     title={tarefa.titulo}
@@ -232,6 +233,7 @@ const AbaConcluidasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => 
                                 onPress={() => {
                                     setChecked(!checked);
                                 }}
+                                color={colors.verde}
                             />
                             <Text style={styles.textoCheck}>{tarefa.titulo}</Text>
                         </View>
