@@ -115,7 +115,6 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
     getTarefas(_id).then((res) => {
-      console.log('get tarefas', res.data)
       setTarefas(res.data);
     }).catch(error => {
       console.error('Erro', error)

@@ -22,7 +22,6 @@ export const getWorkspaceCriados = (token) => {
 }
 
 export const editarStatusTarefaWork = (id,idTarefa,data, token) => {
-    console.log('editarStatusTarefaWork', id,idTarefa,data, token)
     return axios.put(`/workspace/changestatus/?id=${id}&idTarefa=${idTarefa}`, data, { headers: { Authorization: token } })
 }
 
