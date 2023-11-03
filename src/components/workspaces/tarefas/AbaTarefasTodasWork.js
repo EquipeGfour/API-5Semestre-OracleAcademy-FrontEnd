@@ -16,6 +16,7 @@ import FileUpload from '../../genericos/Upload';
 import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
 import Cronometro from '../../genericos/cronometro';
 import ListaAnexos from '../../genericos/ListaAnexos';
+import { useIsFocused } from "@react-navigation/native";
 import ModalGenerico from '../../genericos/ModalGenerico';
 import ConteudoModalTarefaWork from './ConteudoModalTarefaWork';
 
@@ -32,6 +33,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
   const [status,setStatus] = useState(3)
+  const isFocused = useIsFocused();
 
   // ----- Timer -----
   const [isStopwatchStart, setIsStopwatchStart] = useState(false);
@@ -113,6 +115,13 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
     { label: 'Atrasado', value: 4 },
     { label: 'Aguardando Validação', value: 5 },
   ];
+  const statusLabel = {
+    1: 'Completo',
+    2: 'Em Andamento',
+    3: 'Não Iniciado',
+    4: 'Atrasado',
+    5: 'Aguardando Validação'
+  }
 
   // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
@@ -195,7 +204,7 @@ const editarStatusTarefa = async() => {
 
   useEffect(() => {
     buscarTarefasWorkspace();
-  }, [])
+  }, [isFocused])
 
   // --- Adicionar Usuário a uma Tarefa ---
   const adicionarUsuario = (usuario) => {
@@ -284,7 +293,7 @@ const editarStatusTarefa = async() => {
   return (
     <>
       {/* ----- Card de Tarefas Workspace ----- */}
-      <ScrollView>
+      <ScrollView style={{marginBottom: 70}}>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
             <Card style={styles.Cardcontainer} onPress={() => {toggleModal(tarefa._id)}}>
@@ -296,7 +305,7 @@ const editarStatusTarefa = async() => {
                 />
                 <Card.Title
                   title={tarefa?.titulo}
-                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}`}
+                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}\nStatus: ${statusLabel[tarefa.status]}`}
                   subtitleNumberOfLines={3}
                   style={styles.title}
                 />
@@ -325,7 +334,7 @@ const editarStatusTarefa = async() => {
           openModalHandler={openModalHandler}
           deletarTarefaWorkspace={deletarTarefaWorkspace}
           status={status}
-          setStatus={setStatus}
+          setStatus={setStatus}workspace
         />
       </ModalGenerico>
 

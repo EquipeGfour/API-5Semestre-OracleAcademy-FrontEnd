@@ -14,6 +14,8 @@ import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { editarTarefaWork } from '../../../service/workspace';
 import { useIsFocused } from "@react-navigation/native";
+import ConteudoModalTarefaWork from './ConteudoModalTarefaWork';
+import ModalGenerico from '../../genericos/ModalGenerico';
 
 
 // --- Cores do Sistema ---
@@ -28,6 +30,7 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
+  const [status,setStatus] = useState(3)
   const isFocused = useIsFocused();
 
 
@@ -37,6 +40,7 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
     getTarefaById(_id).then((res) => {
       setModalVisible(!isModalVisible);
       setTarefaSelecionado(res.data)
+      setStatus(res.data.status)
     })
   };
 
@@ -229,7 +233,7 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
   return (
     <>
       {/* ----- Card de Tarefas Workspace ----- */}
-      <ScrollView>
+      <ScrollView style={{marginBottom: 70}}>
         {tarefas.map((tarefa) => (
           <View style={styles.filtros}>
             <Card style={styles.Cardcontainer} onPress={() => {toggleModal(tarefa._id)}}>
@@ -262,149 +266,99 @@ const AbaTarefasConcluidasWork = ({ _id, workspaceUsuarios }) => {
       </ScrollView>
 
       {/* ----- Modal Visualizar Tarefa Workspace ----- */}
-      <Modal visible={isModalVisible} transparent animationType="slide">
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modal}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ ...styles.iconContainer, width: '75%' }} >
-                  <Checkbox
-                    onPress={() => {
-                      // Lógica para a seleção
-                    }}
-                  />
-                  <Text style={styles.textoCheck}>{tarefaSelecionada?.titulo}</Text>
-                </View>
-                <View style={styles.iconContainerTittle}>
+      <ModalGenerico isModalVisible={isModalVisible} closeModal={closeModal} altura={400}>
 
-                  {/* ----- Opções da Tarefa ----- */}
-                  <Icon name="edit" style={styles.icons} marginLeft={-10} color={'#51336b'} size={20} onPress={openModalEditarHandler}/>
-                  <Icon name="user-plus" style={styles.icons} marginLeft={16} color={'#51336b'} size={20} onPress={openModalHandler} />
-                  <Icon name="trash" style={styles.icons} marginLeft={16} color={'red'} size={20} onPress={() => deletarTarefaWorkspace(tarefaSelecionada._id)} />
+        <ConteudoModalTarefaWork 
+            tarefaSelecionada={tarefaSelecionada}
+            openModalEditarHandler={openModalEditarHandler}
+            openModalHandler={openModalHandler}
+            deletarTarefaWorkspace={deletarTarefaWorkspace}
+            status={status}
+            setStatus={setStatus}
+          />
+      </ModalGenerico>
 
-                  {/* ----- Modal Editar Tarefa ----- */}
-                  <Modal visible={isModalEditarTarefaVisible} transparent animationType="slide" onBackdropPress={closeModalEditarHandler}>
-                    <TouchableWithoutFeedback onPress={closeModalEditarHandler}>
-                      <View style={styles.modalEditarContainer}>
-                      <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
-                          <TextInput
-                              style={styles.usuario}
-                              mode='outlined'
-                              // textColor="#545F71"
-                              placeholder={tarefaSelecionada?.titulo}
-                              label={isInputFocused ? "Titulo" : ""}
-                              onFocus={handleInputFocus}
-                              onBlur={handleInputBlur}
-                              onChangeText={(e) => setEditarNome(e)}
-                          />
-                          <TextInput
-                              style={styles.usuario}
-                              mode='outlined'
-                              // textColor="#545F71"
-                              placeholder={tarefaSelecionada?.descricao}
-                              label={isInputFocused ? "Descrição" : ""}
-                              onFocus={handleInputFocus}
-                              onBlur={handleInputBlur}
-                              onChangeText={(e) => setEditarDescricao(e)}
-                          />
-                          <View style={styles.dataPickerContainer}>
-                          <DataPicker
-                              selectedDate={editarDataEstimada}
-                              onSelectDate={(e) => setEditarDataEstimada(e)}
-                          />
-                          </View>
-                          <View style={styles.prioridadeContainer}>
-                          <PrioridadeTarefaWork 
-                            prioridade={editarPrioridade}
-                            setPrioridade={setEditarPrioridade}/>
-                          </View>
-                          <View style={{ marginTop: 30 }}>
-                              <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
-                                  <Text style={styles.buttonText}>Salvar</Text>
-                              </TouchableOpacity>
-                          </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  </Modal>  
+      {/* ----- Modal Editar Tarefa ----- */}
+      <ModalGenerico isModalVisible={isModalEditarTarefaVisible} closeModal={closeModalEditarHandler} altura={400}>
+          <View style={styles.modal}>
+          <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
+              <TextInput
+                  style={styles.usuario}
+                  mode='outlined'
+                  // textColor="#545F71"
+                  placeholder={tarefaSelecionada?.titulo}
+                  label={isInputFocused ? "Titulo" : ""}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                  onChangeText={(e) => setEditarNome(e)}
+              />
+              <TextInput
+                  style={styles.usuario}
+                  mode='outlined'
+                  // textColor="#545F71"
+                  placeholder={tarefaSelecionada?.descricao}
+                  label={isInputFocused ? "Descrição" : ""}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                  onChangeText={(e) => setEditarDescricao(e)}
+              />
+              <View style={styles.dataPickerContainer}>
+              <DataPicker
+                  selectedDate={editarDataEstimada}
+                  onSelectDate={(e) => setEditarDataEstimada(e)}
+              />
+              </View>
+              <View style={styles.prioridadeContainer}>
+              <PrioridadeTarefaWork 
+                prioridade={editarPrioridade}
+                setPrioridade={setEditarPrioridade}/>
+              </View>
+              <View style={{ marginTop: 30 }}>
+                  <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
+                      <Text style={styles.buttonText}>Salvar</Text>
+                  </TouchableOpacity>
+              </View>
+          </View>
+      </ModalGenerico>
 
-                  {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
-                  <Modal visible={isModalUserVisible} transparent animationType="slide">
-                    <TouchableWithoutFeedback onPress={closeModalHandler}>
-                      <View style={{
-                        flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}>
-                        <View style={styles.modalAddUserContainer}>
-                          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
-                          <TextInput
-                            style={styles.modalText}
-                            multiline={true}
-                            placeholder='Digite o nome do usuário'
-                            value={nomeUsuario}
-                            onChangeText={(e) => setNomeUsuario(e)}
-                            onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
-                          />
-                          <FlatList
-                            data={usuariosBusca}
-                            renderItem={({ item }) => (
-                              <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
-                                <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
-                              </TouchableOpacity>
-                            )}
-                          />
-                          {usuariosSelecionado.map((user) => (
-                            <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)} style={{ marginTop: 5 }}>
-                              {user.nome}
-                            </Chip>
-                          ))}
-                          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
-                            <Button title="Adicionar" onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)} color={colors.roxo} style={styles.btn} />
-                            <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} style={styles.btn} />
-                          </View>
-                        </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  </Modal>                
-                </View>
-              </View>
-
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Icon name="bars" size={20} style={styles.icon} />
-                  <Text>{tarefaSelecionada?.descricao}</Text>
-                </View>
-              </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Icon name="clock" size={20} style={styles.icon} />
-                  <Text>{formatarData(tarefaSelecionada?.data_estimada)}</Text>
-                </View>
-              </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Icon name="flag" size={20} style={styles.icon} />
-                  <Text>{getPrioridadeTitle(tarefaSelecionada?.prioridade)}</Text>
-                </View>
-              </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <DropdwnGenerico data={data} label="Status" />
-                </View>
-              </View>
-              <View style={styles.espacamento}>
-                <View style={styles.iconContainer}>
-                  <Text>Membros</Text>
-                </View>
-              </View>
-              <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
-                {tarefaSelecionada?.usuarios.map((n) => <UserAvatar name={n.usuario?.nome || ''} />)}
+      {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
+      <ModalGenerico isModalVisible={isModalUserVisible} closeModal={closeModalHandler} altura={400}>
+          <View style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <View style={styles.modalAddUserContainer}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
+              <TextInput
+                style={styles.modalText}
+                multiline={true}
+                placeholder='Digite o nome do usuário'
+                value={nomeUsuario}
+                onChangeText={(e) => setNomeUsuario(e)}
+                onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
+              />
+              <FlatList
+                data={usuariosBusca}
+                renderItem={({ item }) => (
+                  <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
+                    <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              {usuariosSelecionado.map((user) => (
+                <Chip closeIcon={'window-close'} onClose={() => removerUsuario(user)} style={{ marginTop: 5 }}>
+                  {user.nome}
+                </Chip>
+              ))}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
+                <Button title="Adicionar" onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)} color={colors.roxo} style={styles.btn} />
+                <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} style={styles.btn} />
               </View>
             </View>
           </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+      </ModalGenerico>
 
     </>
   );

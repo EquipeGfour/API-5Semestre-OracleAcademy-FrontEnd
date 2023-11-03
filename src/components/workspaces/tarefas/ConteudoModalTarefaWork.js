@@ -165,7 +165,7 @@ const ConteudoModalTarefaWork = (props) => {
                 </TouchableOpacity>
             )}
           </View>
-          <ListaAnexos tarefa={props.tarefaSelecionada} /> 
+          <ListaAnexos tarefa={props.tarefaSelecionada} workspace={true}/> 
         </View>
     )
 }

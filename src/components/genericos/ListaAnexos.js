@@ -15,7 +15,7 @@ const ListaAnexos = (props) => {
             <Text style= {[styles.fileNameText]}>Anexos: </Text>
             <View style= {[styles.viewAnexos, {borderStyle:'solid'}]}>
             {props.tarefa?.arquivos?.map((arquivo, index)=>(
-                <Text style={[styles.textos, styles.textoAnexo, index===props.tarefa?.arquivos.length -1?{width:'45%'}:null]}>{arquivo?.nome}</Text>
+                <Text style={[styles.textos, styles.textoAnexo, props.workspace ? styles.anexoWorkspace : styles.anexoObjetivo]}>{arquivo?.nome}</Text>
             ))}
             </View>
         </View>
@@ -41,9 +41,15 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         flex: 1
     },
-    textoAnexo:{
+    anexoWorkspace: {
+        borderColor: colors.roxo,
+        backgroundColor: colors.roxo,
+    },
+    anexoObjetivo: {
         borderColor: colors.verde,
         backgroundColor: colors.verde,
+    },
+    textoAnexo:{
         marginTop:4,
         paddingHorizontal:10,
         paddingVertical:4,
