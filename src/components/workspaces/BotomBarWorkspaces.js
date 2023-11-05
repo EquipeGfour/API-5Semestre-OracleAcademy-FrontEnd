@@ -4,9 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
-import PrioridadeTarefaWork from './PrioridadeTarefasWork';
-import { postTarefa } from '../service/tarefa';
-
+import { postObjetivos } from '../../service/objetivo';
+import { getStorageItem } from '../../functions/encryptedStorageFunctions';
 
 const colors = {
     verde: "#346c68",
@@ -16,29 +15,22 @@ const colors = {
     cinza: "#BAC0CA"
 };
 
-const BottomBarTarefasWork = ({ onIconPress, id }) => {
+const BottomBarWorkspaces = ({ onIconPress }) => {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
     const [isInputFocused, setInputFocused] = useState(false);
 
     const [nome, setNome] = useState("");
-    const [descricao, setDescricao] = useState("");
-    const [dataEstimada, setDataEstimada] = useState("");
-    const [prioridade, setPrioridade] = useState("");
 
-    const criarObjetivo = () => {
+    const criarWorkspace = async () => {
         const obj = {
             titulo: nome,
-            descricao: descricao,
-            data_estimada: dataEstimada,
-            prioridade: prioridade
+            workspace:true
         };
-        postTarefa(id, obj)
+        const token = await getStorageItem('token');
+        postObjetivos(obj,token)
             .then((res) => {
                 setNome('')
-                setDescricao('')
-                setDataEstimada('')
-                setPrioridade('')
                 closeModal()
             })
             .catch(error => {
@@ -67,9 +59,9 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('HomeWorkspaces')} style={styles.icon}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('')} style={styles.icon}>
                 <Icon name="home" size={30} color={colors.roxo} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.roxo} />
             </TouchableOpacity>
@@ -78,43 +70,21 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
             </TouchableOpacity> */}
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
-                <View style={[styles.modalContainer]}>
+                <View style={[styles.modalContainer,]}>
+                <Text style={styles.textoCriarWorkspace}>Criar Workspace</Text>
                     <TextInput
                         style={styles.usuario}
                         mode='outlined'
                         // textColor="#545F71"
-                        placeholder="Insira o nome da Tarefa"
-                        label={isInputFocused ? "Titulo" : ""}
+                        placeholder="Insira o nome do Workspaces"
+                        label={isInputFocused ? "Workspaces" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         onChangeText={(text) => setNome(text)}
                         value={nome}
                     />
-                    <TextInput
-                        style={styles.usuario}
-                        mode='outlined'
-                        // textColor="#545F71"
-                        placeholder="Insira o nome da Descrição"
-                        label={isInputFocused ? "Descrição" : ""}
-                        onFocus={handleInputFocus}
-                        onBlur={handleInputBlur}
-                        onChangeText={(text) => setDescricao(text)}
-                        value={descricao}
-                    />
-                    <TextInput
-                        style={styles.usuario}
-                        mode='outlined'
-                        // textColor="#545F71"
-                        placeholder="DD / MM / YYYY"
-                        label={isInputFocused ? "Data Conclusão" : ""}
-                        onFocus={handleInputFocus}
-                        onBlur={handleInputBlur}
-                        onChangeText={(text) => setDataEstimada(text)}
-                        value={dataEstimada}
-                    />
-                    <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
-                    <View style={{ marginTop: 30 }}>
-                        <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
+                    <View style={{ marginTop: 40 }}>
+                        <TouchableOpacity onPress={criarWorkspace} style={styles.botaoCriar}>
                             <Text style={styles.buttonText}>Criar</Text>
                         </TouchableOpacity>
                     </View>
@@ -125,11 +95,11 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 };
 
 const styles = StyleSheet.create({
-    modalText: {
-        mode: 'flat',
-        backgroundColor: 'white',
-        width: 200,
-        marginBottom: 30,
+    textoCriarWorkspace:{
+        textAlign:'center',
+        color:colors.roxo,
+        fontSize: 18,
+        fontWeight: 'bold'
     },
     botaoCriar: {
         width: 150,
@@ -146,7 +116,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     usuario: {
-        marginTop: 20,
+        marginTop: 40,
         alignSelf: 'center',
         width: 325,
         backgroundColor: 'transparent'
@@ -168,7 +138,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        padding: 50, // tamanho modal
+        padding: 20,
         borderRadius: 10,
         position: 'absolute',
         left: 0,
@@ -178,4 +148,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BottomBarTarefasWork;
+export default BottomBarWorkspaces;

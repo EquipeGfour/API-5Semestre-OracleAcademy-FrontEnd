@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
-import BottomBarObjetivos from "./ModalBottomBarObjetivos";
+import BottomBarObjetivos from "./BottomBarObjetivos";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
-import { getObjetivos } from "../service/objetivo";
-import { getStorageItem } from "../functions/encryptedStorageFunctions";
+import { getObjetivos } from "../../service/objetivo";
+import { getStorageItem } from "../../functions/encryptedStorageFunctions";
 
 
 const verdeEscuro = "#346c68";
 
 const Recentes = ({ navigation }) => {
+
+    const formatarData = (data) => {
+        const dataFormatada = new Date(data).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+        return dataFormatada;
+    };
 
     const [objetivos, setObjetivos] = useState([]);
 
@@ -42,6 +51,8 @@ const Recentes = ({ navigation }) => {
         buscarObjetivos();
     }, [objetivos])
 
+
+
     return (
         <>
             <BottomBarObjetivos style={{ flex: 1 }} />
@@ -53,8 +64,13 @@ const Recentes = ({ navigation }) => {
                                 title={objetivo.titulo}
                                 titleStyle={{ color: 'white', fontWeight: 'bold' }}
                             />
-                            <Card.Title
+                            {/* <Card.Title
                                 title={objetivo.data_estimada}
+                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                left={(props) => <Icon name="clock" size={30} color="white" />}
+                            /> */}
+                            <Card.Title
+                                title={formatarData(objetivo.data_estimada)}
                                 titleStyle={{ color: 'white', fontWeight: 'bold' }}
                                 left={(props) => <Icon name="clock" size={30} color="white" />}
                             />
@@ -71,7 +87,6 @@ const Recentes = ({ navigation }) => {
                                 <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
                             </Card.Content>
                         </View>
-
                         
                     </TouchableOpacity>
                 ))}
@@ -79,7 +94,7 @@ const Recentes = ({ navigation }) => {
         </>
     );
 }
-
+const teste = memo(Recentes)
 const styles = StyleSheet.create({
     cardContent: {
         alignItems: 'center',
@@ -120,4 +135,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Recentes;
+export default teste;

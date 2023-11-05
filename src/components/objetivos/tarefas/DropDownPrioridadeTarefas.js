@@ -9,7 +9,7 @@ const data = [
     { label: 'Baixo', value: 4 }
 ];
 
-const DropdownComponent = (props) => {
+const DropDownPrioridadeTarefas = (props) => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -52,7 +52,7 @@ const DropdownComponent = (props) => {
     );
 };
 
-export default DropdownComponent;
+export default DropDownPrioridadeTarefas;
 
 const styles = StyleSheet.create({
     container: {

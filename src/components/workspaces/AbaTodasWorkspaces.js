@@ -3,9 +3,9 @@ import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Card, Avatar } from 'react-native-paper';
-import { getStorageItem } from "../functions/encryptedStorageFunctions";
-import { getWorkspaceUser } from "../service/workspace";
-import UserAvatar from "./UserAvatar";
+import { getStorageItem } from "../../functions/encryptedStorageFunctions";
+import { getWorkspaceUser } from "../../service/workspace";
+import UserAvatar from "../genericos/UserAvatar";
 
 const colors = {
     verde: "#346c68",
@@ -16,7 +16,7 @@ const colors = {
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 
-const AbaWorkspaces = ({ navigation }) => {
+const AbaTodasWorkspaces = ({ navigation }) => {
 
     const [workspaces, setWorkspaces] = useState([]);
     const buscarWorkspace = async () => {
@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AbaWorkspaces;
+export default AbaTodasWorkspaces;

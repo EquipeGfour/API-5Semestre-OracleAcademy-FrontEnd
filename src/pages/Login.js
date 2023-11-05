@@ -15,8 +15,8 @@ const Login = ({ navigation }) => {
     const [isInputFocused, setInputFocused] = useState(false);
 
     handleDoubleTap = () => {
-        setEmail('nichollaslimma734@gmail.com');
-        setSenha('senha');
+        setEmail('raniel.santos@email.com');
+        setSenha('123456');
     }
 
     const [senhaVisivel, setSenhaVisivel] = useState(false); // Estado para controlar a visibilidade da senha
@@ -84,7 +84,7 @@ const Login = ({ navigation }) => {
                 style={styles.usuario}
                 mode="outlined"
                 textColor="#545F71"
-                label="Usuário"
+                label="E-mail"
                 placeholder="E-mail"
                 selectionColor='#545f71'
                 value={email}
