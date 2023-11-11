@@ -13,13 +13,14 @@ import ListaTarefaWorkspace from '../pages/ListaTarefaWorkspace';
 import AbaTarefasWorkspace from '../components/workspaces/tarefas/AbaTarefasTodasWork';
 import CadastroUsuario from '../pages/CadastroUsuario';
 import Cronometro from '../components/genericos/cronometro';
+import Grafico from '../components/genericos/Grafico';
 
 
 export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(
         <NavigationContainer>
-            <Stack.Navigator initialRouteName = "Bem-vindo" screenOptions={{headerShown:false}} >
+            <Stack.Navigator initialRouteName = "Grafico" screenOptions={{headerShown:false}} >
                 <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
                 <Stack.Screen name ='Home' component={Home}/>
                 <Stack.Screen name = "Login" component = {Login} />
@@ -34,6 +35,8 @@ export default function Routes(){
                 <Stack.Screen name = 'BottomBarWorkspaces' component={BottomBarWorkspaces}/>
                 <Stack.Screen name = 'AbaTodasWorkspace' component={AbaTarefasWorkspace}/>
                 <Stack.Screen name = 'Cronometro' component={Cronometro}/>
+                {/* Componentes do Gráfico */}
+                <Stack.Screen name = 'Grafico' component={Grafico}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
