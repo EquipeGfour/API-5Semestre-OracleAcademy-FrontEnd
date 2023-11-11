@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     fileNameText:{
         color: 'black',
-        fontSize: 17,
+        fontSize: 14,
         marginLeft: 10
     },
     textos: {
