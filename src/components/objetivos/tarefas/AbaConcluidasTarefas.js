@@ -10,6 +10,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
 import { useIsFocused } from '@react-navigation/native';
+import FileUpload from '../../genericos/Upload';
 
 
 const verdeEscuro = "#346c68";
@@ -172,6 +173,19 @@ const AbaConcluidasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => 
         return '';
     };
 
+    const [selectedFileName, setSelectedFileName] = useState('');
+    const handleFileSelected = async (file) => {
+        if (file && Array.isArray(file) && file.length > 0 && file[0].name) {
+            const token = await getStorageItem('token');
+            setSelectedFileName(file[0]);
+            UploadFile(tarefa._id, file[0], token).then((res) => {
+            }).catch((error) => {
+            })
+        } else {
+            setSelectedFileName('Nome do arquivo não disponível');
+        }
+    };
+
     const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
         try {
             const response = await updateTarefaStatus(tarefaId, novoStatus)
@@ -238,7 +252,12 @@ const AbaConcluidasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => 
                             <Text style={styles.textoCheck}>{tarefa.titulo}</Text>
                         </View>
                         <View style={styles.iconContainerTittle}>
-                            <Icon name="edit" style={styles.icons} size={20} onPress={openEditModal} />
+                            <View style={styles.icons}>
+                                <FileUpload 
+                                    btnColor={colors.verde}
+                                    onFileSelected={handleFileSelected} />
+                            </View>
+                            <Icon name="edit" style={styles.icons} size={20} color={colors.verde} onPress={openEditModal} />
                             <Icon name="trash" style={styles.icons} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
                         </View>
                     </View>
@@ -353,6 +372,7 @@ const styles = StyleSheet.create({
         justifyContent: 'right',
     },
     iconContainerTittle: {
+        marginLeft:-50,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'right',
@@ -414,7 +434,7 @@ const styles = StyleSheet.create({
         color: verdeEscuro
     },
     icons: {
-        padding: 5,
+        padding: 12,
         textAlign: 'right',
         // textAlign: 'right',
         // marginRight:-40
