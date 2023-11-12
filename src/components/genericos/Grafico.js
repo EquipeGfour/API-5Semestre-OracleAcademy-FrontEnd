@@ -37,6 +37,7 @@ const Grafico = () =>{
 const styles = StyleSheet.create({
     container: {
         marginTop: 30,
+        marginBottom: -30,
         width: 'auto',
         height: "auto",
         alignSelf: "center",
