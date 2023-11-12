@@ -26,14 +26,14 @@ const InfoGrafico = () => {
                 </View>
             </View>
             {/* --- Em Andamento --- */}
-            <View style={{...styles.cardGrafico, borderColor:"black"}}>
-                <Icon name="play" style={styles.icons} size={20} color={"black"} onPress={""} />
+            <View style={{...styles.cardGrafico, borderColor:"#545F71"}}>
+                <Icon name="play" style={styles.icons} size={20} color={"#545F71"} onPress={""} />
                 <View style={styles.cardContent}>  
                     <Card.Title                     
                         title={"Em Andamento"}
-                        titleStyle={{color: "black"}}
+                        titleStyle={{color: "#545F71"}}
                     />
-                    <Text style={{...styles.textoValor, color:"black"}}>43/100</Text>
+                    <Text style={{...styles.textoValor, color:"#545F71"}}>43/100</Text>
                 </View>
             </View>
             {/* --- Concluidas --- */}
@@ -48,14 +48,14 @@ const InfoGrafico = () => {
                 </View>
             </View>
             {/* --- Total de Horas --- */}
-            <View style={{...styles.cardGrafico, borderColor:"gray"}}>
-                <Icon name="clock" style={styles.icons} size={20} color={"gray"} onPress={""} />
+            <View style={{...styles.cardGrafico, borderColor:"black"}}>
+                <Icon name="clock" style={styles.icons} size={20} color={"black"} onPress={""} />
                 <View style={styles.cardContent}>  
                     <Card.Title                     
                         title={"Total de Horas"}
-                        titleStyle={{color: "gray"}}
+                        titleStyle={{color: "black"}}
                     />
-                    <Text style={{...styles.textoValor, color:"gray"}}>144h</Text>
+                    <Text style={{...styles.textoValor, color:"black"}}>144h</Text>
                 </View>
             </View>   
         </>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         width: '80%',
         height: "8%",
-        backgroundColor: "#f5fcff",
+        backgroundColor: "#fff",
         borderWidth:1,
         borderRadius: 10,
         alignSelf: "center",

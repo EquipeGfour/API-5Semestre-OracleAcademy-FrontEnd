@@ -15,19 +15,21 @@ import CadastroUsuario from '../pages/CadastroUsuario';
 import Cronometro from '../components/genericos/cronometro';
 import Grafico from '../components/genericos/Grafico';
 import InfoGrafico from '../components/genericos/InfoGrafico';
+import Dashboard from '../pages/Dashboard';
 
 
 export default function Routes(){
     const Stack = createNativeStackNavigator();
     return(
         <NavigationContainer>
-            <Stack.Navigator initialRouteName = "InfoGrafico" screenOptions={{headerShown:false}} >
+            <Stack.Navigator initialRouteName = "Dashboard" screenOptions={{headerShown:false}} >
                 <Stack.Screen name = "Bem-vindo" component = {BemVindo} />
                 <Stack.Screen name ='Home' component={Home}/>
                 <Stack.Screen name = "Login" component = {Login} />
                 <Stack.Screen name ='Lista-tarefas' component={ListaTarefas}/>  
                 <Stack.Screen name = 'ListaTarefaWorkspace' component={ListaTarefaWorkspace}/>              
                 <Stack.Screen name = 'Cadastro-usuario' component={CadastroUsuario}/>
+                <Stack.Screen name = 'Dashboard' component={Dashboard}/>
                 {/* Componentes */}
                 <Stack.Screen name = "Recentes" component = {Recentes} />
                 <Stack.Screen name ='BottomBarObjetivos' component={BottomBarObjetivos}/>
