@@ -8,6 +8,9 @@ export const addUserToTarefa = (id, usuarios) => {
 export const getTarefas = (id) => {
     return axios.get(`/tarefa/buscarTarefas/${id}`);
 }
+export const getTarefasWorkspacePorStatus = (id, status) => {
+    return axios.get(`tarefa/buscarTarefasStatus/`, {params:{id, status}});
+}
 
 //Usado em components/workspace/tarefas/AbaTarefasConcluidasWorkspace
 export const getTarefasConclidasWorkspace = (id) => {
