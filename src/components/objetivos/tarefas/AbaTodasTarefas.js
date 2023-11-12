@@ -13,8 +13,9 @@ import FileUpload from '../../genericos/Upload';
 import Cronometro from '../../genericos/cronometro';
 import { UploadFile } from '../../../service/tarefa';
 import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
-import { updateTarefaStatus } from '../../../service/tarefa';
+import { updateTarefaStatus, getTarefasPorStatus } from '../../../service/tarefa';
 import ListaAnexos from '../../genericos/ListaAnexos';
+
 
 
 const verdeEscuro = "#346c68";
@@ -34,7 +35,7 @@ const theme = {
     },
 };
 
-const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
+const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) => {
 
     const [editingTitle, setEditingTitle] = useState("");
     const [editingDescription, setEditingDescription] = useState("");
@@ -138,15 +139,28 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const buscarTarefas = () => {
         setFlagTarefa(false)
-        getTarefas(id).then((res) => {
-            const novaLista = res.data.map((tarefa) => ({
-                ...tarefa,
-                checked: false,
-            }))
-            setTarefas(novaLista)
-        }).catch(error => {
-            console.error(error)
-        });
+        if(status){
+            getTarefasPorStatus(id, status).then((res) => {
+                const novaLista = res.data.map((tarefa) => ({
+                    ...tarefa,
+                    checked: false,
+                }))
+                setTarefas(novaLista)
+            }).catch(error => {
+                console.error(error)
+            });
+        }
+        else{
+            getTarefas(id).then((res) => {
+                const novaLista = res.data.map((tarefa) => ({
+                    ...tarefa,
+                    checked: false,
+                }))
+                setTarefas(novaLista)
+            }).catch(error => {
+                console.error(error)
+            });
+        }
     }
 
     // --- Cronometro ---
