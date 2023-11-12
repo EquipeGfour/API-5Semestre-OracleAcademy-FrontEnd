@@ -4,7 +4,6 @@ import { Avatar, Card, IconButton, Checkbox, Text, Modal, Portal, PaperProvider,
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from './DropDownPrioridadeTarefas';
-import Login from '../../../pages/Login';
 import { deleteTarefa, getTarefas, editTarefa, getTarefaTime, updateTarefaTime } from '../../../service/tarefa';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +14,7 @@ import { UploadFile } from '../../../service/tarefa';
 import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
 import { updateTarefaStatus, getTarefasPorStatus } from '../../../service/tarefa';
 import ListaAnexos from '../../genericos/ListaAnexos';
+import CardTarefa from '../../genericos/cardTarefa';
 
 
 
@@ -245,30 +245,18 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                 <SafeAreaView >
                     <ScrollView style={styles.listWrapper}>
                         {tarefas.map((tarefa, index) => (
-                            <View style={{ flex: 1 }} key={tarefa.id}>
-                                <TouchableWithoutFeedback onPress={() => getSelectedTarefas(index)}>
-                                    <View>
-                                        <View style={styles.container}>
-                                            <View style={styles.itemContainer}>
-                                                <Checkbox
-                                                    disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
-                                                    style={styles.iconCheck}
-                                                    status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
-                                                    onPress={() => {
-                                                        atualizarStatusTarefa(tarefa._id, 1);
-                                                    }}
-                                                    color={colors.verde}
-                                                />
-                                                <Card.Title
-                                                    title={tarefa.titulo}
-                                                    // subtitle={`Data Conclusão: ${tarefa.data_estimada}`}
-                                                    subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
-                                                />
-                                            </View>
-                                        </View>
-                                    </View>
-                                </TouchableWithoutFeedback>
-                            </View>
+                           <View style={{ flex: 1 }} key={tarefa.id}>
+                            <CardTarefa 
+                                tarefa={tarefa}
+                                checkboxDisabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
+                                checkboxStatus={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
+                                onCheckboxChange={() => {
+                                    atualizarStatusTarefa(tarefa._id, 1);
+                                }}
+                                subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}`}
+                                onCardPress={() => getSelectedTarefas(index)}
+                            />
+                            </View>   
                         ))}
                     </ScrollView>
                 </SafeAreaView>
@@ -436,6 +424,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         width: '100%',
         height: 600,
+        paddingTop: '5%'
 
     },
     textoCheck: {
