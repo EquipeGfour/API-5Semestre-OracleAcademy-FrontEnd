@@ -64,6 +64,11 @@ const BottomBarObjetivos = ({ onIconPress }) => {
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.verde} />
             </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Dashboard')}
+                style={styles.icon}>
+                <Icon name="chart-bar" size={30} color={colors.verde} />
+            </TouchableOpacity>
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
                     <View style={styles.modalContainer}>
