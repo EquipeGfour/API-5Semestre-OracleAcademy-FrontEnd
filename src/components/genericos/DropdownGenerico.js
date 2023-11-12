@@ -14,7 +14,7 @@ const DropdwnGenerico = (props) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container, width:props.width || 325}}>
             {renderLabel()}
             <Dropdown
                 style={styles.dropdown }
@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
     },
     dropdown: {
         height: 50,
-        width: 325,
-        borderColor: 'black',
+        borderColor: 'gray',
         borderWidth: 0.7,
         borderRadius: 5,
         paddingHorizontal: 8, //texto dentro

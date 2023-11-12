@@ -67,8 +67,9 @@ const styles = StyleSheet.create({
     cardGrafico:{
         marginTop: 15,
         width: '80%',
-        height: "8%",
-        backgroundColor: "#fff",
+        height: "auto",
+        backgroundColor: "transparent",
+        borderColor:"black",
         borderWidth:1,
         borderRadius: 10,
         alignSelf: "center",

@@ -4,6 +4,8 @@ import InfoGrafico from "../components/genericos/InfoGrafico";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import DropdwnGenerico from "../components/genericos/DropdownGenerico";
+import DataPickerDashboard from "../components/genericos/DataPickerDashboard";
 
 // --- Cores do Sistema ---
 const colors = {
@@ -14,20 +16,36 @@ const colors = {
     cinza: " #545F71"
 };
 
-const Dashboard = () =>{
+const data = [
+    { label: 'Todos', value: 1 },
+    { label: 'Obj1', value: 2 },
+    { label: 'Obj2', value: 3 },
+];
+
+const Dashboard = (props) =>{
     return(
         <>
         <View style={{ flex:1, backgroundColor: '#FFF' }}>
             <Text style={styles.textoDashboard}>Dashboard</Text>
-            <View style={styles.header}>
-                    <View style={styles.textoObjetivoContainer}>
-                        <Text style={styles.textoObjetivo}>Objetivos</Text>
-                    </View>
-                    <Icon name = 'chevron-right'size={25} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
-                </View>                
             <ScrollView style={styles.listWrapper}>
-                <Grafico></Grafico>
-                <InfoGrafico></InfoGrafico>
+                <View style={styles.header}>
+                        <View style={styles.textoObjetivoContainer}>
+                            <Text style={styles.textoObjetivo}>Objetivos</Text>
+                        </View>
+                        <Icon name = 'chevron-right'size={25} style={styles.icone1} onPress={() => navigation.navigate('HomeWorkspaces')}/>
+                </View>
+                <View style={styles.menuData}>
+                    <DataPickerDashboard></DataPickerDashboard>
+                    <DropdwnGenerico
+                        data={data}
+                        width={150}
+                        status={props.status}
+                        setStatus={props.setStatus}
+                    >                    
+                    </DropdwnGenerico>
+                </View>                
+                    <Grafico></Grafico>
+                    <InfoGrafico></InfoGrafico>
             </ScrollView>
         </View>
         </>
@@ -36,9 +54,10 @@ const Dashboard = () =>{
 
 const styles = StyleSheet.create({
     listWrapper: {
-        flexGrow: 1,
+        flexGrow: 2,
         width: '100%',
-        height: 600,
+        height: 900,
+        marginBottom:20
     },
     header: {
         flexDirection:"row",
@@ -68,6 +87,13 @@ const styles = StyleSheet.create({
         alignSelf:"center", // para ficar o texto no meio do icone
         fontWeight: 'bold'
     },
+    menuData:{
+        flexDirection:"row",
+        justifyContent: "space-between",
+        marginRight: 20,
+        marginTop: 20,
+        marginBottom: -50
+    }
 
 });
 

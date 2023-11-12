@@ -8,7 +8,7 @@ const colors = {
     azul: "#4974a5",
     roxo: "#51336b",
     branco: "#ffffff",
-    cinza: " #545F71"
+    cinza: "#545F71"
 };
 
 const data = [
@@ -25,7 +25,7 @@ const Grafico = () =>{
                     data={data}
                     width={300}
                     labels={({ datum }) => `${datum.y}`}
-                    style={{ labels: { fontSize:18}}} 
+                    style={{ labels: { fontSize:18} }} 
                     innerRadius={50}
                     colorScale={["#51A8A2", "#545F71", "red" ]}
                 />
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "transparent",
         // borderColor:"red",
         // borderWidth:1
     }

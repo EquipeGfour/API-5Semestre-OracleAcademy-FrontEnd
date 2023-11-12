@@ -47,7 +47,7 @@ export default (props) => {
 
 
       
-        <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'black' }]}>
+        <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'grey' }]}>
         <View style={styles.container2}>
             <Text>{formattedDate}</Text>
             <Icon name="calendar" size={20} color={colors.cinza} />
