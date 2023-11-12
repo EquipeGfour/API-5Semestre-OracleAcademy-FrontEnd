@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
       marginTop:0
     },
     title: {
-      fontSize: 14,
-      fontWeight: 'bold',
+      fontSize: 14,      
+      color: "black",
     },
     sectionStyle: {
       marginTop:2,
