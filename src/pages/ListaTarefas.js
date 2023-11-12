@@ -10,8 +10,7 @@ import DataPicker from '../components/genericos/dataPicker';
 import Modal from 'react-native-modal';
 import AbaTodasTarefas from '../components/objetivos/tarefas/AbaTodasTarefas';
 import AbaHojeTarefas from '../components/objetivos/tarefas/AbaHojeTarefas ';
-import AbaAtrasadasTarefas from '../components/objetivos/tarefas/AbaAtrasadasTarefas';
-import AbaConcluidasTarefas from '../components/objetivos/tarefas/AbaConcluidasTarefas';
+
 
 const Tab = createMaterialTopTabNavigator();
 
