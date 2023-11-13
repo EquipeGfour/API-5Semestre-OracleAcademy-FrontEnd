@@ -16,7 +16,7 @@ const InfoGrafico = (props) => {
         <> 
             {/* --- Atrasadas --- */}
             <View style={{...styles.cardGrafico, borderColor:"red"}}>
-                <Icon name="exclamation" style={styles.icons} size={20} color={"red"} onPress={""} />
+                <Icon name="exclamation-triangle" style={styles.icons} size={20} color={"red"} onPress={""} />
                 <View style={styles.cardContent}>  
                     <Card.Title                     
                         title={"Atrasadas"}
@@ -27,7 +27,7 @@ const InfoGrafico = (props) => {
             </View>
             {/* --- Em Andamento --- */}
             <View style={{...styles.cardGrafico, borderColor:"#545F71"}}>
-                <Icon name="play" style={styles.icons} size={20} color={"#545F71"} onPress={""} />
+                <Icon name="road" style={styles.icons} size={20} color={"#545F71"} onPress={""} />
                 <View style={styles.cardContent}>  
                     <Card.Title                     
                         title={"Em Andamento"}
