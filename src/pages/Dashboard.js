@@ -6,6 +6,9 @@ import { Text } from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DropdwnGenerico from "../components/genericos/DropdownGenerico";
 import DataPickerDashboard from "../components/genericos/DataPickerDashboard";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import BottomBarDashboard from "../components/genericos/BottomBarDashboard";
+import { useNavigation } from '@react-navigation/native';
 
 // --- Cores do Sistema ---
 const colors = {
@@ -51,6 +54,9 @@ const Dashboard = (props) =>{
                         color={colors.verde}>                        
                     </InfoGrafico>
             </ScrollView>
+            <BottomBarDashboard
+                color={colors.verde}>
+            </BottomBarDashboard>
         </View>
         </>
     )
@@ -58,10 +64,10 @@ const Dashboard = (props) =>{
 
 const styles = StyleSheet.create({
     listWrapper: {
-        flexGrow: 2,
+        flexGrow: 1,
         width: '100%',
         height: 900,
-        marginBottom:20
+        marginBottom:70
     },
     header: {
         flexDirection:"row",
