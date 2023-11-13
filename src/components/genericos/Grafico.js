@@ -12,17 +12,29 @@ const colors = {
 };
 
 const data = [
-    { x: "Concluidas.", y: 47 },
-    { x: "Andamento.", y: 43 },
-    { x: "Atrasadas", y: 10 }
+    {x:"Concluídos" , y: 0 },
+    {x:"Atrasadas" , y: 0 },
+    {x:"Em Andamento" , y: 100 }
+];
+
+const dataPretendida = [
+    {x:"Concluídos" , y: 47 },
+    {x: "Atrasadas" , y: 10 },
+    {x: "Em Andamento" , y: 43 }
 ];
 
 const Grafico = (props) =>{
+    const [graficoDados, setGraficoDados] = useState(data);
+    useEffect(() => {
+        setGraficoDados(dataPretendida); // Setting the data that we want to display
+    }, []);
+
     return(
         <>
         <View style={styles.container}>       
-                <VictoryPie                 
-                    data={data}
+                <VictoryPie  
+                    animate={{ duration: 2000, easing: "expInOut" }}               
+                    data={graficoDados}
                     width={300}
                     labels={({ datum }) => `${datum.y}`}
                     style={{ labels: { fontSize:18} }} 

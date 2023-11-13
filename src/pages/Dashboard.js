@@ -48,7 +48,7 @@ const Dashboard = (props) =>{
                     </DropdwnGenerico>
                 </View>                
                     <Grafico 
-                        colors={["#51A8A2", "#545F71", "red" ]}>
+                        colors={["#51A8A2", "red" , "#545F71"]}>
                     </Grafico>
                     <InfoGrafico 
                         color={colors.verde}>                        
