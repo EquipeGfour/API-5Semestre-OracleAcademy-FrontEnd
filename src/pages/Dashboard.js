@@ -9,7 +9,7 @@ import DataPickerDashboard from "../components/genericos/DataPickerDashboard";
 
 // --- Cores do Sistema ---
 const colors = {
-    verde: "#346c68",
+    verde: "#51A8A2",
     azul: "#4974a5",
     roxo: "#51336b",
     branco: "#ffffff",
@@ -44,8 +44,12 @@ const Dashboard = (props) =>{
                     >                    
                     </DropdwnGenerico>
                 </View>                
-                    <Grafico></Grafico>
-                    <InfoGrafico></InfoGrafico>
+                    <Grafico 
+                        colors={["#51A8A2", "#545F71", "red" ]}>
+                    </Grafico>
+                    <InfoGrafico 
+                        color={colors.verde}>                        
+                    </InfoGrafico>
             </ScrollView>
         </View>
         </>

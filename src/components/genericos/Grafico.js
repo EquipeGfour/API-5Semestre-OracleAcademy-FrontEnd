@@ -17,7 +17,7 @@ const data = [
     { x: "Atrasadas", y: 10 }
 ];
 
-const Grafico = () =>{
+const Grafico = (props) =>{
     return(
         <>
         <View style={styles.container}>       
@@ -27,7 +27,7 @@ const Grafico = () =>{
                     labels={({ datum }) => `${datum.y}`}
                     style={{ labels: { fontSize:18} }} 
                     innerRadius={50}
-                    colorScale={["#51A8A2", "#545F71", "red" ]}
+                    colorScale={props.colors}
                 />
         </View>
         </>

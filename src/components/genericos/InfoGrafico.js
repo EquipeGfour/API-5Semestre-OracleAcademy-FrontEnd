@@ -11,7 +11,7 @@ const colors = {
     branco: "#ffffff"
 };
 
-const InfoGrafico = () => {
+const InfoGrafico = (props) => {
     return (
         <> 
             {/* --- Atrasadas --- */}
@@ -37,14 +37,14 @@ const InfoGrafico = () => {
                 </View>
             </View>
             {/* --- Concluidas --- */}
-            <View style={{...styles.cardGrafico, borderColor:colors.verde}}>
-                <Icon name="check" style={styles.icons} size={20} color={colors.verde} onPress={""} />
+            <View style={{...styles.cardGrafico, borderColor:props.color}}>
+                <Icon name="check" style={styles.icons} size={20} color={props.color} onPress={""} />
                 <View style={styles.cardContent}>  
                     <Card.Title                     
                         title={"Concluídos"}
-                        titleStyle={{color: colors.verde}}
+                        titleStyle={{color: props.color}}
                     />
-                    <Text style={{...styles.textoValor, color:colors.verde}}>47/100</Text>
+                    <Text style={{...styles.textoValor, color:props.color}}>47/100</Text>
                 </View>
             </View>
             {/* --- Total de Horas --- */}
