@@ -63,8 +63,10 @@ const styles = StyleSheet.create({
         padding: 13,
         height: 50,
         backgroundColor: 'white',
-        borderRadius: 5,
-        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 3,
+        borderWidth: 0.5,
+        marginBottom: 25,
     },
     container2: {
         flexDirection: 'row',
