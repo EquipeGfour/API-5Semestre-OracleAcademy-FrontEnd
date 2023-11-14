@@ -54,7 +54,8 @@ const Recentes = ({ navigation }) => {
 
 
     return (
-        <>
+        <>  
+        <View style={{ flex:1, backgroundColor: '#FFF', zIndex: -1}}>
             <BottomBarObjetivos style={{ flex: 1 }} />
             <ScrollView horizontal={true} contentContainerStyle={styles.container}>
                 {objetivos.map((objetivo) => (
@@ -91,6 +92,7 @@ const Recentes = ({ navigation }) => {
                     </TouchableOpacity>
                 ))}
             </ScrollView>
+            </View>
         </>
     );
 }
