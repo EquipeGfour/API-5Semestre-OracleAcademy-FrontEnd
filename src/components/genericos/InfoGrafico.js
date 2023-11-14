@@ -14,50 +14,15 @@ const colors = {
 const InfoGrafico = (props) => {
     return (
         <> 
-            {/* --- Atrasadas --- */}
-            <View style={{...styles.cardGrafico, borderColor:"red"}}>
-                <Icon name="exclamation-triangle" style={styles.icons} size={20} color={"red"} onPress={""} />
-                <View style={styles.cardContent}>  
-                    <Card.Title                     
-                        title={"Atrasadas"}
-                        titleStyle={{color: "red"}}
-                    />
-                    <Text style={{...styles.textoValor, color:"red"}}>10/100</Text>
-                </View>
-            </View>
-            {/* --- Em Andamento --- */}
-            <View style={{...styles.cardGrafico, borderColor:"#545F71"}}>
-                <Icon name="road" style={styles.icons} size={20} color={"#545F71"} onPress={""} />
-                <View style={styles.cardContent}>  
-                    <Card.Title                     
-                        title={"Em Andamento"}
-                        titleStyle={{color: "#545F71"}}
-                    />
-                    <Text style={{...styles.textoValor, color:"#545F71"}}>43/100</Text>
-                </View>
-            </View>
-            {/* --- Concluidas --- */}
             <View style={{...styles.cardGrafico, borderColor:props.color}}>
-                <Icon name="check" style={styles.icons} size={20} color={props.color} onPress={""} />
+                <Icon name={props.name} style={styles.icons} size={20} color={props.color} onPress={""} />
                 <View style={styles.cardContent}>  
                     <Card.Title                     
-                        title={"Concluídos"}
-                        titleStyle={{color: props.color}}
-                    />
-                    <Text style={{...styles.textoValor, color:props.color}}>47/100</Text>
+                        title={props.title}
+                        titleStyle={{color: props.color}}/>
+                    <Text style={{...styles.textoValor, color:props.color}}>{props.value}</Text>
                 </View>
             </View>
-            {/* --- Total de Horas --- */}
-            <View style={{...styles.cardGrafico, borderColor:"black"}}>
-                <Icon name="clock" style={styles.icons} size={20} color={"black"} onPress={""} />
-                <View style={styles.cardContent}>  
-                    <Card.Title                     
-                        title={"Total de Horas"}
-                        titleStyle={{color: "black"}}
-                    />
-                    <Text style={{...styles.textoValor, color:"black"}}>144h</Text>
-                </View>
-            </View>   
         </>
     )
     

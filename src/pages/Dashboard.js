@@ -50,8 +50,29 @@ const Dashboard = (props) =>{
                     <Grafico 
                         colors={["#51A8A2", "red" , "#545F71"]}>
                     </Grafico>
-                    <InfoGrafico 
-                        color={colors.verde}>                        
+                    <InfoGrafico
+                        title={"Atrasadas"}
+                        name={"exclamation-triangle"}
+                        value={"10/100"}
+                        color={"red"}>                        
+                    </InfoGrafico>
+                    <InfoGrafico
+                        title={"Em Andamento"}
+                        name={"road"}
+                        value={"43/100"}
+                        color={"#545F71"}>
+                    </InfoGrafico>
+                    <InfoGrafico
+                        title={"Concluidas"}
+                        name={"check"}
+                        value={"100/100"}
+                        color={colors.verde}>
+                    </InfoGrafico>
+                    <InfoGrafico
+                        title={"Total de Horas"}
+                        name={"clock"}
+                        value={"144h"}
+                        color={"black"}>
                     </InfoGrafico>
             </ScrollView>
             <BottomBarDashboard
