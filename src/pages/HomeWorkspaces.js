@@ -37,33 +37,35 @@ const HomeWorkspaces = ({ navigation }) => {
 
     return (
         <>
-            <Icon name= 'sign-out-alt' style={styles.logout} onPress={logout}/>
-            <View style = {styles.nomeUsuario}>
-                <Icon name = 'user' size={40}/>
-                <Text style={styles.titulo1}>Olá,</Text>
-                <Text style={styles.nome}>{usuario}</Text>
-            </View>
-
-            <View style={styles.header}>
-                <Icon name = 'chevron-left'size={25} style={styles.iconeSeta} onPress={() => navigation.navigate('Home')}/>
-                <View style={styles.textoWorkContainer}>
-                    <Text style={styles.textoWorkspace}>Workspaces</Text>
+            <View style={{ flex:1, backgroundColor: '#FFF', zIndex: -1}}>
+                <Icon name= 'sign-out-alt' style={styles.logout} onPress={logout}/>
+                <View style = {styles.nomeUsuario}>
+                    <Icon name = 'user' size={40}/>
+                    <Text style={styles.titulo1}>Olá,</Text>
+                    <Text style={styles.nome}>{usuario}</Text>
                 </View>
+
+                <View style={styles.header}>
+                    <Icon name = 'chevron-left'size={25} style={styles.iconeSeta} onPress={() => navigation.navigate('Home')}/>
+                    <View style={styles.textoWorkContainer}>
+                        <Text style={styles.textoWorkspace}>Workspaces</Text>
+                    </View>
+                </View>
+                <Tab.Navigator screenOptions={{
+                    tabBarActiveTintColor: colors.roxo,
+                    tabBarInactiveTintColor: '#545F71',
+                    tabBarLabelStyle: { fontSize: 15 },
+                    tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
+                    tabBarIndicatorStyle: {
+                    backgroundColor: colors.roxo,
+                    },
+                }}>
+                    <Tab.Screen name="Todos" component={AbaWorkspaces}/>                
+                    <Tab.Screen name="Meus Workspaces" component={AbaCriadosWorkspace} />
+                    <Tab.Screen name="Convidado" component={AbaFinalizadosWorkspace} />
+                </Tab.Navigator>
+                <BottomBarWorkspaces/>
             </View>
-            <Tab.Navigator screenOptions={{
-                tabBarActiveTintColor: colors.roxo,
-                tabBarInactiveTintColor: '#545F71',
-                tabBarLabelStyle: { fontSize: 15 },
-                tabBarStyle: { backgroundColor: 'transparent', elevation: 0 },
-                tabBarIndicatorStyle: {
-                backgroundColor: colors.roxo,
-                },
-            }}>
-                <Tab.Screen name="Todos" component={AbaWorkspaces}/>                
-                <Tab.Screen name="Meus Workspaces" component={AbaCriadosWorkspace} />
-                <Tab.Screen name="Convidado" component={AbaFinalizadosWorkspace} />
-            </Tab.Navigator>
-            <BottomBarWorkspaces/>
         </>
     );
 }

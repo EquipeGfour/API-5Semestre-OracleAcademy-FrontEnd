@@ -13,6 +13,10 @@ import ListaTarefaWorkspace from '../pages/ListaTarefaWorkspace';
 import AbaTarefasWorkspace from '../components/workspaces/tarefas/AbaTarefasTodasWork';
 import CadastroUsuario from '../pages/CadastroUsuario';
 import Cronometro from '../components/genericos/cronometro';
+import Grafico from '../components/genericos/Grafico';
+import InfoGrafico from '../components/genericos/InfoGrafico';
+import Dashboard from '../pages/Dashboard';
+import DashboardWorkspace from '../pages/DashboardWorkspace';
 
 
 export default function Routes(){
@@ -26,6 +30,8 @@ export default function Routes(){
                 <Stack.Screen name ='Lista-tarefas' component={ListaTarefas}/>  
                 <Stack.Screen name = 'ListaTarefaWorkspace' component={ListaTarefaWorkspace}/>              
                 <Stack.Screen name = 'Cadastro-usuario' component={CadastroUsuario}/>
+                <Stack.Screen name = 'Dashboard' component={Dashboard}/>
+                <Stack.Screen name = 'DashboardWorkspace' component={DashboardWorkspace}/>
                 {/* Componentes */}
                 <Stack.Screen name = "Recentes" component = {Recentes} />
                 <Stack.Screen name ='BottomBarObjetivos' component={BottomBarObjetivos}/>
@@ -34,6 +40,9 @@ export default function Routes(){
                 <Stack.Screen name = 'BottomBarWorkspaces' component={BottomBarWorkspaces}/>
                 <Stack.Screen name = 'AbaTodasWorkspace' component={AbaTarefasWorkspace}/>
                 <Stack.Screen name = 'Cronometro' component={Cronometro}/>
+                {/* Componentes do Gráfico */}
+                <Stack.Screen name = 'Grafico' component={Grafico}/>
+                <Stack.Screen name = 'InfoGrafico' component={InfoGrafico}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
