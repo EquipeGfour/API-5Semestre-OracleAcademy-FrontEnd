@@ -14,13 +14,15 @@ const colors = {
 const data = [
     {x:"Concluídos" , y: 0 },
     {x:"Atrasadas" , y: 0 },
+    {x:"Não Iniciadas" , y: 0 },
     {x:"Em Andamento" , y: 100 }
 ];
 
 const dataPretendida = [
-    {x:"Concluídos" , y: 47 },
+    {x:"Concluídos" , y: 25 },
     {x: "Atrasadas" , y: 10 },
-    {x: "Em Andamento" , y: 43 }
+    {x:"Não Iniciadas" , y: 25 },
+    {x: "Em Andamento" , y: 40 }
 ];
 
 const Grafico = (props) =>{

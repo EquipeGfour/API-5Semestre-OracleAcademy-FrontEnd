@@ -39,16 +39,16 @@ const Dashboard = (props) =>{
                 </View>
                 <View style={styles.menuData}>
                     <DataPickerDashboard></DataPickerDashboard>
-                    <DropdwnGenerico
+                    {/* <DropdwnGenerico
                         data={data}
                         width={150}
                         status={props.status}
                         setStatus={props.setStatus}
                     >                    
-                    </DropdwnGenerico>
+                    </DropdwnGenerico> */}
                 </View>                
                     <Grafico 
-                        colors={["#51A8A2", "red" , "#545F71"]}>
+                        colors={["#51A8A2", "red" , "gray", "#545F71"]}>
                     </Grafico>
                     <InfoGrafico
                         title={"Atrasadas"}
@@ -57,15 +57,21 @@ const Dashboard = (props) =>{
                         color={"red"}>                        
                     </InfoGrafico>
                     <InfoGrafico
+                        title={"Não Iniciadas"}
+                        name={"pause"}
+                        value={"25/100"}
+                        color={"gray"}>
+                    </InfoGrafico>
+                    <InfoGrafico
                         title={"Em Andamento"}
                         name={"road"}
-                        value={"43/100"}
+                        value={"40/100"}
                         color={"#545F71"}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Concluidas"}
                         name={"check"}
-                        value={"100/100"}
+                        value={"25/100"}
                         color={colors.verde}>
                     </InfoGrafico>
                     <InfoGrafico
