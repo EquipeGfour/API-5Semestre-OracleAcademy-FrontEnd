@@ -13,8 +13,9 @@ import FileUpload from '../../genericos/Upload';
 import Cronometro from '../../genericos/cronometro';
 import { UploadFile } from '../../../service/tarefa';
 import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
-import { updateTarefaStatus } from '../../../service/tarefa';
+import { updateTarefaStatus, getTarefasPorStatus } from '../../../service/tarefa';
 import ListaAnexos from '../../genericos/ListaAnexos';
+
 
 
 const verdeEscuro = "#346c68";
@@ -34,7 +35,7 @@ const theme = {
     },
 };
 
-const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
+const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) => {
 
     const [editingTitle, setEditingTitle] = useState("");
     const [editingDescription, setEditingDescription] = useState("");
@@ -138,15 +139,28 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const buscarTarefas = () => {
         setFlagTarefa(false)
-        getTarefas(id).then((res) => {
-            const novaLista = res.data.map((tarefa) => ({
-                ...tarefa,
-                checked: false,
-            }))
-            setTarefas(novaLista)
-        }).catch(error => {
-            console.error(error)
-        });
+        if(status){
+            getTarefasPorStatus(id, status).then((res) => {
+                const novaLista = res.data.map((tarefa) => ({
+                    ...tarefa,
+                    checked: false,
+                }))
+                setTarefas(novaLista)
+            }).catch(error => {
+                console.error(error)
+            });
+        }
+        else{
+            getTarefas(id).then((res) => {
+                const novaLista = res.data.map((tarefa) => ({
+                    ...tarefa,
+                    checked: false,
+                }))
+                setTarefas(novaLista)
+            }).catch(error => {
+                console.error(error)
+            });
+        }
     }
 
     // --- Cronometro ---
@@ -275,9 +289,11 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                         </View>
                         <View style={styles.iconContainerTittle}>
                             <View style={styles.icons}>
-                                <FileUpload onFileSelected={handleFileSelected} />
+                                <FileUpload 
+                                    btnColor={colors.verde}
+                                    onFileSelected={handleFileSelected} />
                             </View>
-                            <Icon name="edit" style={styles.icons} size={20} onPress={openEditModal} />
+                            <Icon name="edit" style={styles.icons} size={20} color={colors.verde} onPress={openEditModal} />
                             <Icon name="trash" style={styles.icons} size={20} color={'red'} onPress={() => deletarTarefa(tarefa._id)} />
                         </View>
                     </View>
@@ -409,8 +425,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     fileNameText: {
+        marginTop:-35,
         color: 'black',
-        fontSize: 17,
+        fontSize: 14,
     },
     drop: {
         paddingTop: 20
@@ -445,12 +462,10 @@ const styles = StyleSheet.create({
         justifyContent: 'right',
     },
     iconContainerTittle: {
+        marginLeft:-50,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'right',
-    },
-    icons: {
-        marginRight: 10,
     },
     espacamento: {
         marginTop: 35,
@@ -527,8 +542,8 @@ const styles = StyleSheet.create({
         color: verdeEscuro
     },
     icons: {
-        padding: 5,
-        textAlign: 'right',
+        padding: 12,
+        textAlign: 'left',
         // textAlign: 'right',
         // marginRight:-40
     },

@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Modal, Chip } from 'react-native-paper';
-import BottomBarTarefasWork from './BottomBarTarefasWork';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import DropdwnGenerico from '../../genericos/DropdownGenerico';
-import UserAvatar from '../../genericos/UserAvatar';
+
 import { getStorageItem, storageItem } from "../../../functions/encryptedStorageFunctions";
-import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, updateTarefaTime } from '../../../service/tarefa';
+import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, getTarefasWorkspacePorStatus, updateTarefaTime } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
-import { getUserByNameOrEmail } from '../../../service/usuario';
+
 import Toast from 'react-native-toast-message';
 import DataPicker from '../../genericos/dataPicker';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { editarStatusTarefaWork, editarTarefaWork } from '../../../service/workspace';
-import FileUpload from '../../genericos/Upload';
-import Cronometro from '../../genericos/cronometro';
-import ListaAnexos from '../../genericos/ListaAnexos';
+
 import { useIsFocused } from "@react-navigation/native";
 import ModalGenerico from '../../genericos/ModalGenerico';
 import ConteudoModalTarefaWork from './ConteudoModalTarefaWork';
+import CardTarefa from '../../genericos/cardTarefa';
 
 // --- Cores do Sistema ---
 const colors = {
@@ -28,7 +24,7 @@ const colors = {
   branco: "#ffffff"
 };
 
-const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
+const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios, statusFiltro }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [tarefas, setTarefas] = useState([]);
@@ -126,11 +122,21 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios }) => {
 
   // --- Busca Tarefas Workspace ---
   const buscarTarefasWorkspace = () => {
-    getTarefas(_id).then((res) => {
-      setTarefas(res.data);
-    }).catch(error => {
-      console.error('Erro', error)
-    })
+    if (statusFiltro) {
+      getTarefasWorkspacePorStatus(_id, statusFiltro).then((res) => {
+        setTarefas(res.data);
+      }).catch(error => {
+        console.error('Erro', error)
+      })
+    }
+    else{
+      getTarefas(_id).then((res) => {
+        setTarefas(res.data);
+      }).catch(error => {
+        console.error('Erro', error)
+      })
+
+    }
   }
 
   // --- Editar Tarefas Worspace ---
@@ -312,38 +318,21 @@ const editarStatusTarefa = async() => {
   return (
     <>
       {/* ----- Card de Tarefas Workspace ----- */}
-      <ScrollView style={{marginBottom: 70}}>
+      <ScrollView style={{marginBottom: 70, paddingTop: '5%',}}>
         {tarefas.map((tarefa) => (
-          <View style={styles.filtros}>
-            <Card style={styles.Cardcontainer} onPress={() => { toggleModal(tarefa._id) }}>
-              <Card.Content style={styles.contentContainer}>
-                <Checkbox
-                  disabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
-                  style={styles.iconCheck}
-                  status={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    atualizarStatusTarefa(tarefa._id, 1);
-                  }}
-                />
-                <Card.Title
-                  title={tarefa?.titulo}
-                  subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}\nStatus: ${statusLabel[tarefa.status]}`}
-                  subtitleNumberOfLines={3}
-                  style={styles.title}
-                />
-                {/* <Card.Actions style={styles.actionsContainer}>
-                  <IconButton
-                    icon="fire"
-                    onPress={() => {
-                    }}
-                  />
-                </Card.Actions> */}
-              </Card.Content>
-              <View style={{ ...styles.iconContainer, paddingTop: 10, flexWrap: 'wrap' }}>
-                {tarefa.usuarios.map((n) => <UserAvatar name={n.usuario?.nome || ''} />)}
-              </View>
-            </Card>
-          </View>
+          <>
+          <CardTarefa
+          tarefa={tarefa}
+          checkboxDisabled={tarefaStatus[tarefa._id] || tarefa.status === 1}
+          checkboxStatus={tarefaStatus[tarefa._id] || tarefa.status === 1 ? 'checked' : 'unchecked'}
+          onCheckboxChange={() => {
+            atualizarStatusTarefa(tarefa._id, 1);
+          }}
+          subtitle={`Data Conclusão: ${formatarData(tarefa.data_estimada)}\nPrioridade: ${getPrioridadeTitle(tarefa.prioridade)}\nStatus: ${statusLabel[tarefa.status]}`}
+          onCardPress={() => { toggleModal(tarefa._id) }}
+          />
+         
+          </>
         ))}
       </ScrollView>
 
@@ -502,19 +491,8 @@ const styles = StyleSheet.create({
   filtros: {
     // Estilização para seus filtros, se necessário
   },
-  Cardcontainer: {
-    width: 370,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 15,
-    marginHorizontal: '5%',
-    marginTop: '5%',
-    backgroundColor: 'white',
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+ 
+ 
   actionsContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -522,7 +500,8 @@ const styles = StyleSheet.create({
   },
   title: {
     flexDirection: 'row',
-    marginTop: 10,
+
+
   },
   iconCheck: {
     marginLeft: 16,

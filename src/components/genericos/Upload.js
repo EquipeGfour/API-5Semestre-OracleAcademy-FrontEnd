@@ -4,7 +4,7 @@ import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
-const FileUpload = ({ onFileSelected }) => {
+const FileUpload = (props,{ onFileSelected} ) => {
   const handleFileSelect = async () => {
     try {
       const result = await DocumentPicker.pick({
@@ -26,7 +26,12 @@ const FileUpload = ({ onFileSelected }) => {
   return (
     <View>
       <TouchableOpacity onPress={handleFileSelect}>
-      <Icon name="file" style={styles.icons} size={20} />
+      <Icon 
+        name="paperclip" 
+        style={styles.icons} 
+        size={20}
+        color={props.btnColor}
+      />
 
       </TouchableOpacity>
     </View>
