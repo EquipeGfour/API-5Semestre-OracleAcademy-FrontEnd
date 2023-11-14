@@ -62,7 +62,7 @@ const Recentes = ({ navigation }) => {
                         <View style={[styles.retangulo, styles.verdeEscuro]}>
                             <Card.Title
                                 title={objetivo.titulo}
-                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 17, fontSize: 17 }}
                             />
                             {/* <Card.Title
                                 title={objetivo.data_estimada}

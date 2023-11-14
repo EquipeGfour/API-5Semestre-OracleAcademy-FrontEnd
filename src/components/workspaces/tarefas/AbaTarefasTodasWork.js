@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Modal, Chip } from 'react-native-paper';
-
+import { Linking } from 'react-native';
 import { getStorageItem, storageItem } from "../../../functions/encryptedStorageFunctions";
 import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, getTarefasWorkspacePorStatus, updateTarefaTime } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
@@ -347,6 +347,10 @@ const editarStatusTarefa = async() => {
           status={status}
           setStatus={setStatus}workspace
         />
+                              <Text style={{color: 'blue'}}
+      onPress={() => Linking.openURL('https://drive.google.com/file/d/167yvj_uzs6kFV0r_cXDGS3D7GnLKAAGc/view')}>
+  Google
+</Text>
       </ModalGenerico>
 
       {/* ----- Modal Editar Tarefa ----- */}
