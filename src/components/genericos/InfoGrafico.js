@@ -24,8 +24,7 @@ const InfoGrafico = (props) => {
                 </View>
             </View>
         </>
-    )
-    
+    )    
 };
 
 const styles = StyleSheet.create({

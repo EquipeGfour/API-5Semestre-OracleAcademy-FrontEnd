@@ -16,6 +16,7 @@ import Cronometro from '../components/genericos/cronometro';
 import Grafico from '../components/genericos/Grafico';
 import InfoGrafico from '../components/genericos/InfoGrafico';
 import Dashboard from '../pages/Dashboard';
+import DashboardWorkspace from '../pages/DashboardWorkspace';
 
 
 export default function Routes(){
@@ -30,6 +31,7 @@ export default function Routes(){
                 <Stack.Screen name = 'ListaTarefaWorkspace' component={ListaTarefaWorkspace}/>              
                 <Stack.Screen name = 'Cadastro-usuario' component={CadastroUsuario}/>
                 <Stack.Screen name = 'Dashboard' component={Dashboard}/>
+                <Stack.Screen name = 'DashboardWorkspace' component={DashboardWorkspace}/>
                 {/* Componentes */}
                 <Stack.Screen name = "Recentes" component = {Recentes} />
                 <Stack.Screen name ='BottomBarObjetivos' component={BottomBarObjetivos}/>

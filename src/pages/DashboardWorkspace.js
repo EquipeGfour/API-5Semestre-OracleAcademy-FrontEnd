@@ -20,22 +20,22 @@ const colors = {
 
 const data = [
     { label: 'Todos', value: 1 },
-    { label: 'Obj1', value: 2 },
-    { label: 'Obj2', value: 3 },
+    { label: 'Work1', value: 2 },
+    { label: 'Work2', value: 3 },
 ];
 
-const Dashboard = (props) =>{
+const DashboardWorkspace = (props) =>{
     const navigation = useNavigation();
     return(
         <>
-        <View style={{ flex:1, backgroundColor: '#FFF' }}>
+            <View style={{ flex:1, backgroundColor: '#FFF' }}>
             <Text style={styles.textoDashboard}>Dashboard</Text>
             <ScrollView style={styles.listWrapper}>
                 <View style={styles.header}>
-                        <View style={styles.textoObjetivoContainer}>
-                            <Text style={styles.textoObjetivo}>Objetivos</Text>
+                        <Icon name = 'chevron-left' size={25} style={styles.icone1} onPress={() => navigation.navigate('Dashboard')}/>
+                        <View style={styles.textoWorkspaceContainer}>
+                            <Text style={styles.textoWorkspace}>Workspaces</Text>
                         </View>
-                        <Icon name = 'chevron-right'size={25} style={styles.icone1} onPress={() => navigation.navigate('DashboardWorkspace')}/>
                 </View>
                 <View style={styles.menuData}>
                     <DataPickerDashboard></DataPickerDashboard>
@@ -48,7 +48,7 @@ const Dashboard = (props) =>{
                     </DropdwnGenerico>
                 </View>                
                     <Grafico 
-                        colors={["#51A8A2", "red" , "#545F71"]}>
+                        colors={[colors.roxo, "red" , "#545F71"]}>
                     </Grafico>
                     <InfoGrafico
                         title={"Atrasadas"}
@@ -66,7 +66,7 @@ const Dashboard = (props) =>{
                         title={"Concluidas"}
                         name={"check"}
                         value={"100/100"}
-                        color={colors.verde}>
+                        color={colors.roxo}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Total de Horas"}
@@ -76,10 +76,10 @@ const Dashboard = (props) =>{
                     </InfoGrafico>
             </ScrollView>
             <BottomBarDashboard
-                onPress={() => navigation.navigate('Home')}
-                color={colors.verde}>
+                color={colors.roxo}
+                onPress={() => navigation.navigate('HomeWorkspaces')}>
             </BottomBarDashboard>
-        </View>
+        </View>        
         </>
     )
 };
@@ -96,28 +96,30 @@ const styles = StyleSheet.create({
         paddingTop: '15%',
         justifyContent: "center",
     },
-    textoObjetivoContainer: {
+    textoWorkspaceContainer: {
         flex: 1,  // Isso faz com que o contêiner do texto preencha o espaço disponível
     },
-    textoObjetivo: {
+    textoWorkspace: {
         fontSize: 20,
-        color: "#51A8A2",
+        color: colors.roxo,
         alignSelf:"center", // para ficar o texto no meio do icone
         fontWeight: 'bold',
         marginTop:-30,
-        marginLeft: 40
+        marginRight: 40,
+        alignItems:'center'
     },
     icone1:{
-        marginTop: -25,
+        marginTop: -30,
         color: '#bac0ca',
-        marginRight: 30
+        marginLeft: 30
     },
     textoDashboard: {
         marginTop: 30,
         fontSize: 25,
-        color: "#51A8A2",
+        color: colors.roxo,
         alignSelf:"center", // para ficar o texto no meio do icone
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        alignItems:'center'
     },
     menuData:{
         flexDirection:"row",
@@ -126,8 +128,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: -50
     }
-
 });
 
-export default Dashboard;
-
+export default DashboardWorkspace;

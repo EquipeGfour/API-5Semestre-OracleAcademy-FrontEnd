@@ -8,7 +8,7 @@ const BottomBarDashboard = (props) =>{
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => props.onPress()} 
                 style={styles.icon}>
             <Icon name="home" size={30} color={props.color} />
             </TouchableOpacity>
