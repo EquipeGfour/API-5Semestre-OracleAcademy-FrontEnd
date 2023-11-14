@@ -83,9 +83,8 @@ const Recentes = ({ navigation }) => {
                             <Card.Content style={styles.cardContent}>
                                 <View style={styles.textContainer}>
                                     {/* <Text style={styles.textoNome}>Progresso</Text> */}
-                                    <Text style={styles.textoPorcentagem}>{objetivo.progresso}%</Text>
+                                    <Text style={styles.textoPorcentagem}>/</Text>
                                 </View>
-                                <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
                             </Card.Content>
                         </View>
                         
