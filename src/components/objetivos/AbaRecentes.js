@@ -12,6 +12,9 @@ const verdeEscuro = "#346c68";
 
 const Recentes = ({ navigation }) => {
 
+    const [tarefasConcluidas, setTarefasConcluidas] = useState(0);
+    const [totalTarefas, setTotalTarefas] = useState(0);
+
     const formatarData = (data) => {
         const dataFormatada = new Date(data).toLocaleDateString('pt-BR', {
             day: '2-digit',
@@ -52,6 +55,17 @@ const Recentes = ({ navigation }) => {
     }, [objetivos])
 
 
+    useEffect(() => {
+        // Fazendo uma solicitação HTTP para o backend/banco de dados
+        fetch('URL_DO_SEU_ENDPOINT')
+            .then(response => response.json())
+            .then(data => {
+                // Atualizando os estados com os dados recebidos
+                setTarefasConcluidas(data.tarefasConcluidas);
+                setTotalTarefas(data.totalTarefas);
+            })
+            .catch(error => console.error('Erro ao buscar dados:', error));
+    }, []); 
 
     return (
         <>  
@@ -72,18 +86,20 @@ const Recentes = ({ navigation }) => {
                             /> */}
                             <Card.Title
                                 title={formatarData(objetivo.data_estimada)}
-                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8 }}
                                 left={(props) => <Icon name="clock" size={30} color="white" />}
                             />
                             <Card.Title
                                 title={getPrioridadeTitle(objetivo.prioridade)}
-                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
+                                titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8 }}
                                 left={(props) => <Icon name="flag" size={30} color="white" />}
                             />
                             <Card.Content style={styles.cardContent}>
                                 <View style={styles.textContainer}>
                                     {/* <Text style={styles.textoNome}>Progresso</Text> */}
-                                    <Text style={styles.textoPorcentagem}>/</Text>
+                                    <Text style={styles.textoPorcentagem}>
+                                        {tarefasConcluidas} / {totalTarefas}
+                                    </Text>
                                 </View>
                             </Card.Content>
                         </View>
@@ -123,7 +139,8 @@ const styles = StyleSheet.create({
     textoPorcentagem: {
         alignSelf: "flex-end",
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 8
     },
     textoNome: {
         alignSelf: "flex-start",
