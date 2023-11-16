@@ -199,7 +199,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
           alignItems: 'center'
         }}>
           <View style={styles.modalContainer}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', marginTop: 3 ,textAlign:'center'}}>Adicionar membros</Text>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', marginTop: 3 ,textAlign:'center', color:colors.roxo,}}>Adicionar membros</Text>
             <TextInput
               style={styles.modalText}
               mode='outlined'
