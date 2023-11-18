@@ -8,6 +8,15 @@ const data = [
     { label: 'Média', value: 3 },
     { label: 'Baixo', value: 4 }
 ];
+const colors = {
+    verde: "#51A8A2",
+    azul: "#4974a5",
+    roxo: "#51336b",
+    branco: "#ffffff",
+    cinza: "#9BA5B7",
+    vermelho: "#FF0000",
+    rosa: "#FFC0CB", // Cor rosa personalizada
+};
 
 const PrioridadeTarefaWork = (props) => {
     const [value, setValue] = useState(null);
@@ -77,12 +86,12 @@ const styles = StyleSheet.create({
     label: {
         position: 'absolute',
         backgroundColor: 'white',
-        left: 22,
+        left: -20,
         top: 8,
         zIndex: 999,
         paddingHorizontal: 8,
         fontSize: 14,
-        color: 'black',
+        color: colors.roxo
     },
     placeholderStyle: {
         fontSize: 16,
