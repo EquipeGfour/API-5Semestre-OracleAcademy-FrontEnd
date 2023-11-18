@@ -39,6 +39,7 @@ const PrioridadeTarefaWork = (props) => {
             labelField="label"
             valueField="value"
             placeholder={!isFocus ? 'Prioridade' : '...'}
+            placeholderStyle={{color:'black'}}
             
             value={props.prioridade}
             onFocus={() => setIsFocus(true)}
@@ -63,10 +64,12 @@ const styles = StyleSheet.create({
         height: 50,
         width: 325,
         borderColor: 'black',
-        borderWidth: 0.7,
-        borderRadius: 5,
+        borderWidth: 0.5,
+        borderRadius: 3,
         paddingHorizontal: 8, //texto dentro
-        marginStart:-45
+        marginStart:-45,
+        borderBottomColor: 'black',
+        borderBottomWidth: 0.8,
     },
     icon: {
         marginRight: 5,
@@ -79,9 +82,11 @@ const styles = StyleSheet.create({
         zIndex: 999,
         paddingHorizontal: 8,
         fontSize: 14,
+        color: 'black',
     },
     placeholderStyle: {
         fontSize: 16,
+        color: 'black',
     },
     selectedTextStyle: {
         fontSize: 16,

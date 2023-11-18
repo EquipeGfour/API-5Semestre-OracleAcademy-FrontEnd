@@ -23,7 +23,6 @@ export default (props) => {
     rosa: "#FFC0CB", // Cor rosa personalizada
 };
 
-  
   return (
     <>
       <DatePicker
@@ -47,9 +46,9 @@ export default (props) => {
 
 
       
-        <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'grey' }]}>
+        <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: props.borderColor || 'grey', borderWidth: props.borderWidth || 1 }]}>
         <View style={styles.container2}>
-            <Text>{formattedDate}</Text>
+            <Text style={{color: props.fontColor || 'black', fontSize: 15}}>{formattedDate}</Text>
             <Icon name="calendar" size={20} color={colors.cinza} />
         </View>
         </TouchableOpacity>
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
         padding: 13,
         height: 50,
         backgroundColor: 'white',
-        borderRadius: 5,
+        borderRadius: 3,
         borderWidth: 1,
     },
     container2: {
