@@ -362,7 +362,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                             <View>
                                 <TextInput
                                     mode='outlined'
-                                    outlineColor='gray'
+                                    outlineColor='black'
                                     outlineStyle={{ borderWidth: 0.5 }}
                                     style={styles.modalText2}
                                     placeholder={tarefa.titulo}
@@ -370,7 +370,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                                 />
                                 <TextInput
                                     mode='outlined'
-                                    outlineColor='gray'
+                                    outlineColor='black'
                                     outlineStyle={{ borderWidth: 0.5 }}
                                     style={styles.modalText}
                                     placeholder={tarefa.descricao}
@@ -378,16 +378,20 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                                 />
                             </View>
                         </TouchableWithoutFeedback>
-                        <DataPicker
-                            selectedDate={editingEstimatedDate}
-                            onSelectDate={(e) => setEditingEstimatedDate(e)}
-                            stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25, } }}
-                        />
-                        <DropdownComponent
-                            style={styles.modalText}
-                            prioridade={editingPriority}
-                            setPrioridade={setEditingPriority}
-                        />
+                        <View style={styles.dataPickerContainer}>
+                            <DataPicker
+                                selectedDate={editingEstimatedDate}
+                                onSelectDate={(e) => setEditingEstimatedDate(e)}
+                                stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25, } }}
+                            />
+                        </View>
+                        <View style={styles.prioridadeContainer}>
+                            <DropdownComponent
+                                style={styles.modalText}
+                                prioridade={editingPriority}
+                                setPrioridade={setEditingPriority}
+                            />
+                        </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
                                 <Text style={styles.buttonText}>Salvar</Text>
@@ -559,7 +563,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 15,
     },
-
+    prioridadeContainer: {
+        marginTop: 26.8,
+    },
 });
 
 export default teste;

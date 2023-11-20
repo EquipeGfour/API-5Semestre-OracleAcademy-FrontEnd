@@ -274,16 +274,20 @@ const AbaHojeTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                                 />
                             </View>
                         </TouchableWithoutFeedback>
-                        <DataPicker
-                            selectedDate={editingEstimatedDate}
-                            onSelectDate={(e) => setEditingEstimatedDate(e)}
-                            stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
-                        />
-                        <DropdownComponent
-                            style={styles.modalText}
-                            prioridade={editingPriority}
-                            setPrioridade={setEditingPriority}
-                        />
+                        <View style={styles.dataPickerContainer}>
+                            <DataPicker
+                                selectedDate={editingEstimatedDate}
+                                onSelectDate={(e) => setEditingEstimatedDate(e)}
+                                stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
+                            />
+                        </View>
+                        <View style={styles.prioridadeContainer}>
+                            <DropdownComponent
+                                style={styles.modalText}
+                                prioridade={editingPriority}
+                                setPrioridade={setEditingPriority}
+                            />
+                        </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
                                 <Text style={styles.buttonText}>Salvar</Text>
@@ -404,7 +408,17 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
-    }
+    },
+    prioridadeContainer: {
+        marginTop: -15,
+        marginLeft: 30,
+        backgroundColor: 'transparent'
+    },
+    dataPickerContainer: {
+        left: -23,
+        padding: 25,
+
+    },
 
 });
 
