@@ -49,6 +49,9 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios, statusFiltro }) => {
   const closeModal = () => {
     setModalVisible(false);
     editarStatusTarefa()
+    setTimeout(() => {
+      buscarTarefasWorkspace();
+    }, 2000)
     buscarTarefasWorkspace();
     setTarefaSelecionado("")
   };
@@ -196,7 +199,6 @@ const editarStatusTarefa = async() => {
   const obj = {
     status: status
   }
-  console.log(_id, 'AQuiiii');
   editarStatusTarefaWork(_id,tarefaSelecionada._id, obj, token).then(res =>{
   }).catch(error => {
     console.log(error);
