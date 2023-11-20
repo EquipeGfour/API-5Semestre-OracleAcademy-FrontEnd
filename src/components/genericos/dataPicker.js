@@ -49,7 +49,7 @@ export default (props) => {
       
         <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'grey' }]}>
         <View style={styles.container2}>
-            <Text>{formattedDate}</Text>
+            <Text style={{color: 'black'}}>{formattedDate}</Text>
             <Icon name="calendar" size={20} color={colors.cinza} />
         </View>
         </TouchableOpacity>
@@ -63,8 +63,10 @@ const styles = StyleSheet.create({
         padding: 13,
         height: 50,
         backgroundColor: 'white',
-        borderRadius: 5,
-        borderWidth: 1,
+        borderRadius: 3,
+        borderWidth: 1.2,
+        borderTopWidth: 1.5,
+        borderLeftWidth: 1.5,
     },
     container2: {
         flexDirection: 'row',
