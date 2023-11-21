@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
         marginRight: '50%',
     },
     iconContainerTittle: {
+        marginLeft: 13,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'right',
