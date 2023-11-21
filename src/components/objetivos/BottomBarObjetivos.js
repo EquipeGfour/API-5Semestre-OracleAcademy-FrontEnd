@@ -77,7 +77,7 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                     <TextInput
                         style={styles.modalText}
                         outlineColor='black'
-                        outlineStyle={{ borderWidth: 0.5 }}
+                        outlineStyle={{ borderWidth: 0.65 }}
                         mode='outlined'
                         label='Nome'
                         placeholder='Nome'
@@ -88,7 +88,7 @@ const BottomBarObjetivos = ({ onIconPress }) => {
                     <TextInput
                         style={styles.modalText2}
                         outlineColor='black'
-                        outlineStyle={{ borderWidth: 0.5 }}
+                        outlineStyle={{ borderWidth: 0.50 }}
                         mode='outlined'
                         label='Descrição'
                         multiline={true}
@@ -168,13 +168,12 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         width: 325,
         marginBottom: 20,
-        borderColor: colors.azul,
 
     },
     modalText2: {
         backgroundColor: "white",
         width: 325,
-        marginBottom: 27,
+        marginBottom: 26.8,
     },
     textoCriarObjetivo: {
         textAlign: 'center',
