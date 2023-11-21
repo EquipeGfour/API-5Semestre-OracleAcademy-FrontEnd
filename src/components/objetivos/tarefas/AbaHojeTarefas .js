@@ -10,6 +10,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DataPicker from '../../genericos/dataPicker';
 import { useIsFocused } from '@react-navigation/native';
+import ModalGenerico from '../../genericos/ModalGenerico';
 
 const verdeEscuro = "#346c68";
 const colors = {
@@ -28,7 +29,7 @@ const theme = {
     },
 };
 
-const AbaHojeTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
+const AbaHojeTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
     const [editingTitle, setEditingTitle] = useState("");
     const [editingDescription, setEditingDescription] = useState("");
@@ -152,7 +153,7 @@ const AbaHojeTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
 
 
     useEffect(() => {
-        if(isFocused) buscarTarefas();
+        if (isFocused) buscarTarefas();
     }, [isFocused])
 
     useEffect(() => {
@@ -243,57 +244,59 @@ const AbaHojeTarefas  = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
                 </View>
             </Modal>
 
-            <Modal visible={isModalVisible} onDismiss={closeModal} style={{ zIndex: 3 }}>
-                <PaperProvider theme={theme}>
-                    <View style={{
-                        position: 'absolute',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: -200,
-                    }}>
-                        <View style={styles.modalContainer}>
-                            <Text style={styles.textoEditarTarefa}>Editar Tarefa</Text>
-                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                                <View>
-                                    <TextInput
-                                        mode='outlined'
-                                        outlineColor='gray'
-                                        outlineStyle={{ borderWidth: 0.5 }}
-                                        style={styles.modalText}
-                                        placeholder={tarefa.titulo}
-                                        onChangeText={(e) => setEditingTitle(e)}
-                                    />
-                                    <TextInput
-                                        mode='outlined'
-                                        outlineColor='gray'
-                                        outlineStyle={{ borderWidth: 0.5 }}
-                                        style={styles.modalText}
-                                        placeholder={tarefa.descricao}
-                                        onChangeText={(e) => setEditingDescription(e)}
-                                    />
-                                </View>
-                            </TouchableWithoutFeedback>
+            <ModalGenerico isModalVisible={isModalEditarTarefaVisible} closeModal={closeModalEditarHandler} altura={400}>
+                <View style={{
+                    position: 'absolute',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: -200,
+                }}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.textoEditarTarefa}>Editar Tarefa</Text>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View>
+                                <TextInput
+                                    mode='outlined'
+                                    outlineColor='gray'
+                                    outlineStyle={{ borderWidth: 0.5 }}
+                                    style={styles.modalText}
+                                    placeholder={tarefa.titulo}
+                                    onChangeText={(e) => setEditingTitle(e)}
+                                />
+                                <TextInput
+                                    mode='outlined'
+                                    outlineColor='gray'
+                                    outlineStyle={{ borderWidth: 0.5 }}
+                                    style={styles.modalText}
+                                    placeholder={tarefa.descricao}
+                                    onChangeText={(e) => setEditingDescription(e)}
+                                />
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <View style={styles.dataPickerContainer}>
                             <DataPicker
                                 selectedDate={editingEstimatedDate}
                                 onSelectDate={(e) => setEditingEstimatedDate(e)}
                                 stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
                             />
+                        </View>
+                        <View style={styles.prioridadeContainer}>
                             <DropdownComponent
                                 style={styles.modalText}
                                 prioridade={editingPriority}
                                 setPrioridade={setEditingPriority}
                             />
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
-                                    <Text style={styles.buttonText}>Salvar</Text>
-                                </TouchableOpacity>
-                            </View>
-
                         </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
+                                <Text style={styles.buttonText}>Salvar</Text>
+                            </TouchableOpacity>
+                        </View>
+
                     </View>
-                </PaperProvider>
-            </Modal>
+                </View>
+            </ModalGenerico>
 
         </>
     );
@@ -399,14 +402,24 @@ const styles = StyleSheet.create({
         // textAlign: 'right',
         // marginRight:-40
     },
-    textoEditarTarefa:{
-        textAlign:'center',
-        color:colors.verde,
+    textoEditarTarefa: {
+        textAlign: 'center',
+        color: colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
-    }
+    },
+    prioridadeContainer: {
+        marginTop: -15,
+        marginLeft: 30,
+        backgroundColor: 'transparent'
+    },
+    dataPickerContainer: {
+        left: -23,
+        padding: 25,
+
+    },
 
 });
 
-export default AbaHojeTarefas ;
+export default AbaHojeTarefas;

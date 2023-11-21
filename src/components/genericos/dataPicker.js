@@ -24,48 +24,48 @@ export default (props) => {
 };
 
   
-  return (
-    <>
-      <DatePicker
-        modal
-        open={open}
-        date={props.selectedDate?new Date(props.selectedDate):new Date()}
-        mode="date"
-        title="Selecione a data"
-        confirmText="Confirmar"
-        cancelText="Fechar"
-        locale="pt-BR"
-        onConfirm={(dataFinal) => {
-          setOpen(false);
-          props.onSelectDate(dataFinal)
-          setDate(dataFinal); // Atualize a variável date com a data selecionada
-        }}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
+return (
+  <>
+    <DatePicker
+      modal
+      open={open}
+      date={props.selectedDate?new Date(props.selectedDate):new Date()}
+      mode="date"
+      title="Selecione a data"
+      confirmText="Confirmar"
+      cancelText="Fechar"
+      locale="pt-BR"
+      onConfirm={(dataFinal) => {
+        setOpen(false);
+        props.onSelectDate(dataFinal)
+        setDate(dataFinal); // Atualize a variável date com a data selecionada
+      }}
+      onCancel={() => {
+        setOpen(false);
+      }}
+    />
 
 
-      
-        <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'black' }]}>
-        <View style={styles.container2}>
-            <Text>{formattedDate}</Text>
-            <Icon name="calendar" size={20} color={colors.cinza} />
-        </View>
-        </TouchableOpacity>
-    </>
-  )
+    
+      <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: props.borderColor || 'grey', borderWidth: props.borderWidth || 1 }]}>
+      <View style={styles.container2}>
+          <Text style={{color: props.fontColor || 'black', fontSize: 15}}>{formattedDate}</Text>
+          <Icon name="calendar" size={20} color={colors.cinza} />
+      </View>
+      </TouchableOpacity>
+  </>
+)
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: 325,
-        padding: 13,
-        height: 50,
-        backgroundColor: 'white',
-        borderRadius: 5,
-        borderWidth: 1,
-    },
+  container: {
+      width: 325,
+      padding: 13,
+      height: 50,
+      backgroundColor: 'white',
+      borderRadius: 3,
+      borderWidth: 1,
+  },
     container2: {
         flexDirection: 'row',
         justifyContent: 'space-between',

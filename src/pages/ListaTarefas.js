@@ -10,8 +10,7 @@ import DataPicker from '../components/genericos/dataPicker';
 import Modal from 'react-native-modal';
 import AbaTodasTarefas from '../components/objetivos/tarefas/AbaTodasTarefas';
 import AbaHojeTarefas from '../components/objetivos/tarefas/AbaHojeTarefas ';
-import AbaAtrasadasTarefas from '../components/objetivos/tarefas/AbaAtrasadasTarefas';
-import AbaConcluidasTarefas from '../components/objetivos/tarefas/AbaConcluidasTarefas';
+
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -218,10 +217,10 @@ const ListaTarefas = ({route, navigation}) => {
                     {() => <AbaTodasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
                 </Tab.Screen>
                 <Tab.Screen name="Atrasadas">
-                    {() => <AbaAtrasadasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
+                    {() => <AbaTodasTarefas status={4} flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
                 </Tab.Screen>
                 <Tab.Screen name="Concluídas">
-                    {() => <AbaConcluidasTarefas flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
+                    {() => <AbaTodasTarefas status={1} flagTarefa={flagTarefa} setflagTarefa={setFlagTarefa} id={_id} />}
                 </Tab.Screen>
             </Tab.Navigator>
             <BottomBarTarefas criouTarefa={criouTarefa} objetivo={{titulo, descricao, data_estimada, prioridade, _id}}/>
