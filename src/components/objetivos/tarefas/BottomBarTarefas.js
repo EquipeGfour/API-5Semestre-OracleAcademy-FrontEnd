@@ -104,8 +104,8 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
       </TouchableOpacity> */}
 
       <Modal isVisible={isModalVisible} onBackdropPress={closeModal} style={styles.modal}>
-        
           <View style={styles.modalContainer}>
+            <Text style = {styles.tituloModal}>Criar Tarefa</Text>
             <TextInput
               style={styles.modalText}
               mode='outlined'
@@ -126,6 +126,7 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
               value={descricao}
               onChangeText={e => setDescricao(e)}
             />
+            <View style={styles.dataPickerContainer}>
             <DatePicker
               theme={theme}
               selectedDate={dataFinal}
@@ -134,6 +135,7 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
               cancelButtonColor={cancelButtonColor}
               
             />
+            </View>
             <TouchableOpacity style = {styles.drop}>
             <DropdownComponent 
               theme={theme}
@@ -145,7 +147,7 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
 
             <View style={{ marginTop: 20 }}>
               <TouchableOpacity onPress={criarTarefa} style={styles.botaoCriar}>
-                <Text style={styles.buttonText}>Criar Tarefa</Text>
+                <Text style={styles.buttonText}>Criar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -157,7 +159,8 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
 
 const styles = StyleSheet.create({
   drop:{
-    paddingTop:20
+    marginTop: -10,
+    backgroundColor: 'transparent'
   },
   modal: {
     flex: 1,
@@ -204,10 +207,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalText: {
-    mode: 'flat',
-    backgroundColor: 'white',
+    marginTop: 10,
+    alignSelf: 'center',
     width: 325,
-    marginBottom: 20,
+    backgroundColor: 'transparent'
+  },
+  tituloModal: {
+    textAlign: 'center',
+    color: colors.verde,
+    fontSize: 21,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  dataPickerContainer: {
+    padding: 25,
+    marginTop: -10
   },
 });
 
