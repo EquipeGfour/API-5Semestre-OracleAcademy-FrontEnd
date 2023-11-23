@@ -46,7 +46,7 @@ const DataPickerDashboard = (props) =>{
             />      
             <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'grey' }]}>
             <View style={styles.container2}>
-                <Text>{formattedDate}</Text>
+                <Text> Selecione o Período:                      {formattedDate}</Text>
                 <Icon name="calendar" size={20} color={colors.cinza} />
             </View>
             </TouchableOpacity>
@@ -56,19 +56,20 @@ const DataPickerDashboard = (props) =>{
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 20,
+        marginLeft: "10%",
         marginTop: 17.5,
-        width: 150,
+        width: "87%",
         padding: 13,
         height: 50,
         backgroundColor: 'white',
         borderRadius: 5,
         borderWidth: 0.7,
-    },
+        },
     container2: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        alignContent: 'center',
     },
 });
 

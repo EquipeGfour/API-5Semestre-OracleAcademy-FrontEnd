@@ -49,6 +49,9 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios, statusFiltro }) => {
   const closeModal = () => {
     setModalVisible(false);
     editarStatusTarefa()
+    setTimeout(() => {
+      buscarTarefasWorkspace();
+    }, 2000)
     buscarTarefasWorkspace();
     setTarefaSelecionado("")
   };
@@ -57,7 +60,7 @@ const AbaTarefasTodasWorkspace = ({ _id, workspaceUsuarios, statusFiltro }) => {
   const [isModalEditarTarefaVisible, setModalEditarTarefaVisible] = useState(false);
   const [isInputFocused, setInputFocused] = useState(false);
   const openModalEditarHandler = () => {
-    setEditarNome(tarefaSelecionada.nome);
+    setEditarNome(tarefaSelecionada.titulo);
     setEditarDescricao(tarefaSelecionada.descricao);
     setEditarDataEstimada(new Date(tarefaSelecionada.data_estimada));
     setEditarPrioridade(tarefaSelecionada.prioridade)
@@ -196,7 +199,6 @@ const editarStatusTarefa = async() => {
   const obj = {
     status: status
   }
-  console.log(_id, 'AQuiiii');
   editarStatusTarefaWork(_id,tarefaSelecionada._id, obj, token).then(res =>{
   }).catch(error => {
     console.log(error);
@@ -355,6 +357,7 @@ const editarStatusTarefa = async() => {
             <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
               <TextInput
                   style={styles.usuario}
+                  outlineStyle={{borderRadius: 3}}
                   mode='outlined'
                   // textColor="#545F71"
                   value={editarNome}
@@ -365,6 +368,7 @@ const editarStatusTarefa = async() => {
               />
               <TextInput
                   style={styles.usuario}
+                  outlineStyle={{borderRadius: 3}}
                   mode='outlined'
                   // textColor="#545F71"
                   value={editarDescricao}
@@ -560,15 +564,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignSelf: 'center',
     width: 325,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   prioridadeContainer: {
     marginTop: -15,
-    marginLeft: 30,
+    marginLeft: 35,
     backgroundColor: 'transparent'
   },
   dataPickerContainer: {
-    left: -23,
+    left: -18,
     padding: 25,
 
   },

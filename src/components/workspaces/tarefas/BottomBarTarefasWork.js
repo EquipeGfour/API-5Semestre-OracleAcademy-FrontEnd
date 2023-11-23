@@ -95,7 +95,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                         style={styles.usuario}
                         mode='outlined'
                         // textColor="#545F71"
-                        placeholder="Insira o nome da Descrição"
+                        placeholder="Insira a Descrição"
                         label={isInputFocused ? "Descrição" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
@@ -118,11 +118,13 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                     <DataPicker
                         selectedDate={dataEstimada}
                         onSelectDate={(date) => setDataEstimada(date)}
+                        borderColor='black'
+                        borderWidth={0.5}
                     />
                     </View>
 
                     <View style={styles.prioridadeContainer}>
-                    <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
+                        <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
                     </View>
                     <View style={{ marginTop: 30 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
@@ -138,10 +140,12 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 const styles = StyleSheet.create({
     prioridadeContainer:{
         marginTop: -15,
+        width: '100%',
+        marginLeft: -10,
     },
     dataPickerContainer: {
         left: -55,  
-        padding: 25, 
+        padding: 17, 
         
     },
     modalText: {

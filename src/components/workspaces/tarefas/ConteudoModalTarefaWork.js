@@ -97,7 +97,7 @@ const ConteudoModalTarefaWork = (props) => {
               <View style={styles.iconContainerTittle}>
 
                 <View style={styles.fileUpload} marginLeft={-80}>
-                  <FileUpload onFileSelected={handleFileSelected} marginLeft={20} />
+                  <FileUpload onFileSelected={handleFileSelected} marginLeft={20} btnColor={colors.roxo} />
                 </View>
                 <Icon name="edit" style={styles.icons} marginLeft={10} color={'#51336b'} size={20} onPress={props.openModalEditarHandler}/>
                 <Icon name="user-plus" style={styles.icons} marginLeft={10} color={'#51336b'} size={20} onPress={props.openModalHandler} />
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
         marginRight: '50%',
     },
     iconContainerTittle: {
+        marginLeft: 13,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'right',

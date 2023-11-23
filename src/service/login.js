@@ -1,5 +1,5 @@
 import axios from "./axios";
 
-export const postLogin = (data) => {
-    return axios.post(`/login`, data);
+export const postLogin = (data, token) => {
+    return axios.post(`/login`, data, token);
 }

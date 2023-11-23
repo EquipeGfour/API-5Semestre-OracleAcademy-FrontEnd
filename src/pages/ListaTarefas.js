@@ -178,8 +178,8 @@ const ListaTarefas = ({route, navigation}) => {
                         label={isInputFocused ? "Nome Objetivo" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
-                        outlineColor={colors.cinza}
-                        outlineStyle={{ borderWidth: 0.5 }}
+                        outlineColor={'black'}
+                        outlineStyle={{ borderWidth: 0.7 }}
                         style={styles.modalText}
                         onChangeText={(e) => setEditingTitle(e)}
                     />
