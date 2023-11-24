@@ -12,6 +12,9 @@ const verdeEscuro = "#346c68";
 
 const Recentes = ({ navigation }) => {
 
+    const [tarefasConcluidas, setTarefasConcluidas] = useState(0);
+    const [totalTarefas, setTotalTarefas] = useState(0);
+
     const formatarData = (data) => {
         const dataFormatada = new Date(data).toLocaleDateString('pt-BR', {
             day: '2-digit',
@@ -33,16 +36,16 @@ const Recentes = ({ navigation }) => {
     }
 
     const getPrioridadeTitle = (prioridade) => {
-        if(prioridade === 1){
+        if (prioridade === 1) {
             return "Urgente";
         }
-        else if (prioridade === 2){
+        else if (prioridade === 2) {
             return "Alta";
         }
-        else if (prioridade === 3){
+        else if (prioridade === 3) {
             return "Média";
         }
-        else if(prioridade === 4){
+        else if (prioridade === 4) {
             return "Baixo";
         }
     }
@@ -52,50 +55,45 @@ const Recentes = ({ navigation }) => {
     }, [objetivos])
 
 
+    
 
     return (
-        <>  
-        <View style={{ flex:1, backgroundColor: '#FFF', zIndex: -1}}>
-            <BottomBarObjetivos style={{ flex: 1 }} />
-            <ScrollView horizontal={true} contentContainerStyle={styles.container}>
-                {objetivos.map((objetivo) => (
-                    <TouchableOpacity key={objetivo._id} onPress={() => navigation.navigate('Lista-tarefas', objetivo)}>
-                        <View style={[styles.retangulo, styles.verdeEscuro]}>
-                            <Card.Title
-                                title={objetivo.titulo}
-                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                            />
-                            {/* <Card.Title
+        <>
+            <View style={{ flex: 1, backgroundColor: '#FFF', zIndex: -1 }}>
+                <BottomBarObjetivos style={{ flex: 1 }} />
+                <ScrollView horizontal={true} contentContainerStyle={styles.container}>
+                    {objetivos.map((objetivo) => (
+                        <TouchableOpacity key={objetivo._id} onPress={() => navigation.navigate('Lista-tarefas', objetivo)}>
+                            <View style={[styles.retangulo, styles.verdeEscuro]}>
+                                <Card.Title
+                                    title={objetivo.titulo}
+                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 18, fontSize: 18, marginLeft: 5 }}
+                                />
+                                {/* <Card.Title
                                 title={objetivo.data_estimada}
                                 titleStyle={{ color: 'white', fontWeight: 'bold' }}
                                 left={(props) => <Icon name="clock" size={30} color="white" />}
                             /> */}
-                            <Card.Title
-                                title={formatarData(objetivo.data_estimada)}
-                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                                left={(props) => <Icon name="clock" size={30} color="white" />}
-                            />
-                            <Card.Title
-                                title={getPrioridadeTitle(objetivo.prioridade)}
-                                titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                                left={(props) => <Icon name="flag" size={30} color="white" />}
-                            />
-                            <Card.Content style={styles.cardContent}>
-                                <View style={styles.textContainer}>
-                                    {/* <Text style={styles.textoNome}>Progresso</Text> */}
-                                    <Text style={styles.textoPorcentagem}>{objetivo.progresso}%</Text>
-                                </View>
-                                <ProgressBar progress={0.5} color='#9BA5B7' style={{ backgroundColor: 'white' }} />
-                            </Card.Content>
-                        </View>
-                        
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+                                <Card.Title
+                                    title={formatarData(objetivo.data_estimada)}
+                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8, marginLeft: -8 }}
+                                    left={(props) => <Icon name="clock" size={28} color="white" />}
+                                />
+                                <Card.Title
+                                    title={getPrioridadeTitle(objetivo.prioridade)}
+                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8, marginLeft: -8 }}
+                                    left={(props) => <Icon name="flag" size={28} color="white" />}
+                                />
+                            </View>
+
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
             </View>
         </>
     );
 }
+
 const teste = memo(Recentes)
 const styles = StyleSheet.create({
     cardContent: {
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
     },
     retangulo: {
         width: 200,
-        height: 250,
+        height: 220,
         margin: 15,
         borderRadius: 20,
     },
@@ -124,7 +122,8 @@ const styles = StyleSheet.create({
     textoPorcentagem: {
         alignSelf: "flex-end",
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 8
     },
     textoNome: {
         alignSelf: "flex-start",

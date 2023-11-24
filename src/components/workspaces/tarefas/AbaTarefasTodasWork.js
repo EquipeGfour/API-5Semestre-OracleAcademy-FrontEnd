@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Modal, Chip } from 'react-native-paper';
-
+import { Linking } from 'react-native';
 import { getStorageItem, storageItem } from "../../../functions/encryptedStorageFunctions";
 import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, getTarefasWorkspacePorStatus, updateTarefaTime } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
