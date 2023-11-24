@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { ProgressBar, Colors, Card, IconButton, Avatar } from 'react-native-paper';
 import { getObjetivos } from "../../service/objetivo";
 import { getStorageItem } from "../../functions/encryptedStorageFunctions";
-import { getTaskStatistics } from "../../service/tarefa";
 
 
 const verdeEscuro = "#346c68";
@@ -56,22 +55,7 @@ const Recentes = ({ navigation }) => {
     }, [objetivos])
 
 
-    useEffect(() => {
-        const fetchTaskStatistics = async () => {
-            try {
-                const token = await getStorageItem('token');
-
-                const statistics = await getTaskStatistics( token);
-                setTarefasConcluidas(statistics.Concluídos);
-                setTotalTarefas(statistics.TarefasTotais);
-            } catch (error) {
-                // Trate o erro conforme necessário
-                console.error('Erro ao obter estatísticas de tarefas:', error);
-            }
-        };
-
-        fetchTaskStatistics();
-    }, []);
+    
 
     return (
         <>
@@ -83,7 +67,7 @@ const Recentes = ({ navigation }) => {
                             <View style={[styles.retangulo, styles.verdeEscuro]}>
                                 <Card.Title
                                     title={objetivo.titulo}
-                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 17, fontSize: 17 }}
+                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 18, fontSize: 18, marginLeft: 5 }}
                                 />
                                 {/* <Card.Title
                                 title={objetivo.data_estimada}
@@ -92,22 +76,14 @@ const Recentes = ({ navigation }) => {
                             /> */}
                                 <Card.Title
                                     title={formatarData(objetivo.data_estimada)}
-                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8 }}
-                                    left={(props) => <Icon name="clock" size={30} color="white" />}
+                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8, marginLeft: -8 }}
+                                    left={(props) => <Icon name="clock" size={28} color="white" />}
                                 />
                                 <Card.Title
                                     title={getPrioridadeTitle(objetivo.prioridade)}
-                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8 }}
-                                    left={(props) => <Icon name="flag" size={30} color="white" />}
+                                    titleStyle={{ color: 'white', fontWeight: 'bold', marginTop: 8, marginLeft: -8 }}
+                                    left={(props) => <Icon name="flag" size={28} color="white" />}
                                 />
-                                <Card.Content style={styles.cardContent}>
-                                    <View style={styles.textContainer}>
-                                        {/* <Text style={styles.textoNome}>Progresso</Text> */}
-                                        <Text style={styles.textoPorcentagem}>
-                                            {tarefasConcluidas} / {totalTarefas}
-                                        </Text>
-                                    </View>
-                                </Card.Content>
                             </View>
 
                         </TouchableOpacity>
@@ -117,6 +93,7 @@ const Recentes = ({ navigation }) => {
         </>
     );
 }
+
 const teste = memo(Recentes)
 const styles = StyleSheet.create({
     cardContent: {
@@ -131,7 +108,7 @@ const styles = StyleSheet.create({
     },
     retangulo: {
         width: 200,
-        height: 250,
+        height: 220,
         margin: 15,
         borderRadius: 20,
     },

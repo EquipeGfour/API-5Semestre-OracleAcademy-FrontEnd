@@ -97,14 +97,4 @@ export const UploadFile = (idTarefa, file, token) => {
     const data = new FormData()
     data.append('file', file)
     return axios.post(`/upload/tarefa/${idTarefa}`, data ,{ headers: { Authorization: token, 'Content-Type': 'multipart/form-data' } })
-}
-
-export const getTaskStatistics = async ( token) => {
-  try {
-    const response = await axios.get(`/workspace/buscarEmAndamento/`, { headers: { Authorization: token} });
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao obter estatísticas de tarefas:', error);
-    throw error;
-  }
 };
