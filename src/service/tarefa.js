@@ -1,8 +1,8 @@
 import axios from "./axios";
 
 
-export const addUserToTarefa = (id, usuarios) => {
-    return axios.put(`/tarefa/adicionarUser/${id}`, usuarios);
+export const addUserToTarefa = (id, usuarios, token) => {
+    return axios.put(`/tarefa/adicionarUser/${id}`, usuarios, token);
 }
 
 export const getTarefas = (id) => {
@@ -73,20 +73,20 @@ export const postTarefa = (id, data) => {
 }
 
 
-export const deleteTarefa = (idTarefa) => {
-    return axios.delete(`/tarefa/deletar/${idTarefa}`)
+export const deleteTarefa = (idTarefa, token) => {
+    return axios.delete(`/tarefa/deletar/${idTarefa, token}`)
 }
 
-export const editTarefa = (idTarefa, tarefaEdited) => {
-    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited)
+export const editTarefa = (idTarefa, tarefaEdited, token) => {
+    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited, token)
 }
 
 export const getTarefaTime = (idTarefa) => {
     return axios.get(`/tarefa/buscarCronometro/${idTarefa}`)
 }
 
-export const updateTarefaStatus = (idTarefa, status) => {
-    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status})
+export const updateTarefaStatus = (idTarefa, status, token) => {
+    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status}, token)
 }
 
 export const updateTarefaTime = (idTarefa) => {

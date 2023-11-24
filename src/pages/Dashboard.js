@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Grafico from "../components/genericos/Grafico";
 import InfoGrafico from "../components/genericos/InfoGrafico";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -8,6 +8,9 @@ import DropdwnGenerico from "../components/genericos/DropdownGenerico";
 import DataPickerDashboard from "../components/genericos/DataPickerDashboard";
 import BottomBarDashboard from "../components/genericos/BottomBarDashboard";
 import { useNavigation } from '@react-navigation/native';
+import { getStorageItem } from "../functions/encryptedStorageFunctions";
+import axios from "axios";
+import { getDadosGraficoByMonthObj } from "../service/grafico";
 
 // --- Cores do Sistema ---
 const colors = {
@@ -18,14 +21,45 @@ const colors = {
     cinza: " #545F71"
 };
 
-const data = [
-    { label: 'Todos', value: 1 },
-    { label: 'Obj1', value: 2 },
-    { label: 'Obj2', value: 3 },
-];
 
 const Dashboard = (props) =>{
-    const navigation = useNavigation();
+
+// --- Rotas Gráfico ---
+const navigation = useNavigation();
+const [infoGrafico, setInfoGrafico] = useState([]);
+const [dataEstimada, setDataEstimada] = useState(new Date());
+const [dataAtual, setDataAtual] = useState(new Date());
+const buscarDadosGraficoByMonth = async () => {
+    const token = await getStorageItem('token');
+    var dia = dataEstimada.getDate();
+    var mes = dataEstimada.getMonth() + 1; // Os meses começam do zero, então é necessário adicionar 1
+    var ano = dataEstimada.getFullYear() % 100; // Obtém os dois últimos dígitos do ano
+    
+    dia = dia < 10 ? '0' + dia : dia;
+    mes = mes < 10 ? '0' + mes : mes;
+    ano = ano < 10 ? '0' + ano : ano;
+
+    const dataFinalFormatada = dia + '/' + mes + '/' + '20' +  ano;
+
+    getDadosGraficoByMonthObj(dataFinalFormatada,token).then(async (res) => {
+        const data = [{x:"Concluídos" , y: res.data['1']},
+        {x:"Em Andamento" , y: res.data['2'] },
+        {x:"Nao Iniciadas" , y: res.data['3'] }]
+
+        infoGrafico.push(...data)
+
+        console.log(dataFinalFormatada);
+        console.log(res.data);
+    }).catch(error => {
+        console.error('Erro', error.response);
+    })
+
+}
+
+useEffect (() => {
+    buscarDadosGraficoByMonth(dataAtual);
+},[dataEstimada]);
+
     return(
         <>
         <View style={{ flex:1, backgroundColor: '#FFF' }}>
@@ -38,16 +72,13 @@ const Dashboard = (props) =>{
                         <Icon name = 'chevron-right'size={25} style={styles.icone1} onPress={() => navigation.navigate('DashboardWorkspace')}/>
                 </View>
                 <View style={styles.menuData}>
-                    <DataPickerDashboard></DataPickerDashboard>
-                    {/* <DropdwnGenerico
-                        data={data}
-                        width={150}
-                        status={props.status}
-                        setStatus={props.setStatus}
-                    >                    
-                    </DropdwnGenerico> */}
+                    <DataPickerDashboard
+                        selectedDate={dataEstimada}
+                        onSelectDate={(date) => setDataEstimada(date)}
+                    ></DataPickerDashboard>
                 </View>                
                     <Grafico 
+                        data={infoGrafico}
                         colors={["#51A8A2", "red" , "gray", "#545F71"]}>
                     </Grafico>
                     <InfoGrafico
