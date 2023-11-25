@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, Button, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Checkbox, IconButton, Text, Menu, Divider, Provider, Modal, Chip } from 'react-native-paper';
-
+import { Linking } from 'react-native';
 import { getStorageItem, storageItem } from "../../../functions/encryptedStorageFunctions";
 import { addUserToTarefa, deleteTarefa, getTarefaById, getTarefas, getTarefasWorkspacePorStatus, updateTarefaTime } from '../../../service/tarefa';
 import { TextInput } from 'react-native-paper';
@@ -399,10 +399,10 @@ const editarStatusTarefa = async() => {
       {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
       <ModalGenerico isModalVisible={isModalUserVisible} closeModal={closeModalHandler} altura={400} >
         <View style={styles.modal}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Adicionar membros à tarefa</Text>
+          <Text style={{  fontSize: 22, fontWeight: 'bold', marginTop: 3 ,textAlign:'center', color:colors.roxo, }}>Adicionar membros à tarefa</Text>
           <TextInput
             style={styles.modalText}
-            multiline={true}
+            mode='outlined'
             placeholder='Digite o nome do usuário'
             value={nomeUsuario}
             onChangeText={(e) => setNomeUsuario(e)}
@@ -411,8 +411,8 @@ const editarStatusTarefa = async() => {
           <FlatList
             data={usuariosBusca}
             renderItem={({ item }) => (
-              <TouchableOpacity style={{ marginTop: 10 }} onPress={() => adicionarUsuario(item.usuario)}>
-                <Text style={{ fontSize: 18 }}>{item.usuario.nome}</Text>
+              <TouchableOpacity  style={styles.usuarioItem} onPress={() => adicionarUsuario(item.usuario)}>
+                <Text style={styles.usuarioItemText}>{item.usuario.nome}</Text>
               </TouchableOpacity>
             )}
           />
@@ -421,13 +421,10 @@ const editarStatusTarefa = async() => {
               {user.nome}
             </Chip>
           ))}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
-              <TouchableOpacity onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)}  style={styles.botaoCriar}>
-                  <Text style={styles.buttonText}>Adicionar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={closeModalHandler}  style={styles.botaoCriar}>
-                  <Text style={styles.buttonText}>Fechar</Text>
-              </TouchableOpacity>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 80}}>
+            <Text onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)} style={styles.buttonText}>
+              Adicionar
+            </Text>
           </View>
         </View>
       </ModalGenerico>
@@ -436,6 +433,23 @@ const editarStatusTarefa = async() => {
 };
 
 const styles = StyleSheet.create({
+  usuarioItemText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  usuarioItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center', // Center the content horizontally
+    marginTop: 15,
+    backgroundColor: colors.roxo,
+    borderRadius: 25,
+    width: 150,
+    height: 25,
+    alignSelf:'center'
+  },
   fileUpload:{
     marginRight:'10%'
   },
@@ -547,17 +561,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   botaoCriar: {
-    width: 150,
-    borderRadius: 20,
-    backgroundColor: colors.roxo,
-    alignSelf: 'center', // Centraliza o botão horizontalmente
+
+    padding:50
   },
   buttonText: {
+    borderRadius: 25, 
+    backgroundColor: colors.roxo,
+    width: 150,
+    height: 50,
+    textAlign: 'center',
+    lineHeight: 50,
     color: 'white',
     fontSize: 16,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    textAlign: 'center',
     fontWeight: 'bold'
   },
   usuario: {
