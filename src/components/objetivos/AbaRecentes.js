@@ -16,6 +16,9 @@ const Recentes = ({ navigation }) => {
     const [totalTarefas, setTotalTarefas] = useState(0);
 
     const formatarData = (data) => {
+        if (data?.includes('/')) {
+            return data
+        }
         const dataFormatada = new Date(data).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',

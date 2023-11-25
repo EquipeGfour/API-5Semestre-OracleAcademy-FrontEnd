@@ -68,8 +68,8 @@ export const getTarefaById = (id, status) => {
 }
 
 
-export const postTarefa = (id, data) => {
-    return axios.post(`/tarefa/criar/${id}`, data);
+export const postTarefa = (id, data, token) => {
+    return axios.post(`/tarefa/criar/${id}`, data, { headers: { Authorization: token }});
 }
 
 
@@ -77,8 +77,8 @@ export const deleteTarefa = (idTarefa) => {
     return axios.delete(`/tarefa/deletar/${idTarefa}`)
 }
 
-export const editTarefa = (idTarefa, tarefaEdited) => {
-    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited)
+export const editTarefa = (idTarefa, tarefaEdited, token) => {
+    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited, { headers: { Authorization: token }})
 }
 
 export const getTarefaTime = (idTarefa) => {

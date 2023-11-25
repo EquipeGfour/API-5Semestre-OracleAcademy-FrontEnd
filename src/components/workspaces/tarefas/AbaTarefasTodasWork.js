@@ -266,6 +266,9 @@ const editarStatusTarefa = async() => {
 
   // --- DatePicker Tarefas Workspace --- 
   const formatarData = (data) => {
+    if (data.includes('/')){
+      return data
+    }
     if (data) {
       const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
       const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
@@ -356,7 +359,7 @@ const editarStatusTarefa = async() => {
           <View style={styles.modal}>
             <Text style={styles.textoEditarTarefaWorkspace}>Editar Tarefa</Text>
               <TextInput
-                  style={styles.usuario}
+                  style={[styles.usuario]}
                   outlineStyle={{borderRadius: 3}}
                   mode='outlined'
                   // textColor="#545F71"
@@ -388,18 +391,16 @@ const editarStatusTarefa = async() => {
                 prioridade={editarPrioridade}
                 setPrioridade={setEditarPrioridade}/>
               </View>
-              <View style={{ marginTop: 30 }}>
-                  <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
-                      <Text style={styles.buttonText}>Salvar</Text>
-                  </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={editarTarefaWorkspace} style={styles.botaoCriar}>
+                <Text style={styles.buttonText}>Salvar</Text>
+              </TouchableOpacity>
           </View>
         </ModalGenerico>
 
       {/* ----- Modal Adicionar Usuário a Tarefa ----- */}   
       <ModalGenerico isModalVisible={isModalUserVisible} closeModal={closeModalHandler} altura={400} >
         <View style={styles.modal}>
-          <Text style={{  fontSize: 22, fontWeight: 'bold', marginTop: 3 ,textAlign:'center', color:colors.roxo, }}>Adicionar membros à tarefa</Text>
+          <Text style={{  fontSize: 21, fontWeight: 'bold', marginTop: 3 ,textAlign:'center', color:colors.roxo, }}>Adicionar membros à tarefa</Text>
           <TextInput
             style={styles.modalText}
             mode='outlined'
@@ -421,7 +422,7 @@ const editarStatusTarefa = async() => {
               {user.nome}
             </Chip>
           ))}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 80}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginVertical: 60}}>
             <Text onPress={() => adicionarTodosUsuariosATarefa(tarefaSelecionada?._id)} style={styles.buttonText}>
               Adicionar
             </Text>
@@ -466,8 +467,8 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: 'white',
-    padding: 10,
     borderRadius: 20,
+    width: '95%',
   },  
   espacamento: {
     marginTop: 45,
@@ -557,12 +558,13 @@ const styles = StyleSheet.create({
   textoEditarTarefaWorkspace: {
     textAlign: 'center',
     color: colors.roxo,
-    fontSize: 18,
+    fontSize: 21,
     fontWeight: 'bold'
   },
   botaoCriar: {
-
-    padding:50
+    paddingTop: 20,
+    alignContent: 'center',
+    alignSelf: 'center',
   },
   buttonText: {
     borderRadius: 25, 
@@ -578,16 +580,15 @@ const styles = StyleSheet.create({
   usuario: {
     marginTop: 20,
     alignSelf: 'center',
-    width: 325,
+    width: '90%',
     backgroundColor: 'transparent',
   },
   prioridadeContainer: {
-    marginTop: -15,
-    marginLeft: 35,
+    marginTop: 0,
     backgroundColor: 'transparent'
   },
   dataPickerContainer: {
-    left: -18,
+    left: -9,
     padding: 25,
 
   },

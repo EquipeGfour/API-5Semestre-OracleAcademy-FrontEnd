@@ -13,6 +13,9 @@ const verdeEscuro = "#346c68";
 
 const AbaTarefasAtrasadas = ({ navigation }) => {
     const formatarData = (data) => {
+        if (data?.includes('/')) {
+            return data
+        }
         const dataFormatada = new Date(data).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',

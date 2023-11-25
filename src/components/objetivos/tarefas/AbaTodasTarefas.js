@@ -67,14 +67,15 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
         setModalVisible(true);
     };
 
-    const saveEditedTarefa = () => {
+    const saveEditedTarefa = async () => {
+        const token = await getStorageItem("token");
         const editedTarefa = {
             titulo: editingTitle,
             descricao: editingDescription,
             data_estimada: editingEstimatedDate,
             prioridade: editingPriority,
         };
-        editTarefa(tarefa._id, editedTarefa)
+        editTarefa(tarefa._id, editedTarefa, token)
             .then((res) => {
                 Toast.show({
                     type: 'success',
@@ -203,6 +204,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
     }, [flagTarefa])
 
     const formatarData = (data) => {
+        if (data?.includes('/')){
+            return data
+        }
         if (data) {
             const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
             const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
@@ -275,7 +279,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                 </SafeAreaView>
             </KeyboardAvoidingView>
 
-            <Modal visible={visible} onDismiss={hideModal}>
+            <ModalGenerico isModalVisible={visible} closeModal={hideModal} altura={450}>
                 <ScrollView style={[styles.modal, { maxHeight: 450 }]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ ...styles.iconContainer, width: '75%' }} >
@@ -348,7 +352,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                         </View>
                     </View> */}
                 </ScrollView>
-            </Modal>
+            </ModalGenerico>
 
             <ModalGenerico isModalVisible={isModalVisible} closeModal={closeModal} altura={500}>
                 <View style={{
@@ -363,7 +367,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                                 <TextInput
                                     mode='outlined'
                                     outlineColor='gray'
-                                    outlineStyle={{ borderWidth: 0.5 }}
+                                    outlineStyle={{ borderWidth: 1 }}
                                     style={styles.modalText2}
                                     placeholder={tarefa.titulo}
                                     onChangeText={(e) => setEditingTitle(e)}
@@ -371,7 +375,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                                 <TextInput
                                     mode='outlined'
                                     outlineColor='gray'
-                                    outlineStyle={{ borderWidth: 0.5 }}
+                                    outlineStyle={{ borderWidth: 1 }}
                                     style={styles.modalText}
                                     placeholder={tarefa.descricao}
                                     onChangeText={(e) => setEditingDescription(e)}
@@ -383,12 +387,14 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                             onSelectDate={(e) => setEditingEstimatedDate(e)}
                             stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25, } }}
                         />
-                        <DropdownComponent
-                            style={styles.modalText}
-                            prioridade={editingPriority}
-                            setPrioridade={setEditingPriority}
-                        />
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', width: '98%', marginTop: 25 }}>
+                            <DropdownComponent
+                                style={[styles.modalText]}
+                                prioridade={editingPriority}
+                                setPrioridade={setEditingPriority}
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                             <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
                                 <Text style={styles.buttonText}>Salvar</Text>
                             </TouchableOpacity>
@@ -478,13 +484,8 @@ const styles = StyleSheet.create({
         marginLeft: 0
     },
     modal: {
-        backgroundColor: 'white',
         margin: 10,
-        padding: 20,
         borderRadius: 20,
-        elevation: 8,
-        borderColor: 'black',
-        borderWidth: 1,
         marginVertical: 10,
         merginHorizontal: 10,
     },

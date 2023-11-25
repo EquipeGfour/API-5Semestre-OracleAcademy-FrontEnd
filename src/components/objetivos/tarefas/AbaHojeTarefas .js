@@ -163,6 +163,9 @@ const AbaHojeTarefas = ({ id, flagTarefa, setFlagTarefa = () => { } }) => {
     }, [flagTarefa])
 
     const formatarData = (data) => {
+        if (data?.includes('/')) {
+            return data
+        }
         if (data) {
             const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
             const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);

@@ -67,16 +67,15 @@ export default PrioridadeTarefaWork;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        padding: 17,
+        paddingHorizontal: 12,
     },
     dropdown: {
         height: 50,
-        width: 325,
+        width: '100%',
         borderColor: 'black',
         borderWidth: 0.5,
         borderRadius: 3,
         paddingHorizontal: 8, //texto dentro
-        marginStart:-45,
         borderBottomColor: 'black',
         borderBottomWidth: 0.8,
     },
