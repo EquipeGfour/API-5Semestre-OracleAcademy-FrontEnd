@@ -15,6 +15,7 @@ import { UploadFile } from '../../../service/tarefa';
 import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
 import { updateTarefaStatus, getTarefasPorStatus } from '../../../service/tarefa';
 import ListaAnexos from '../../genericos/ListaAnexos';
+import ModalGenerico from '../../genericos/ModalGenerico';
 
 
 
@@ -142,7 +143,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
 
     const buscarTarefas = () => {
         setFlagTarefa(false)
-        if(status){
+        if (status) {
             getTarefasPorStatus(id, status).then((res) => {
                 const novaLista = res.data.map((tarefa) => ({
                     ...tarefa,
@@ -153,7 +154,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                 console.error(error)
             });
         }
-        else{
+        else {
             getTarefas(id).then((res) => {
                 const novaLista = res.data.map((tarefa) => ({
                     ...tarefa,
@@ -205,6 +206,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
     }, [flagTarefa])
 
     const formatarData = (data) => {
+        if (data?.includes('/')){
+            return data
+        }
         if (data) {
             const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
             const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
@@ -278,8 +282,8 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                 </SafeAreaView>
             </KeyboardAvoidingView>
 
-            <Modal visible={visible} onDismiss={hideModal}>
-                <ScrollView style={[styles.modal, { maxHeight: 400 }]}>
+            <ModalGenerico isModalVisible={visible} closeModal={hideModal} altura={450}>
+                <ScrollView style={[styles.modal, { maxHeight: 450 }]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ ...styles.iconContainer, width: '75%' }} >
                             <Checkbox
@@ -293,7 +297,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                         </View>
                         <View style={styles.iconContainerTittle}>
                             <View style={styles.icons}>
-                                <FileUpload 
+                                <FileUpload
                                     btnColor={colors.verde}
                                     onFileSelected={handleFileSelected} />
                             </View>
@@ -341,7 +345,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                             </TouchableOpacity>
                         )}
                     </View>
-                    <ListaAnexos tarefa={tarefa} />        
+                    <ListaAnexos tarefa={tarefa} />
                     {/* <View style={{marginLeft:10}}>
                         <Text style= {styles.fileNameText}>Anexos: </Text>
                         <View style= {styles.viewAnexos}>
@@ -351,58 +355,56 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                         </View>
                     </View> */}
                 </ScrollView>
-            </Modal>
+            </ModalGenerico>
 
-            <Modal visible={isModalVisible} onDismiss={closeModal} style={{ zIndex: 3 }}>
-                <PaperProvider theme={theme}>
-                    <View style={{
-                        position: 'absolute',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: -200,
-                    }}>
-                        <View style={styles.modalContainer}>
-                            <Text style={styles.textoEditarTarefa}>Editar Tarefa</Text>
-                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                                <View>
-                                    <TextInput
-                                        mode='outlined'
-                                        outlineColor='gray'
-                                        outlineStyle={{ borderWidth: 0.5 }}
-                                        style={styles.modalText}
-                                        placeholder={tarefa.titulo}
-                                        onChangeText={(e) => setEditingTitle(e)}
-                                    />
-                                    <TextInput
-                                        mode='outlined'
-                                        outlineColor='gray'
-                                        outlineStyle={{ borderWidth: 0.5 }}
-                                        style={styles.modalText}
-                                        placeholder={tarefa.descricao}
-                                        onChangeText={(e) => setEditingDescription(e)}
-                                    />
-                                </View>
-                            </TouchableWithoutFeedback>
-                            <DataPicker
-                                selectedDate={editingEstimatedDate}
-                                onSelectDate={(e) => setEditingEstimatedDate(e)}
-                                stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25 } }}
-                            />
+            <ModalGenerico isModalVisible={isModalVisible} closeModal={closeModal} altura={500}>
+                <View style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.textoEditarTarefa}>Editar Tarefa</Text>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View>
+                                <TextInput
+                                    mode='outlined'
+                                    outlineColor='gray'
+                                    outlineStyle={{ borderWidth: 1 }}
+                                    style={styles.modalText2}
+                                    placeholder={tarefa.titulo}
+                                    onChangeText={(e) => setEditingTitle(e)}
+                                />
+                                <TextInput
+                                    mode='outlined'
+                                    outlineColor='gray'
+                                    outlineStyle={{ borderWidth: 1 }}
+                                    style={styles.modalText}
+                                    placeholder={tarefa.descricao}
+                                    onChangeText={(e) => setEditingDescription(e)}
+                                />
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <DataPicker
+                            selectedDate={editingEstimatedDate}
+                            onSelectDate={(e) => setEditingEstimatedDate(e)}
+                            stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25, } }}
+                        />
+                        <View style={{ flexDirection: 'row', width: '98%', marginTop: 25 }}>
                             <DropdownComponent
-                                style={styles.modalText}
+                                style={[styles.modalText]}
                                 prioridade={editingPriority}
                                 setPrioridade={setEditingPriority}
                             />
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
-                                    <Text style={styles.buttonText}>Salvar</Text>
-                                </TouchableOpacity>
-                            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                            <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
+                                <Text style={styles.buttonText}>Salvar</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </PaperProvider>
-            </Modal>
+                </View>
+            </ModalGenerico>
 
         </>
     );
@@ -429,7 +431,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     fileNameText: {
-        marginTop:-35,
+        marginTop: -35,
         color: 'black',
         fontSize: 14,
     },
@@ -449,6 +451,7 @@ const styles = StyleSheet.create({
     botaoCriar: {
         width: 100,
         borderRadius: 20,
+        marginBottom: -15,
         backgroundColor: colors.verde,
         alignSelf: 'center', // Centraliza o botão horizontalmente
     },
@@ -466,7 +469,7 @@ const styles = StyleSheet.create({
         justifyContent: 'right',
     },
     iconContainerTittle: {
-        marginLeft:-50,
+        marginLeft: -50,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'right',
@@ -484,13 +487,10 @@ const styles = StyleSheet.create({
         marginLeft: 0
     },
     modal: {
-        backgroundColor: 'white',
         margin: 10,
-        padding: 20,
         borderRadius: 20,
-        elevation: 8,
-        borderColor: 'black',
-        borderWidth: 1,
+        marginVertical: 10,
+        merginHorizontal: 10,
     },
     container: {
         width: 355,
@@ -510,18 +510,23 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: 'white',
         padding: 20,
-        borderRadius: 10,
         alignItems: 'center',
         width: "96%",
-        borderWidth: 1,
-        borderColor: 'black',
-        borderStyle: 'solid',
+        marginHorizontal: 10,
+        paddingHorizontal: 5
     },
     modalText: {
         mode: "flat",
         backgroundColor: "white",
         width: 325,
-        marginBottom: 25,
+        marginBottom: 26.7,
+        borderRadius: 3,
+    },
+    modalText2: {
+        mode: "flat",
+        backgroundColor: "white",
+        width: 325,
+        marginBottom: 19.1,
         borderRadius: 3,
     },
     textos: {
@@ -556,8 +561,8 @@ const styles = StyleSheet.create({
         color: colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 10,
-    }
+        marginBottom: 15,
+    },
 
 });
 

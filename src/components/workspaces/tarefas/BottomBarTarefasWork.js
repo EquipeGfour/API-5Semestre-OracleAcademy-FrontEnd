@@ -28,13 +28,13 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
     const [prioridade, setPrioridade] = useState("");
 
     const criarObjetivo = async () => {
+        const token = await getStorageItem('token');
         const obj = {
             titulo: nome,
             descricao: descricao,
             data_estimada: dataEstimada,
             prioridade: prioridade
         };
-        const token = await getStorageItem('token');
         postTarefa(id, obj, token)
             .then((res) => {
                 setNome('')
@@ -126,7 +126,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                     </View>
 
                     <View style={styles.prioridadeContainer}>
-                        <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
+                    <PrioridadeTarefaWork setPrioridade={(value) => setPrioridade(value)}/>
                     </View>
                     <View style={{ marginTop: 30 }}>
                         <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
@@ -141,14 +141,12 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
 const styles = StyleSheet.create({
     prioridadeContainer:{
-        marginTop: -15,
         width: '100%',
-        marginLeft: -10,
+        marginTop: 15
     },
     dataPickerContainer: {
-        left: -55,  
-        padding: 17, 
-        
+        padding: 12,
+        marginTop: 12
     },
     modalText: {
         mode: 'flat',
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        padding: 50, // tamanho modal
+        paddingVertical: 50, // tamanho modal
         borderRadius: 10,
         position: 'absolute',
         left: 0,

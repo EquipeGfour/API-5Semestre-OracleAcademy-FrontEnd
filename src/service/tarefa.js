@@ -69,7 +69,7 @@ export const getTarefaById = (id, status) => {
 
 
 export const postTarefa = (id, data, token) => {
-    return axios.post(`/tarefa/criar/${id}`, data, {headers: {Authorization: token}});
+    return axios.post(`/tarefa/criar/${id}`, data, { headers: { Authorization: token }});
 }
 
 
@@ -78,7 +78,7 @@ export const deleteTarefa = (idTarefa, token) => {
 }
 
 export const editTarefa = (idTarefa, tarefaEdited, token) => {
-    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited, {headers: {Authorization: token}})
+    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited, { headers: { Authorization: token }})
 }
 
 export const getTarefaTime = (idTarefa) => {
@@ -97,4 +97,4 @@ export const UploadFile = (idTarefa, file, token) => {
     const data = new FormData()
     data.append('file', file)
     return axios.post(`/upload/tarefa/${idTarefa}`, data ,{ headers: { Authorization: token, 'Content-Type': 'multipart/form-data' } })
-}
+};
