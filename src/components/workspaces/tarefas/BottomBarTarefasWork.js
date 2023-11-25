@@ -7,6 +7,7 @@ import { TextInput } from 'react-native-paper';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { postTarefa } from '../../../service/tarefa';
 import DataPicker from '../../genericos/dataPicker';
+import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
 
 const colors = {
     verde: "#346c68",
@@ -26,14 +27,15 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
     const [dataEstimada, setDataEstimada] = useState(new Date()); // Inicialize com a data atual
     const [prioridade, setPrioridade] = useState("");
 
-    const criarObjetivo = () => {
+    const criarObjetivo = async () => {
         const obj = {
             titulo: nome,
             descricao: descricao,
             data_estimada: dataEstimada,
             prioridade: prioridade
         };
-        postTarefa(id, obj)
+        const token = await getStorageItem('token');
+        postTarefa(id, obj, token)
             .then((res) => {
                 setNome('')
                 setDescricao('')

@@ -4,10 +4,11 @@ import InfoGrafico from "../components/genericos/InfoGrafico";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import DropdwnGenerico from "../components/genericos/DropdownGenerico";
 import DataPickerDashboard from "../components/genericos/DataPickerDashboard";
 import BottomBarDashboard from "../components/genericos/BottomBarDashboard";
 import { useNavigation } from '@react-navigation/native';
+import { getStorageItem } from "../functions/encryptedStorageFunctions";
+import { getDadosGraficoByMonthWork, getHorasTrabalhadasWork } from "../service/grafico";
 
 // --- Cores do Sistema ---
 const colors = {
@@ -18,14 +19,54 @@ const colors = {
     cinza: " #545F71"
 };
 
-const data = [
-    { label: 'Todos', value: 1 },
-    { label: 'Work1', value: 2 },
-    { label: 'Work2', value: 3 },
-];
-
 const DashboardWorkspace = (props) =>{
-    const navigation = useNavigation();
+const navigation = useNavigation();
+const [infoGrafico, setInfoGrafico] = useState([]);
+const [dataEstimada, setDataEstimada] = useState(new Date());
+const [dataAtual, setDataAtual] = useState(new Date());
+// --- Info Cards ---
+const [totalAndamento, setTotalAndamento] = useState(0);
+const [totalNaoIniciadas, setTotalNaoIniciadas] = useState(0);
+const [totalAtrasadas, setTotalAtrasadas] = useState(0);
+const [totalConcluidas, setTotalConcluidas] = useState(0);
+const [totalHoras, setTotalHoras] = useState(0);
+
+const buscarDadosGraficoByMonth = async () => {
+    const token = await getStorageItem('token');
+    // - Fomatando Data - 
+    var dia = dataEstimada.getDate();
+    var mes = dataEstimada.getMonth() + 1; 
+    var ano = dataEstimada.getFullYear() % 100; 
+    mes = mes < 10 ? '0' + mes : mes;
+    ano = ano < 10 ? '0' + ano : ano;
+    const dataFinalFormatada = dia + '/' + mes + '/' + '20' +  ano;
+
+    // - Busca Horas -
+    getHorasTrabalhadasWork(token).then(async (res) => {
+        setTotalHoras(res.data);
+    }).catch(error => {
+        console.error('Erro', error.response);
+    })
+
+    getDadosGraficoByMonthWork(dataFinalFormatada,token).then(async (res) => {
+        const data = [{x:"Concluídos" , y: res.data['1']},
+        {x:"Em Andamento" , y: res.data['2'] },
+        {x:"Não Iniciadas" , y: res.data['3']},
+        {x:"Atrasadas" , y: res.data['4'] }]
+        setTotalConcluidas(res.data['1']);
+        setTotalAndamento(res.data['2']);
+        setTotalNaoIniciadas(res.data['3']);
+        setTotalAtrasadas(res.data['4']);
+        setInfoGrafico(data);
+    }).catch(error => {
+        console.error('Erro', error.response);
+    })
+}
+
+useEffect (() => {
+    buscarDadosGraficoByMonth(dataAtual);
+},[dataEstimada]);
+
     return(
         <>
             <View style={{ flex:1, backgroundColor: '#FFF' }}>
@@ -38,46 +79,52 @@ const DashboardWorkspace = (props) =>{
                         </View>
                 </View>
                 <View style={styles.menuData}>
-                    <DataPickerDashboard></DataPickerDashboard>
-                    {/* <DropdwnGenerico
-                        data={data}
-                        width={150}
-                        status={props.status}
-                        setStatus={props.setStatus}
-                    >                    
-                    </DropdwnGenerico> */}
+                    <DataPickerDashboard
+                        selectedDate={dataEstimada}
+                        onSelectDate={(date) => setDataEstimada(date)}>
+                    </DataPickerDashboard>
+
                 </View>                
                     <Grafico 
+                        data={infoGrafico}
                         colors={[colors.roxo, "red" , "gray", "#545F71"]}>
                     </Grafico>
                     <InfoGrafico
                         title={"Atrasadas"}
                         name={"exclamation-triangle"}
-                        value={"10/100"}
+                        value={totalAtrasadas}
+                        total={totalNaoIniciadas + totalAndamento + totalAtrasadas + totalConcluidas}
+                        barra={true}
                         color={"red"}>                        
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Não Iniciadas"}
                         name={"pause"}
-                        value={"25/100"}
+                        value={totalNaoIniciadas}
+                        total={totalNaoIniciadas + totalAndamento + totalAtrasadas + totalConcluidas}
+                        barra={true}
                         color={"gray"}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Em Andamento"}
                         name={"road"}
-                        value={"40/100"}
+                        value={totalAndamento}
+                        total={totalNaoIniciadas + totalAndamento + totalAtrasadas + totalConcluidas}
+                        barra={true}
                         color={"#545F71"}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Concluidas"}
                         name={"check"}
-                        value={"25/100"}
+                        value={totalConcluidas}
+                        total={totalNaoIniciadas + totalAndamento + totalAtrasadas + totalConcluidas}
+                        barra={true}
                         color={colors.roxo}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Total de Horas"}
                         name={"clock"}
-                        value={"144h"}
+                        value={totalHoras}
                         color={"black"}>
                     </InfoGrafico>
             </ScrollView>
