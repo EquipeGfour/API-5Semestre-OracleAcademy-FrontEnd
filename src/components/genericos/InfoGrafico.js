@@ -20,7 +20,7 @@ const InfoGrafico = (props) => {
                     <Card.Title                     
                         title={props.title}
                         titleStyle={{color: props.color}}/>
-                    <Text style={{...styles.textoValor, color:props.color}}>{props.value}</Text>
+                    <Text style={{...styles.textoValor, color:props.color}}>{props.value} {props.barra?"/ ": "h"}{props.total} </Text>
                 </View>
             </View>
         </>

@@ -68,7 +68,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
     };
 
     const saveEditedTarefa = async () => {
-        const token = await getStorageItem("token");
+        const token = await getStorageItem('token');
         const editedTarefa = {
             titulo: editingTitle,
             descricao: editingDescription,
@@ -122,8 +122,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
         { label: 'Aguardando Validação', value: 5 },
     ];
 
-    const deletarTarefa = (id) => {
-        deleteTarefa(id).then(res => {
+    const deletarTarefa = async (id) => {
+        const token = await getStorageItem('token');
+        deleteTarefa(id, token).then(res => {
+            console.log(res);
             Toast.show({
                 type: 'success',
                 text1: 'Tarefa excluida com sucesso!',
@@ -234,7 +236,8 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
 
     const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
         try {
-            const response = await updateTarefaStatus(tarefaId, novoStatus)
+            const token = await getStorageItem('token');
+            const response = await updateTarefaStatus(tarefaId, novoStatus, token)
             setTarefaStatus((prevStatus) => ({
                 ...prevStatus,
                 [tarefaId]: !prevStatus[tarefaId],

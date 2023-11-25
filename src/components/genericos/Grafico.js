@@ -36,7 +36,7 @@ const Grafico = (props) =>{
         <View style={styles.container}>       
                 <VictoryPie  
                     animate={{ duration: 2000, easing: "expInOut" }}               
-                    data={graficoDados}
+                    data={props.data}
                     width={300}
                     labels={({ datum }) => `${datum.y}`}
                     style={{ labels: { fontSize:18} }} 

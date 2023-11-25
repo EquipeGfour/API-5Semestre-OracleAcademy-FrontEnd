@@ -46,7 +46,7 @@ const DataPickerDashboard = (props) =>{
             />      
             <TouchableOpacity onPress={() => setOpen(true)} style={[styles.container, { borderColor: 'grey' }]}>
             <View style={styles.container2}>
-                <Text> Selecione o Período:                      {formattedDate}</Text>
+                <Text> Selecione o Período                      {formattedDate}</Text>
                 <Icon name="calendar" size={20} color={colors.cinza} />
             </View>
             </TouchableOpacity>
