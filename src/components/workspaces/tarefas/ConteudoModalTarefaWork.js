@@ -41,6 +41,9 @@ const ConteudoModalTarefaWork = (props) => {
     };
 
     const formatarData = (data) => {
+      if (data?.includes('/')) {
+        return data
+      }
         if (data) {
             const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
             const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
@@ -82,7 +85,7 @@ const ConteudoModalTarefaWork = (props) => {
       
     return (
         <View style={styles.modal}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', width: '65%' }}>
             <View style={{ ...styles.iconContainer, width: '75%' }} >
               <Checkbox
                 onPress={() => {
@@ -94,9 +97,9 @@ const ConteudoModalTarefaWork = (props) => {
             <View style={styles.iconContainerTittle}>
 
               {/* ----- Opções da Tarefa ----- */}
-              <View style={styles.iconContainerTittle}>
+              <View style={[styles.iconContainerTittle]}>
 
-                <View style={styles.fileUpload} marginLeft={-80}>
+                <View style={styles.fileUpload}>
                   <FileUpload onFileSelected={handleFileSelected} marginLeft={20} btnColor={colors.roxo} />
                 </View>
                 <Icon name="edit" style={styles.icons} marginLeft={10} color={'#51336b'} size={20} onPress={props.openModalEditarHandler}/>

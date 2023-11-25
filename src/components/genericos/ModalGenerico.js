@@ -1,11 +1,12 @@
 import React from "react";
 import { StyleSheet, ScrollView, View } from 'react-native';
-import { Modal } from 'react-native-paper';
+// import { Modal } from 'react-native-paper';
+import Modal from 'react-native-modal';
 
 
 const ModalGenerico = (props) => {
     return (
-        <Modal visible={props.isModalVisible} transparent animationType="slide" onDismiss={props.closeModal} >
+        <Modal isVisible={props.isModalVisible} transparent animationType="slide" onBackdropPress={props.closeModal} >
             <View style={[styles.modalContainer]}>
                 <ScrollView style={[styles.modal, {maxHeight: props.altura || 450}]}>
                     {props.children}
@@ -25,16 +26,12 @@ const styles = StyleSheet.create({
         merginHorizontal: 10,
     },
     modalContainer: {
-        marginHorizontal: 10,
-        elevation: 10,
         backgroundColor: 'white',
-        borderRadius: 20,
-        marginTop: 20,
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        paddingHorizontal: 5
-    },
+        padding: 0,
+        borderRadius: 10,
+        alignItems: 'center',
+        width: '100%',
+      },
 })
 /*
 flexDirection: 'row',

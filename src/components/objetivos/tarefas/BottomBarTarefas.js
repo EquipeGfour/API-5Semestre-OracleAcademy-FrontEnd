@@ -15,6 +15,7 @@ import BemVindo from '../../../pages/BemVindo';
 import { postTarefa } from '../../../service/tarefa';
 import Toast from 'react-native-toast-message';
 import DatePicker from '../../genericos/dataPicker';
+import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
 
 
 
@@ -43,14 +44,15 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
   const [dataFinal, setDataFinal] = useState(new Date());
   const [prioridade, setPrioridade] = useState('');
 
-  const criarTarefa = () => {
+  const criarTarefa = async () => {
+    const token = await getStorageItem('token');
     const data = {
       titulo: nome,
       descricao: descricao,
       data_estimada: dataFinal,
       prioridade: prioridade,
     };
-    postTarefa(objetivo._id, data)
+    postTarefa(objetivo._id, data, token)
       .then(res => {
         setNome('')
         setDescricao('')
@@ -137,12 +139,15 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
             />
             </View>
             <TouchableOpacity style = {styles.drop}>
-            <DropdownComponent 
-              theme={theme}
-              style={styles.drop}
-              prioridade={prioridade}
-              setPrioridade={setPrioridade}
-            />
+            <View style={{flexDirection: 'row', width: '103.5%'}}>
+
+                <DropdownComponent
+                  theme={theme}
+                  style={styles.drop}
+                  prioridade={prioridade}
+                  setPrioridade={setPrioridade}
+                />
+            </View>
             </TouchableOpacity>
 
             <View style={{ marginTop: 20 }}>
@@ -205,6 +210,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
+    width: '100%',
   },
   modalText: {
     marginTop: 10,
