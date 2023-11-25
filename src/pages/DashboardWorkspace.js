@@ -87,7 +87,7 @@ useEffect (() => {
                 </View>                
                     <Grafico 
                         data={infoGrafico}
-                        colors={[colors.roxo, "red" , "gray", "#545F71"]}>
+                        colors={[colors.roxo, "#545F71", "gray", "red"]}>
                     </Grafico>
                     <InfoGrafico
                         title={"Atrasadas"}
