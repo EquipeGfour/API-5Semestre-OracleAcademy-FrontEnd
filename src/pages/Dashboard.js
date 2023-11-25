@@ -10,7 +10,7 @@ import BottomBarDashboard from "../components/genericos/BottomBarDashboard";
 import { useNavigation } from '@react-navigation/native';
 import { getStorageItem } from "../functions/encryptedStorageFunctions";
 import axios from "axios";
-import { getDadosGraficoByMonthObj } from "../service/grafico";
+import { getDadosGraficoByMonthObj, getHorasTrabalhadasObjetivos } from "../service/grafico";
 
 // --- Cores do Sistema ---
 const colors = {
@@ -23,37 +23,44 @@ const colors = {
 
 
 const Dashboard = (props) =>{
-
-// --- Rotas Gráfico ---
 const navigation = useNavigation();
 const [infoGrafico, setInfoGrafico] = useState([]);
 const [dataEstimada, setDataEstimada] = useState(new Date());
 const [dataAtual, setDataAtual] = useState(new Date());
+// --- Info Cards ---
+const [totalAndamento, setTotalAndamento] = useState(0);
+const [totalAtrasadas, setTotalAtrasadas] = useState(0);
+const [totalConcluidas, setTotalConcluidas] = useState(0);
+const [totalHoras, setTotalHoras] = useState(0);
+
 const buscarDadosGraficoByMonth = async () => {
     const token = await getStorageItem('token');
+    // - Fomatando Data - 
     var dia = dataEstimada.getDate();
-    var mes = dataEstimada.getMonth() + 1; // Os meses começam do zero, então é necessário adicionar 1
-    var ano = dataEstimada.getFullYear() % 100; // Obtém os dois últimos dígitos do ano
-    
-    dia = dia < 10 ? '0' + dia : dia;
+    var mes = dataEstimada.getMonth() + 1; 
+    var ano = dataEstimada.getFullYear() % 100; 
     mes = mes < 10 ? '0' + mes : mes;
     ano = ano < 10 ? '0' + ano : ano;
-
     const dataFinalFormatada = dia + '/' + mes + '/' + '20' +  ano;
 
-    getDadosGraficoByMonthObj(dataFinalFormatada,token).then(async (res) => {
-        const data = [{x:"Concluídos" , y: res.data['1']},
-        {x:"Em Andamento" , y: res.data['2'] },
-        {x:"Nao Iniciadas" , y: res.data['3'] }]
-
-        infoGrafico.push(...data)
-
-        console.log(dataFinalFormatada);
-        console.log(res.data);
+    // - Busca Horas -
+    getHorasTrabalhadasObjetivos(token).then(async (res) => {
+        setTotalHoras(res.data);
     }).catch(error => {
         console.error('Erro', error.response);
     })
 
+    getDadosGraficoByMonthObj(dataFinalFormatada,token).then(async (res) => {
+        const data = [{x:"Concluídos" , y: res.data['1']},
+        {x:"Em Andamento" , y: res.data['3'] },
+        {x:"Atrasadas" , y: res.data['4'] }]
+        setTotalConcluidas(res.data['1']);
+        setTotalAndamento(res.data['3']);
+        setTotalAtrasadas(res.data['4']);
+        setInfoGrafico(data)
+    }).catch(error => {
+        console.error('Erro', error.response);
+    })
 }
 
 useEffect (() => {
@@ -79,36 +86,36 @@ useEffect (() => {
                 </View>                
                     <Grafico 
                         data={infoGrafico}
-                        colors={["#51A8A2", "red" , "gray", "#545F71"]}>
+                        colors={["#51A8A2",  "#545F71", "red"]}>
                     </Grafico>
                     <InfoGrafico
                         title={"Atrasadas"}
                         name={"exclamation-triangle"}
-                        value={"10/100"}
+                        value={totalAtrasadas}
+                        total={totalAndamento + totalAtrasadas + totalConcluidas}
+                        barra={true}
                         color={"red"}>                        
-                    </InfoGrafico>
-                    <InfoGrafico
-                        title={"Não Iniciadas"}
-                        name={"pause"}
-                        value={"25/100"}
-                        color={"gray"}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Em Andamento"}
                         name={"road"}
-                        value={"40/100"}
+                        value={totalAndamento}
+                        total={totalAndamento + totalAtrasadas + totalConcluidas}
+                        barra={true}
                         color={"#545F71"}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Concluidas"}
                         name={"check"}
-                        value={"25/100"}
+                        value={totalConcluidas}
+                        total={totalAndamento + totalAtrasadas + totalConcluidas}
+                        barra={true}
                         color={colors.verde}>
                     </InfoGrafico>
                     <InfoGrafico
                         title={"Total de Horas"}
                         name={"clock"}
-                        value={"144h"}
+                        value={totalHoras}
                         color={"black"}>
                     </InfoGrafico>
             </ScrollView>

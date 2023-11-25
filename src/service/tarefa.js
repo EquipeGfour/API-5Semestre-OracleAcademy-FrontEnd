@@ -2,7 +2,7 @@ import axios from "./axios";
 
 
 export const addUserToTarefa = (id, usuarios, token) => {
-    return axios.put(`/tarefa/adicionarUser/${id}`, usuarios, token);
+    return axios.put(`/tarefa/adicionarUser/${id}`, usuarios,{headers: {Authorization: token}});
 }
 
 export const getTarefas = (id) => {
@@ -68,17 +68,17 @@ export const getTarefaById = (id, status) => {
 }
 
 
-export const postTarefa = (id, data) => {
-    return axios.post(`/tarefa/criar/${id}`, data);
+export const postTarefa = (id, data, token) => {
+    return axios.post(`/tarefa/criar/${id}`, data, {headers: {Authorization: token}});
 }
 
 
 export const deleteTarefa = (idTarefa, token) => {
-    return axios.delete(`/tarefa/deletar/${idTarefa, token}`)
+    return axios.delete(`/tarefa/deletar/${idTarefa}`, {headers: {Authorization: token}})
 }
 
 export const editTarefa = (idTarefa, tarefaEdited, token) => {
-    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited, token)
+    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited, {headers: {Authorization: token}})
 }
 
 export const getTarefaTime = (idTarefa) => {
@@ -86,7 +86,7 @@ export const getTarefaTime = (idTarefa) => {
 }
 
 export const updateTarefaStatus = (idTarefa, status, token) => {
-    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status}, token)
+    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status}, {headers: {Authorization: token}})
 }
 
 export const updateTarefaTime = (idTarefa) => {

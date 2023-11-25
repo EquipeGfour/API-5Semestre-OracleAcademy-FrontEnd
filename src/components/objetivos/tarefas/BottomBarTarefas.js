@@ -15,6 +15,7 @@ import BemVindo from '../../../pages/BemVindo';
 import { postTarefa } from '../../../service/tarefa';
 import Toast from 'react-native-toast-message';
 import DatePicker from '../../genericos/dataPicker';
+import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
 
 
 
@@ -43,14 +44,15 @@ const BottomBarTarefas = ({ onIconPress, objetivo, criouTarefa }) => {
   const [dataFinal, setDataFinal] = useState(new Date());
   const [prioridade, setPrioridade] = useState('');
 
-  const criarTarefa = () => {
+  const criarTarefa = async () => {
     const data = {
       titulo: nome,
       descricao: descricao,
       data_estimada: dataFinal,
       prioridade: prioridade,
     };
-    postTarefa(objetivo._id, data)
+    const token = await getStorageItem('token');
+    postTarefa(objetivo._id, data, token)
       .then(res => {
         setNome('')
         setDescricao('')
