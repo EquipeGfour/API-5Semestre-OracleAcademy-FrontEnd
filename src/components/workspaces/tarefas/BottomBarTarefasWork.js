@@ -7,6 +7,7 @@ import { TextInput } from 'react-native-paper';
 import PrioridadeTarefaWork from './PrioridadeTarefasWork';
 import { postTarefa } from '../../../service/tarefa';
 import DataPicker from '../../genericos/dataPicker';
+import { getStorageItem } from '../../../functions/encryptedStorageFunctions';
 
 const colors = {
     verde: "#346c68",
@@ -26,14 +27,15 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
     const [dataEstimada, setDataEstimada] = useState(new Date()); // Inicialize com a data atual
     const [prioridade, setPrioridade] = useState("");
 
-    const criarObjetivo = () => {
+    const criarObjetivo = async () => {
+        const token = await getStorageItem('token');
         const obj = {
             titulo: nome,
             descricao: descricao,
             data_estimada: dataEstimada,
             prioridade: prioridade
         };
-        postTarefa(id, obj)
+        postTarefa(id, obj, token)
             .then((res) => {
                 setNome('')
                 setDescricao('')
@@ -95,7 +97,7 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                         style={styles.usuario}
                         mode='outlined'
                         // textColor="#545F71"
-                        placeholder="Insira o nome da Descrição"
+                        placeholder="Insira a Descrição"
                         label={isInputFocused ? "Descrição" : ""}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
@@ -118,6 +120,8 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
                     <DataPicker
                         selectedDate={dataEstimada}
                         onSelectDate={(date) => setDataEstimada(date)}
+                        borderColor='black'
+                        borderWidth={0.5}
                     />
                     </View>
 
@@ -137,12 +141,12 @@ const BottomBarTarefasWork = ({ onIconPress, id }) => {
 
 const styles = StyleSheet.create({
     prioridadeContainer:{
-        marginTop: -15,
+        width: '100%',
+        marginTop: 15
     },
     dataPickerContainer: {
-        left: -55,  
-        padding: 25, 
-        
+        padding: 12,
+        marginTop: 12
     },
     modalText: {
         mode: 'flat',
@@ -194,7 +198,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        padding: 50, // tamanho modal
+        paddingVertical: 50, // tamanho modal
         borderRadius: 10,
         position: 'absolute',
         left: 0,

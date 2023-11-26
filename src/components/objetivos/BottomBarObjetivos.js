@@ -14,7 +14,8 @@ const colors = {
     azul: "#4974a5",
     roxo: "#51336b",
     branco: "#ffffff",
-    cinza: "#9BA5B7"
+    cinza: "#9BA5B7",
+    black: "#0000"
 };
 
 const theme = {
@@ -64,42 +65,55 @@ const BottomBarObjetivos = ({ onIconPress }) => {
             <TouchableOpacity onPress={openModal} style={styles.icon}>
                 <Icon name="plus-circle" size={30} color={colors.verde} />
             </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Dashboard')}
+                style={styles.icon}>
+                <Icon name="chart-bar" size={30} color={colors.verde} />
+            </TouchableOpacity>
 
             <Modal isVisible={isModalVisible} onBackdropPress={closeModal}>
-                    <View style={styles.modalContainer}>
-                    <Text style = {styles.textoCriarObjetivo}>Criar Objetivo</Text>
-                        <TextInput
-                            style={styles.modalText}
-                            mode='outlined'
-                            label='Nome'
-                            placeholder='Nome'
-                            value={nome}
-                            theme={theme}
-                            onChangeText={(e) => setNome(e)}
-                        />
-                        <TextInput
-                            style={styles.modalText}
-                            mode='outlined'
-                            label='Descrição'
-                            multiline={true}
-                            placeholder='Descrição'
-                            value={descricao}
-                            theme={theme}
-                            onChangeText={(e) => setDescricao(e)}
-                        />
-                        <DataPicker
-                            theme={theme}
-                            selectedDate={dataEstimada}
-                            onSelectDate={(date) => setDataEstimada(date)}
-                        />
-                        <DropdownComponent prioridade={prioridade} theme={theme}setPrioridade={setPrioridade} style={styles.modalText} />
+                <View style={styles.modalContainer}>
+                    <Text style={styles.textoCriarObjetivo}>Criar Objetivo</Text>
+                    <TextInput
+                        style={styles.modalText}
+                        outlineColor='black'
+                        outlineStyle={{ borderWidth: 0.65 }}
+                        mode='outlined'
+                        label='Nome'
+                        placeholder='Nome'
+                        value={nome}
+                        theme={theme}
+                        onChangeText={(e) => setNome(e)}
+                    />
+                    <TextInput
+                        style={styles.modalText2}
+                        outlineColor='black'
+                        outlineStyle={{ borderWidth: 0.50 }}
+                        mode='outlined'
+                        label='Descrição'
+                        multiline={true}
+                        placeholder='Descrição'
+                        value={descricao}
+                        theme={theme}
+                        onChangeText={(e) => setDescricao(e)}
+                    />
+                    <DataPicker
+                        theme={theme}
+                        selectedDate={dataEstimada}
+                        onSelectDate={(date) => setDataEstimada(date)}
+                    />
+                    <DropdownComponent
+                        prioridade={prioridade}
+                        theme={theme}
+                        setPrioridade={setPrioridade}
+                    />
 
-                        <View style={{ marginTop: 20 }}>
-                            <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
-                                <Text style={styles.buttonText}>Criar</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={{ marginTop: 20 }}>
+                        <TouchableOpacity onPress={criarObjetivo} style={styles.botaoCriar}>
+                            <Text style={styles.buttonText}>Criar</Text>
+                        </TouchableOpacity>
                     </View>
+                </View>
             </Modal>
         </View>
     );
@@ -120,8 +134,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold'
     },
-    data:{
-        flex:1,
+    data: {
+        flex: 1,
         justifyContent: 'center'
     },
     container: {
@@ -134,7 +148,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         borderTopWidth: 1,
-        borderColor: 'lightgray',        
+        borderColor: 'lightgray',
     },
     icon: {
         padding: 10,
@@ -142,25 +156,34 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: 'white',
         padding: 15,
-        borderRadius: 10,
+        borderRadius: 20,
         justifyContent: 'center',
-        
+        alignItems: 'center',
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderWidth: 1,
+
     },
     modalText: {
-        backgroundColor : "white",
+        backgroundColor: "white",
         width: 325,
-        marginBottom: 30,
-        borderColor: colors.cinza,
-        
+        marginBottom: 20,
+
     },
-    textoCriarObjetivo:{
-        textAlign:'center',
-        color:colors.verde,
+    modalText2: {
+        backgroundColor: "white",
+        width: 325,
+        marginBottom: 26.8,
+    },
+    textoCriarObjetivo: {
+        textAlign: 'center',
+        color: colors.verde,
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 35,
-      }
-    
-    
+        marginBottom: 25,
+        marginTop: 10,
+    }
+
+
 });
 export default BottomBarObjetivos;

@@ -191,7 +191,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
       </Modal>
 
       {/* --- Modal Adicionar Membros ---  */}
-      <Modal isVisible={openModal}>
+      <Modal isVisible={openModal} onBackdropPress={closeModalHandler}>
         <View style={{
           flex: 1,
           flexDirection: 'column',
@@ -199,11 +199,12 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
           alignItems: 'center'
         }}>
           <View style={styles.modalContainer}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', marginTop: 3 }}>Adicionar membros ao Workspace</Text>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', marginTop: 3 ,textAlign:'center', color:colors.roxo,}}>Adicionar membros</Text>
             <TextInput
               style={styles.modalText}
-              multiline={true}
+              mode='outlined'
               placeholder='Digite o nome do usuário'
+              label={isInputFocused ? "Titulo" : ""}
               value={nomeUsuario}
               onChangeText={(e) => setNomeUsuario(e)}
               onSubmitEditing={adicionarUsuario} // Chama a função quando pressionar "Enter"
@@ -212,7 +213,7 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
               data={usuariosBusca}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.usuarioItem} onPress={() => adicionarUsuario(item)}>
-                  <Text style={{ fontSize: 18 }}>{item.nome}</Text>
+                  <Text style={styles.usuarioItemText}>{item.nome}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -222,8 +223,9 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
               </Chip>
             ))}
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
-              <Button title="Adicionar" onPress={adicionarTodosUsuariosAoWorkspace} color={colors.roxo} />
-              <Button title="Fechar" onPress={closeModalHandler} color={colors.roxo} />
+              <Text onPress={adicionarTodosUsuariosAoWorkspace} color={colors.roxo} style={styles.botaoAdicionar}>
+                Adicionar
+              </Text>
             </View>            
           </View>
         </View>
@@ -262,6 +264,18 @@ const ListaTarefaWorkspace = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  botaoAdicionar:{
+    borderRadius: 25, 
+    backgroundColor: colors.roxo,
+    width: 150,
+    height: 50,
+    textAlign: 'center',
+    lineHeight: 50,
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold'
+
+  },
   menu: {
     zIndex: 2,
   },
@@ -333,10 +347,35 @@ const styles = StyleSheet.create({
     height: 50,
     fontSize: 18
   },
+  // usuarioItem: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginTop: 15,
+  //   backgroundColor: colors.roxo,
+  //   borderRadius: 25, 
+  //   width: 150,
+  //   height: 30,
+  //   textAlign: 'center',
+  //   color: 'white',
+  //   fontSize: 16,
+  //   fontWeight: 'bold'
+  // },
   usuarioItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    justifyContent: 'center', // Center the content horizontally
+    marginTop: 15,
+    backgroundColor: colors.roxo,
+    borderRadius: 25,
+    width: 150,
+    height: 25,
+    alignSelf:'center'
+  },
+  usuarioItemText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   usuario: {
     marginTop: 40,

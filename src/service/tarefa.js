@@ -1,8 +1,8 @@
 import axios from "./axios";
 
 
-export const addUserToTarefa = (id, usuarios) => {
-    return axios.put(`/tarefa/adicionarUser/${id}`, usuarios);
+export const addUserToTarefa = (id, usuarios, token) => {
+    return axios.put(`/tarefa/adicionarUser/${id}`, usuarios,{headers: {Authorization: token}});
 }
 
 export const getTarefas = (id) => {
@@ -68,25 +68,25 @@ export const getTarefaById = (id, status) => {
 }
 
 
-export const postTarefa = (id, data) => {
-    return axios.post(`/tarefa/criar/${id}`, data);
+export const postTarefa = (id, data, token) => {
+    return axios.post(`/tarefa/criar/${id}`, data, { headers: { Authorization: token }});
 }
 
 
-export const deleteTarefa = (idTarefa) => {
-    return axios.delete(`/tarefa/deletar/${idTarefa}`)
+export const deleteTarefa = (idTarefa, token) => {
+    return axios.delete(`/tarefa/deletar/${idTarefa}`, {headers: {Authorization: token}})
 }
 
-export const editTarefa = (idTarefa, tarefaEdited) => {
-    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited)
+export const editTarefa = (idTarefa, tarefaEdited, token) => {
+    return axios.patch(`/tarefa/editar/${idTarefa}`, tarefaEdited, { headers: { Authorization: token }})
 }
 
 export const getTarefaTime = (idTarefa) => {
     return axios.get(`/tarefa/buscarCronometro/${idTarefa}`)
 }
 
-export const updateTarefaStatus = (idTarefa, status) => {
-    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status})
+export const updateTarefaStatus = (idTarefa, status, token) => {
+    return axios.put(`/tarefa/mudarStatus/${idTarefa}`, {status}, {headers: {Authorization: token}})
 }
 
 export const updateTarefaTime = (idTarefa) => {
@@ -97,4 +97,4 @@ export const UploadFile = (idTarefa, file, token) => {
     const data = new FormData()
     data.append('file', file)
     return axios.post(`/upload/tarefa/${idTarefa}`, data ,{ headers: { Authorization: token, 'Content-Type': 'multipart/form-data' } })
-}
+};

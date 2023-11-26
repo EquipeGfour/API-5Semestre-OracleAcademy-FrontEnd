@@ -32,6 +32,7 @@ const Home = ({ navigation }) => {
     
     return (
         <>
+        <View style={{ flex:1, backgroundColor: '#FFF', zIndex: -1}}>
             <Icon name= 'sign-out-alt' style={styles.logout} onPress={logout}/>
             <View style = {styles.nomeUsuario}>
                 <Icon name = 'user' size={40}/>
@@ -53,11 +54,12 @@ const Home = ({ navigation }) => {
                     backgroundColor: "#51A8A2"
                 },
             }}>
-                <Tab.Screen name="Todas" component={Recentes} />
-               
+                <Tab.Screen name="Todas" component={Recentes} />               
             </Tab.Navigator>
             <BottomBarObjetivos style={styles.container}/>
+        </View>
         </>
+        
     );
 }
 

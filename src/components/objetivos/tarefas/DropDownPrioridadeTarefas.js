@@ -57,8 +57,8 @@ export default DropDownPrioridadeTarefas;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        padding: 16,
-        paddingTop: -25
+        paddingTop: -25,
+        width: '100%',
     },
     dropdown: {
         height: 50,

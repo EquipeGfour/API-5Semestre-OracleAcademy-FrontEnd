@@ -67,14 +67,15 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
         setModalVisible(true);
     };
 
-    const saveEditedTarefa = () => {
+    const saveEditedTarefa = async () => {
+        const token = await getStorageItem('token');
         const editedTarefa = {
             titulo: editingTitle,
             descricao: editingDescription,
             data_estimada: editingEstimatedDate,
             prioridade: editingPriority,
         };
-        editTarefa(tarefa._id, editedTarefa)
+        editTarefa(tarefa._id, editedTarefa, token)
             .then((res) => {
                 Toast.show({
                     type: 'success',
@@ -121,8 +122,10 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
         { label: 'Aguardando Validação', value: 5 },
     ];
 
-    const deletarTarefa = (id) => {
-        deleteTarefa(id).then(res => {
+    const deletarTarefa = async (id) => {
+        const token = await getStorageItem('token');
+        deleteTarefa(id, token).then(res => {
+            console.log(res);
             Toast.show({
                 type: 'success',
                 text1: 'Tarefa excluida com sucesso!',
@@ -203,6 +206,9 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
     }, [flagTarefa])
 
     const formatarData = (data) => {
+        if (data?.includes('/')){
+            return data
+        }
         if (data) {
             const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
             const formattedDate = new Date(data).toLocaleDateString('pt-BR', options);
@@ -230,7 +236,8 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
 
     const atualizarStatusTarefa = async (tarefaId, novoStatus) => {
         try {
-            const response = await updateTarefaStatus(tarefaId, novoStatus)
+            const token = await getStorageItem('token');
+            const response = await updateTarefaStatus(tarefaId, novoStatus, token)
             setTarefaStatus((prevStatus) => ({
                 ...prevStatus,
                 [tarefaId]: !prevStatus[tarefaId],
@@ -275,7 +282,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                 </SafeAreaView>
             </KeyboardAvoidingView>
 
-            <Modal visible={visible} onDismiss={hideModal}>
+            <ModalGenerico isModalVisible={visible} closeModal={hideModal} altura={450}>
                 <ScrollView style={[styles.modal, { maxHeight: 450 }]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ ...styles.iconContainer, width: '75%' }} >
@@ -348,7 +355,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                         </View>
                     </View> */}
                 </ScrollView>
-            </Modal>
+            </ModalGenerico>
 
             <ModalGenerico isModalVisible={isModalVisible} closeModal={closeModal} altura={500}>
                 <View style={{
@@ -392,7 +399,7 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                                 setPrioridade={setEditingPriority}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                             <TouchableOpacity onPress={saveEditedTarefa} style={styles.botaoCriar}>
                                 <Text style={styles.buttonText}>Salvar</Text>
                             </TouchableOpacity>
@@ -482,13 +489,8 @@ const styles = StyleSheet.create({
         marginLeft: 0
     },
     modal: {
-        backgroundColor: 'white',
         margin: 10,
-        padding: 20,
         borderRadius: 20,
-        elevation: 8,
-        borderColor: 'black',
-        borderWidth: 1,
         marginVertical: 10,
         merginHorizontal: 10,
     },

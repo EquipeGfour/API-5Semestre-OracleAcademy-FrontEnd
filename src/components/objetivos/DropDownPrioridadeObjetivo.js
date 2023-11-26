@@ -71,11 +71,11 @@ import { Dropdown } from 'react-native-element-dropdown';
     dropdown: {
       height: 50,
       width: 325,
-      borderColor: colors.cinza,
+      borderColor: 'black',
       borderWidth: 0.5,
-      borderRadius: 5,
+      borderRadius: 3,
       paddingHorizontal: 10,
-      marginStart: -15
+      marginStart: -15.5
     },
     icon: {
       marginRight: 5,

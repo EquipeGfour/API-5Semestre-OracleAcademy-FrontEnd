@@ -8,6 +8,15 @@ const data = [
     { label: 'Média', value: 3 },
     { label: 'Baixo', value: 4 }
 ];
+const colors = {
+    verde: "#51A8A2",
+    azul: "#4974a5",
+    roxo: "#51336b",
+    branco: "#ffffff",
+    cinza: "#9BA5B7",
+    vermelho: "#FF0000",
+    rosa: "#FFC0CB", // Cor rosa personalizada
+};
 
 const PrioridadeTarefaWork = (props) => {
     const [value, setValue] = useState(null);
@@ -39,6 +48,7 @@ const PrioridadeTarefaWork = (props) => {
             labelField="label"
             valueField="value"
             placeholder={!isFocus ? 'Prioridade' : '...'}
+            placeholderStyle={{color:'black'}}
             
             value={props.prioridade}
             onFocus={() => setIsFocus(true)}
@@ -57,16 +67,17 @@ export default PrioridadeTarefaWork;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        padding: 17,
+        paddingHorizontal: 12,
     },
     dropdown: {
         height: 50,
-        width: 325,
+        width: '100%',
         borderColor: 'black',
-        borderWidth: 0.7,
-        borderRadius: 5,
+        borderWidth: 0.5,
+        borderRadius: 3,
         paddingHorizontal: 8, //texto dentro
-        marginStart:-45
+        borderBottomColor: 'black',
+        borderBottomWidth: 0.8,
     },
     icon: {
         marginRight: 5,
@@ -74,14 +85,16 @@ const styles = StyleSheet.create({
     label: {
         position: 'absolute',
         backgroundColor: 'white',
-        left: 22,
+        left: -20,
         top: 8,
         zIndex: 999,
         paddingHorizontal: 8,
         fontSize: 14,
+        color: colors.roxo
     },
     placeholderStyle: {
         fontSize: 16,
+        color: 'black',
     },
     selectedTextStyle: {
         fontSize: 16,
