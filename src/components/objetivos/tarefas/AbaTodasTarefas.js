@@ -369,30 +369,32 @@ const AbaTodasTarefas = ({ id, flagTarefa, setFlagTarefa = () => { }, status }) 
                             <View>
                                 <TextInput
                                     mode='outlined'
-                                    outlineColor='gray'
-                                    outlineStyle={{ borderWidth: 1 }}
+                                    outlineColor='black'
+                                    outlineStyle={{ borderWidth: 0.5 }}
                                     style={styles.modalText2}
                                     placeholder={tarefa.titulo}
                                     onChangeText={(e) => setEditingTitle(e)}
                                 />
                                 <TextInput
                                     mode='outlined'
-                                    outlineColor='gray'
-                                    outlineStyle={{ borderWidth: 1 }}
+                                    outlineColor='black'
+                                    outlineStyle={{ borderWidth: 0.5 }}
                                     style={styles.modalText}
                                     placeholder={tarefa.descricao}
                                     onChangeText={(e) => setEditingDescription(e)}
                                 />
                             </View>
                         </TouchableWithoutFeedback>
-                        <DataPicker
-                            selectedDate={editingEstimatedDate}
-                            onSelectDate={(e) => setEditingEstimatedDate(e)}
-                            stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25, } }}
-                        />
-                        <View style={{ flexDirection: 'row', width: '98%', marginTop: 25 }}>
+                        <View style={styles.dataPickerContainer}>
+                            <DataPicker
+                                selectedDate={editingEstimatedDate}
+                                onSelectDate={(e) => setEditingEstimatedDate(e)}
+                                stylesProps={{ container: { borderWidth: 0.5, marginBottom: 25, } }}
+                            />
+                        </View>
+                        <View style={styles.prioridadeContainer}>
                             <DropdownComponent
-                                style={[styles.modalText]}
+                                style={styles.modalText}
                                 prioridade={editingPriority}
                                 setPrioridade={setEditingPriority}
                             />
@@ -563,7 +565,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 15,
     },
-
+    prioridadeContainer: {
+        marginTop: 26.8,
+    },
 });
 
 export default teste;
