@@ -42,8 +42,9 @@ const buscarDadosGraficoByMonth = async () => {
     const dataFinalFormatada = dia + '/' + mes + '/' + '20' +  ano;
 
     // - Busca Horas -
-    getHorasTrabalhadasWork(token).then(async (res) => {
+    getHorasTrabalhadasWork(token,dataFinalFormatada).then(async (res) => {
         setTotalHoras(res.data);
+
     }).catch(error => {
         console.error('Erro', error.response);
     })
