@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
     label: {
         position: 'absolute',
         backgroundColor: 'white',
-        left: -20,
-        top: 8,
+        left: 15,
+        top: 11,
         zIndex: 999,
         paddingHorizontal: 8,
-        fontSize: 14,
+        fontSize: 15,
         color: colors.roxo
     },
     placeholderStyle: {
